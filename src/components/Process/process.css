@@ -1,0 +1,117 @@
+/* ==========================================================================
+   Process — an After Effects-style calibration timeline (spec §27)
+   The rail is an SVG curve that bends toward the cursor's vertical position
+   (components/Process/process.ts). Nodes are keyframe glyphs:
+   linear · ease in · ease out · auto bezier · hold.
+   ========================================================================== */
+
+.process { overflow: hidden; }
+
+.process__title {
+  position: relative;
+  z-index: 1;
+  margin-bottom: clamp(28px, 3.2vw, 48px);
+}
+
+.process__track {
+  --node-y: 11px;
+  position: relative;
+  z-index: 1;
+}
+
+.process__curve {
+  position: absolute;
+  left: 0;
+  top: calc(var(--node-y) - 80px);
+  width: 100%;
+  height: 160px;
+  overflow: visible;
+  pointer-events: none;
+}
+.process__curve path { fill: none; vector-effect: non-scaling-stroke; }
+.process__curve-base { stroke: var(--ft-line-strong); stroke-width: 1; }
+.process__curve-light {
+  stroke: var(--ft-green);
+  stroke-width: 1.4;
+  stroke-dasharray: var(--lit, 0.5) 1;
+  filter: drop-shadow(0 0 4px rgba(77, 214, 255, 0.7)) drop-shadow(0 0 10px color-mix(in srgb, var(--ft-accent) 45%, transparent));
+}
+
+.process__rail {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+
+.process__stage {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding-top: 40px;
+  color: var(--ft-mist);
+  transition: opacity var(--dur-mid) var(--ease-out);
+}
+
+/* keyframe glyph */
+.process__node {
+  --ny: 0px;
+  position: absolute;
+  left: 0;
+  top: calc(var(--node-y) - 11px);
+  width: 22px;
+  height: 22px;
+  transform: translateY(var(--ny));
+  will-change: transform;
+}
+.process__node svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: var(--ft-black);
+  stroke: rgba(155, 170, 181, 0.85);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+  transition: fill var(--dur-mid) var(--ease-out), stroke var(--dur-mid) var(--ease-out), filter var(--dur-mid) var(--ease-out);
+}
+
+.process__index { color: var(--ft-mist); }
+.process__kf { color: rgba(155, 170, 181, 0.55); }
+.process__stage h3 { color: rgba(233, 240, 244, 0.78); }
+.process__stage p { max-width: 22em; }
+.process__chips { color: var(--ft-mist); letter-spacing: 0.12em; margin-top: 4px; }
+.process__stage.is-active .process__chips { color: var(--ft-pearl); }
+
+/* keyframes the light has passed stay lit; the active one is selected */
+.process__stage.is-passed .process__node svg { stroke: var(--ft-pearl); }
+.process__stage.is-active .process__node svg {
+  fill: var(--ft-green);
+  stroke: var(--ft-green);
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--ft-accent) 80%, transparent)) drop-shadow(0 0 16px rgba(77, 214, 255, 0.35));
+}
+.process__stage.is-active .process__index,
+.process__stage.is-active .process__kf { color: var(--ft-green); }
+.process__stage.is-active h3 { color: var(--ft-pearl); }
+.process__stage.is-active p { color: color-mix(in srgb, var(--ft-pearl) 70%, var(--ft-mist)); }
+.process__rail:hover .process__stage:not(.is-active) { opacity: 0.62; }
+
+@media (max-width: 899px) {
+  .process__curve { display: none; }
+  .process__rail {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-left: 38px;
+  }
+  .process__rail::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--ft-accent) 20%, transparent), var(--ft-green) 45%, var(--ft-line) 55%);
+  }
+  .process__stage { padding: 0 0 26px; }
+  .process__node { left: -38px; top: 0; transform: none; }
+}

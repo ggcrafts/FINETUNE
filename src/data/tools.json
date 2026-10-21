@@ -1,0 +1,28 @@
+{
+  "$comment": "Tool registry. `icons` = candidate simple-icons slugs (first found wins). Drop an official SVG at public/assets/tools/custom/<id>.svg to override. Run `npm run icons` after edits (also runs automatically before dev/build).",
+  "tools": [
+    { "id": "after-effects", "label": "After Effects", "mono": "Ae", "icons": ["adobeaftereffects"] },
+    { "id": "premiere", "label": "Premiere Pro", "mono": "Pr", "icons": ["adobepremierepro"] },
+    { "id": "photoshop", "label": "Photoshop", "mono": "Ps", "icons": ["adobephotoshop"] },
+    { "id": "claude", "label": "Claude", "mono": "Cl", "icons": ["claude", "anthropic"] },
+    { "id": "codex", "label": "Codex", "mono": "Cx", "icons": ["openai"] },
+    { "id": "figma", "label": "Figma", "mono": "Fg", "icons": ["figma"] },
+    { "id": "nano-banana", "label": "Nano Banana", "mono": "NB", "icons": ["nanobanana", "googlegemini"] },
+    { "id": "higgsfield", "label": "Higgsfield", "mono": "Hf", "icons": ["higgsfield", "higgsfieldai"] },
+    { "id": "magnific", "label": "Magnific", "mono": "Mg", "icons": ["magnific", "magnificai", "freepik"] },
+    { "id": "kling", "label": "Kling", "mono": "Kl", "icons": ["kling", "klingai"] },
+    { "id": "seedance", "label": "Seedance", "mono": "Sd", "icons": ["seedance", "bytedance"] },
+    { "id": "suno", "label": "Suno", "mono": "Su", "icons": ["suno"] },
+    { "id": "elevenlabs", "label": "ElevenLabs", "mono": "11", "icons": ["elevenlabs"] },
+    { "id": "frameio", "label": "Frame.io", "mono": "Fio", "icons": ["frameio"] },
+    { "id": "blender", "label": "Blender", "mono": "Bl", "icons": ["blender"] },
+    { "id": "unity", "label": "Unity", "mono": "U", "icons": ["unity"] }
+  ],
+  "groups": {
+    "practice-0": ["photoshop", "figma", "magnific", "nano-banana"],
+    "practice-1": ["after-effects", "premiere", "blender", "unity", "frameio"],
+    "practice-2": ["nano-banana", "higgsfield", "kling", "seedance", "magnific", "suno", "elevenlabs"],
+    "practice-3": ["claude", "codex", "blender", "unity"],
+    "lab": ["claude", "codex", "blender", "unity", "after-effects", "figma"]
+  }
+}

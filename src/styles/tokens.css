@@ -1,0 +1,87 @@
+/* ==========================================================================
+   FineTune Prism — design tokens
+   Single source for color, type, spacing and motion. Spec §6–8, §32.
+   ========================================================================== */
+
+:root {
+  /* ---- Color ----------------------------------------------------------- */
+  --ft-black: #05090e;
+  --ft-midnight: #0a1320;
+  --ft-slate: #111b28;
+  --ft-pearl: #e9f0f4;
+  --ft-mist: #9baab5;
+  --ft-line: rgba(233, 240, 244, 0.12);
+  --ft-line-soft: rgba(233, 240, 244, 0.06);
+  --ft-line-strong: rgba(233, 240, 244, 0.22);
+  --ft-panel: rgba(233, 240, 244, 0.035);
+  /* Accent — a living spectral hue (driven by motion/spectrum.ts) that cycles
+     through the hero-line palette. "--ft-green" is kept as an alias so every
+     accent use follows it. Static cyan without JS / with reduced motion. */
+  --ft-accent: #4dd6ff;
+  --ft-accent-2: #8f6bff;
+  --ft-accent-grad: linear-gradient(90deg, var(--ft-accent), var(--ft-accent-2));
+  --ft-green: var(--ft-accent);
+  --ft-green-soft: color-mix(in srgb, var(--ft-accent) 16%, transparent);
+  --ft-green-line: color-mix(in srgb, var(--ft-accent) 42%, transparent);
+
+  /* Optical colors — reserved for light phenomena (lines, glints), never UI fills. */
+  --ft-optic-cyan: #4dd6ff;
+  --ft-optic-violet: #8f6bff;
+  --ft-optic-rose: #ff61c2;
+  --ft-optic-amber: #ff9a4d;
+
+  /* ---- Typography ------------------------------------------------------ */
+  --font-display: "Space Grotesk Variable", "Space Grotesk", "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Inter Variable", "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+
+  --display-xl: clamp(4.95rem, 8.8vw, 9.9rem);
+  --display-lg: clamp(3.63rem, 6.6vw, 7.04rem);
+  --display-md: clamp(2.64rem, 4.62vw, 4.84rem);
+  --display-sm: clamp(1.925rem, 2.86vw, 2.86rem);
+  --title-md: clamp(1.375rem, 1.76vw, 1.65rem);
+
+  --body-lg: 1.2375rem;
+  --body-md: 1.1rem;
+  --body-sm: 0.9625rem;
+  --mono-sm: 0.7563rem;
+  --mono-xs: 0.6875rem;
+
+  /* ---- Layout ---------------------------------------------------------- */
+  --page-max: 1440px;
+  --page-padding: clamp(18px, 4vw, 64px);
+  --grid-cols: 12;
+  --grid-gap: clamp(12px, 1.6vw, 24px);
+  --frame-gap: clamp(10px, 1vw, 14px);  /* gap between framed panels */
+  --frame-pad: clamp(18px, 2.6vw, 40px); /* inner padding of a framed panel */
+  --header-h: 64px;
+
+  --section-xl: clamp(88px, 8vw, 128px);
+  --section-lg: clamp(64px, 6vw, 96px);
+  --section-md: clamp(44px, 4vw, 72px);
+  --section-sm: clamp(28px, 3vw, 44px);
+
+  /* ---- Motion ---------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1); /* power3.out equivalent */
+  --ease-optic: cubic-bezier(0.37, 0, 0.63, 1); /* sine.inOut */
+  --dur-fast: 270ms;
+  --dur-mid: 630ms;
+  --dur-slow: 1350ms;
+
+  /* ---- Breakpoints (reference only — CSS vars cannot drive @media) ---- */
+  --bp-sm: 600px;
+  --bp-md: 900px;
+  --bp-lg: 1200px;
+  --bp-xl: 1600px;
+}
+
+@media (max-width: 1199px) {
+  :root { --grid-cols: 8; }
+}
+
+@media (max-width: 599px) {
+  :root {
+    --grid-cols: 4;
+    --header-h: 56px;
+  }
+}

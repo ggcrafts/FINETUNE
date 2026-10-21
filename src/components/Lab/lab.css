@@ -1,0 +1,202 @@
+/* ==========================================================================
+   Experimental Lab — credible creative R&D, not a terminal (spec §28)
+   Layout: intro + experiment | code/system | capabilities | side rail
+   ========================================================================== */
+
+.lab { overflow: hidden; }
+
+.lab__layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 4fr) minmax(0, 2fr) 28px;
+  grid-template-areas:
+    "intro intro intro rail"
+    "exp   code  cap   rail"
+    "tools tools tools rail";
+  gap: var(--grid-gap);
+}
+
+.lab__intro {
+  grid-area: intro;
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+  gap: var(--grid-gap);
+  align-items: end;
+  margin-bottom: 4px;
+}
+.lab__intro .t-body-sm { max-width: 32em; }
+
+/* ---- Experiment surface ------------------------------------------------ */
+.lab__experiment {
+  grid-area: exp;
+  position: relative;
+  margin: 0;
+  min-height: 260px;
+  border: 1px solid var(--ft-line);
+  overflow: hidden;
+  background: var(--ft-midnight);
+}
+.lab__experiment img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.lab__canvas-slot { position: absolute; inset: 0; }
+
+.lab__exp-cap {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 10px;
+  background: rgba(5, 9, 14, 0.6);
+}
+.lab__exp-cap .t-mono-xs { color: var(--ft-pearl); }
+.lab__pending { top: 12px; right: 12px; }
+
+/* ---- Code / system ----------------------------------------------------- */
+.lab__code {
+  grid-area: code;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--ft-line);
+  background: rgba(10, 19, 32, 0.55);
+  min-width: 0;
+}
+
+.lab__code-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--ft-line-soft);
+}
+.lab__code-head span:first-child { color: var(--ft-pearl); }
+
+.lab__code pre {
+  margin: 0;
+  padding: 14px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 12.65px;
+  line-height: 1.75;
+  color: rgba(233, 240, 244, 0.86);
+  tab-size: 4;
+  flex: 1;
+}
+.lab__code .c { color: rgba(155, 170, 181, 0.7); }
+.lab__code .k { color: var(--ft-green); }
+.lab__code .s { color: #c8d6df; }
+
+.lab__code-note {
+  padding: 12px 14px;
+  border-top: 1px solid var(--ft-line-soft);
+  font-size: 14.3px;
+}
+
+/* ---- Capabilities ------------------------------------------------------ */
+.lab__capabilities {
+  grid-area: cap;
+  display: grid;
+  align-content: start;
+  border-top: 1px solid var(--ft-line-soft);
+}
+.lab__capabilities li {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 8px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--ft-line-soft);
+  font-size: 14.85px;
+  line-height: 1.35;
+  color: var(--ft-pearl);
+}
+.lab__capabilities li .t-mono-xs { color: var(--ft-green); padding-top: 2px; }
+
+/* ---- Toolbox ----------------------------------------------------------- */
+.lab__tools {
+  grid-area: tools;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ft-line-soft);
+}
+.lab__tools > p { color: var(--ft-green); }
+@media (max-width: 599px) {
+  .lab__tools { grid-template-columns: 1fr; gap: 10px; }
+}
+
+/* ---- Side rail — the single "second read" moment ----------------------- */
+.lab__rail {
+  grid-area: rail;
+  display: flex;
+  justify-content: space-between;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  padding: 4px 0;
+  border-left: 1px solid var(--ft-line);
+  color: rgba(155, 170, 181, 0.75);
+  letter-spacing: 0.24em;
+}
+.lab__rail span:first-child { color: var(--ft-green); }
+
+@media (max-width: 1199px) {
+  .lab__layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 24px;
+    grid-template-areas:
+      "intro intro rail"
+      "exp   exp   rail"
+      "code  cap   rail"
+      "tools tools rail";
+  }
+}
+
+@media (max-width: 899px) {
+  .lab__layout {
+    grid-template-columns: 1fr;
+    grid-template-areas: "intro" "exp" "code" "cap" "tools";
+  }
+  .lab__intro { grid-template-columns: 1fr; }
+  .lab__rail { display: none; }
+  .lab__experiment { aspect-ratio: 16 / 10; min-height: 0; }
+  .lab__capabilities { grid-template-columns: 1fr 1fr; column-gap: var(--grid-gap); }
+}
+
+@media (max-width: 599px) {
+  .lab__capabilities { grid-template-columns: 1fr; }
+}
+
+/* ---- Live terminal (terminal.ts): small, translucent, clearly not editable */
+.lab__term.is-live {
+  font-size: 10.5px;
+  line-height: 1.7;
+  opacity: 0.66;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+  pointer-events: none;
+  white-space: pre-wrap;
+  overflow: hidden;
+  flex: none;
+}
+.lab__term .t-p { color: color-mix(in srgb, var(--ft-accent) 75%, transparent); }
+.lab__term .t-cont .t-p { color: rgba(155, 170, 181, 0.55); }
+.lab__term .t-out { color: rgba(155, 170, 181, 0.85); }
+.lab__term .t-ok { color: var(--ft-green); }
+.lab__term .t-cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  margin-left: 1px;
+  vertical-align: -0.2em;
+  background: rgba(233, 240, 244, 0.7);
+}

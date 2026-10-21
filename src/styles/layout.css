@@ -1,0 +1,408 @@
+/* ==========================================================================
+   Layout — page container, 12-col grid, framed panels, shared UI atoms
+   Spec §8 (grid/density), §34 (CTAs), §35 (micro-UI), §44 (page-start clarity)
+   ========================================================================== */
+
+.page {
+  width: 100%;
+  max-width: calc(var(--page-max) + var(--page-padding) * 2);
+  margin-inline: auto;
+  padding-inline: var(--page-padding);
+}
+
+/* Stack of framed panels. Tight gap = sections flow into each other. */
+.panels {
+  display: flex;
+  flex-direction: column;
+  gap: var(--frame-gap);
+  padding-top: calc(var(--header-h) + var(--frame-gap) * 2);
+  padding-bottom: var(--frame-gap);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+}
+
+/* ---- Frame: the visible structural panel ------------------------------- */
+.frame {
+  position: relative;
+  border: 1px solid var(--ft-line);
+  background:
+    linear-gradient(180deg, rgba(233, 240, 244, 0.022), rgba(233, 240, 244, 0.008)),
+    rgba(5, 9, 14, 0.72);
+  padding: var(--frame-pad);
+  isolation: isolate;
+}
+
+/* Viewfinder corner ticks — every panel reads as an observed field */
+.frame::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  --t: 10px;
+  --c: var(--ft-line-strong);
+  background:
+    linear-gradient(var(--c), var(--c)) top left / var(--t) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) top left / 1px var(--t) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--t) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / 1px var(--t) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--t) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 1px var(--t) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--t) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / 1px var(--t) no-repeat;
+  z-index: 3;
+}
+
+.frame--active::before { --c: var(--ft-green-line); }
+
+/* faint chromatic split on structural lines — light passing through the frame */
+.frame {
+  box-shadow:
+    -1px 0 0 rgba(77, 214, 255, 0.045),
+    1px 0 0 rgba(255, 97, 194, 0.045);
+}
+
+/* Subtle technical grid — Hero, Process, Lab only (spec §35: .025–.065) */
+.grid-overlay {
+  position: absolute;
+  inset: -48px;
+  transform: translate3d(var(--gx, 0px), var(--gy, 0px), 0);
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(233, 240, 244, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(233, 240, 244, 0.045) 1px, transparent 1px);
+  background-size: calc(100% / 12) 64px;
+  mask-image: radial-gradient(120% 90% at 60% 40%, #000 30%, transparent 85%);
+  -webkit-mask-image: radial-gradient(120% 90% at 60% 40%, #000 30%, transparent 85%);
+  z-index: 0;
+}
+
+/* ---- Section head ------------------------------------------------------ */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 14px;
+  margin-bottom: clamp(20px, 2.4vw, 32px);
+  border-bottom: 1px solid var(--ft-line-soft);
+}
+
+.section-id {
+  font-family: var(--font-mono);
+  font-size: var(--mono-sm);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ft-mist);
+  white-space: nowrap;
+}
+.section-id b {
+  font-weight: 500;
+  color: var(--ft-green);
+}
+
+.section-note {
+  font-family: var(--font-mono);
+  font-size: var(--mono-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(155, 170, 181, 0.7);
+  text-align: right;
+}
+
+/* ---- Buttons / CTAs ---------------------------------------------------- */
+.btn {
+  --btn-line: var(--ft-line-strong);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 48px;
+  padding: 0 18px 0 20px;
+  font-family: var(--font-mono);
+  font-size: var(--mono-sm);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ft-pearl);
+  border: 1px solid var(--btn-line);
+  background: rgba(5, 9, 14, 0.4);
+  transition:
+    border-color var(--dur-mid) var(--ease-out),
+    background-color var(--dur-mid) var(--ease-out),
+    color var(--dur-mid) var(--ease-out);
+}
+
+.btn__arrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 16.5px;
+  letter-spacing: 0;
+  transition: transform var(--dur-mid) var(--ease-out);
+}
+
+.btn:hover,
+.btn:focus-visible {
+  --btn-line: var(--ft-pearl);
+  background-color: rgba(233, 240, 244, 0.05);
+}
+.btn:hover .btn__arrow,
+.btn:focus-visible .btn__arrow { transform: translate(4px, 0); }
+
+/* Primary — viewfinder corners in FineTune green */
+.btn--primary {
+  --btn-line: rgba(233, 240, 244, 0.32);
+  background: rgba(233, 240, 244, 0.04);
+}
+.btn--primary::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  pointer-events: none;
+  --t: 8px;
+  --c: var(--ft-green);
+  background:
+    linear-gradient(var(--c), var(--c)) top left / var(--t) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) top left / 1px var(--t) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--t) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / 1px var(--t) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--t) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 1px var(--t) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--t) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / 1px var(--t) no-repeat;
+  transition: inset var(--dur-mid) var(--ease-out);
+}
+.btn--primary .btn__arrow { color: var(--ft-green); }
+.btn--primary:hover::before,
+.btn--primary:focus-visible::before { inset: -1px; } /* focus converges onto the frame */
+
+/* Ghost — lower contrast secondary */
+.btn--ghost {
+  --btn-line: var(--ft-line);
+  color: var(--ft-mist);
+  background: transparent;
+}
+.btn--ghost:hover,
+.btn--ghost:focus-visible { color: var(--ft-pearl); }
+
+/* Solid — the single intentional green fill (Contact) */
+.btn--solid {
+  --btn-line: var(--ft-green);
+  background: var(--ft-green);
+  color: var(--ft-black);
+}
+.btn--solid:hover,
+.btn--solid:focus-visible {
+  --btn-line: var(--ft-pearl);
+  background: var(--ft-pearl);
+}
+
+/* Inline arrow link */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: var(--mono-sm);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ft-pearl);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.link-arrow span[aria-hidden] {
+  color: var(--ft-green);
+  transition: transform var(--dur-mid) var(--ease-out);
+}
+.link-arrow:hover span[aria-hidden],
+.link-arrow:focus-visible span[aria-hidden] { transform: translate(4px, -2px); }
+
+/* Small bordered tag — index boxes, eyebrows */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 24px;
+  padding: 0 8px;
+  border: 1px solid var(--ft-line);
+  font-family: var(--font-mono);
+  font-size: var(--mono-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ft-mist);
+  white-space: nowrap;
+}
+
+.index-box {
+  display: inline-grid;
+  place-items: center;
+  min-width: 28px;
+  height: 24px;
+  padding: 0 6px;
+  border: 1px solid var(--ft-line-strong);
+  font-family: var(--font-mono);
+  font-size: var(--mono-xs);
+  letter-spacing: 0.06em;
+  color: var(--ft-pearl);
+  white-space: nowrap;
+}
+
+/* Status dot — system state (availability) */
+.status-dot {
+  position: relative;
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ft-green);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ft-accent) 14%, transparent), 0 0 10px color-mix(in srgb, var(--ft-accent) 60%, transparent);
+}
+
+/* Optical hairline — light continuing across a boundary */
+.light-line {
+  position: absolute;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(77, 214, 255, 0.0) 8%,
+    rgba(77, 214, 255, 0.55) 34%,
+    rgba(233, 240, 244, 0.95) 52%,
+    rgba(255, 154, 77, 0.6) 66%,
+    rgba(143, 107, 255, 0.0) 90%,
+    transparent 100%);
+  filter: drop-shadow(0 0 6px rgba(77, 214, 255, 0.45));
+}
+
+/* Placeholder marker — honest label for media that will be replaced in Phase 05 */
+.media-pending {
+  position: absolute;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 9.9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(233, 240, 244, 0.55);
+  background: rgba(5, 9, 14, 0.6);
+  border: 1px solid var(--ft-line-soft);
+  padding: 3px 6px;
+}
+
+/* ---- Stacked slides (motion/stack.ts) ---------------------------------- */
+.frame { --e: 1; background-color: rgba(6, 11, 18, 0.9); }
+
+/* ---- Background light (effects/bgParticles.ts): behind every panel ---- */
+.bg-light {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(2px) saturate(1.3) brightness(1.2);
+}
+#main,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* --e: entry state 0 → 1, animated (registered so it can transition) */
+@property --e {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
+.is-stacked .panels > .frame {
+  position: relative;
+  transform-origin: 50% 0%;
+  will-change: opacity, translate, scale;
+  transition:
+    opacity 560ms var(--ease-out),
+    translate 760ms var(--ease-out),
+    scale 760ms var(--ease-out),
+    --e 760ms var(--ease-out),
+    visibility 0s linear 0s;
+}
+
+/* out of focus: a light dim overlay (continuous, set by stack.ts) */
+.is-stacked .panels > .frame::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  background: var(--ft-black);
+  opacity: var(--dim, 0);
+  pointer-events: none;
+  z-index: 6;
+}
+
+/* not yet revealed: clear, slightly low, out of focus */
+.is-stacked .panels > .frame.is-pending {
+  opacity: 0;
+  translate: 0 44px;
+  transition:
+    opacity 380ms var(--ease-out),
+    translate 380ms var(--ease-out),
+    --e 380ms var(--ease-out);
+}
+
+/* receded: pushed back into depth, then hidden (frees the GPU and the a11y tree) */
+.is-stacked .panels > .frame.is-receded {
+  opacity: 0;
+  translate: 0 -48px;
+  scale: 0.9;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 480ms var(--ease-out),
+    translate 760ms var(--ease-out),
+    scale 760ms var(--ease-out),
+    --e 760ms var(--ease-out),
+    visibility 0s linear 760ms;
+}
+
+/* content resolves from blur to focus with the entry state */
+.is-stacked .panels > .frame > :not(.grid-overlay) {
+  filter: blur(calc((1 - var(--e, 1)) * 7px));
+}
+
+/* ---- Keyword calibration: each section's key word tunes in on entry ---- */
+.kw {
+  --k: calc(1 - var(--e, 1));
+  text-shadow:
+    calc(var(--k) * -3px) 0 0 rgba(77, 214, 255, calc(var(--k) * 0.7)),
+    calc(var(--k) * 3px) 0 0 rgba(255, 97, 194, calc(var(--k) * 0.7));
+}
+.kw--weight {
+  font-weight: calc(300 + 320 * var(--e, 1));
+  font-variation-settings: "wght" calc(300 + 320 * var(--e, 1));
+}
+.kw--fill {
+  color: rgba(233, 240, 244, calc(0.04 + 0.96 * var(--e, 1)));
+  -webkit-text-stroke: calc(var(--k) * 1.6px + 0.01px) rgba(233, 240, 244, calc(0.4 + var(--k) * 0.6));
+}
+.kw--track {
+  letter-spacing: calc(-0.03em + var(--k) * 0.32em);
+}
+
+/* ---- Cursor line waves overlay (effects/lineWaves.ts) ------------------- */
+.line-waves {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 45;
+}
+
+/* ---- "Let's talk" black hole: heavy layers stand still (state.setHold) ---- */
+html.is-hold .bg-light,
+html.is-hold .line-waves,
+html.is-hold .hero__canvas { visibility: hidden; }
+html.is-hold *:not(.blackhole, .blackhole *),
+html.is-hold *::before,
+html.is-hold *::after { animation-play-state: paused !important; }

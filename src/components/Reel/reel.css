@@ -1,0 +1,84 @@
+/* ==========================================================================
+   Reel strip — compact marquee of playing clips, right after the hero
+   ========================================================================== */
+
+.reel {
+  padding-block: clamp(14px, 1.6vw, 22px) clamp(16px, 1.8vw, 24px);
+  overflow: hidden;
+}
+
+.reel__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding-inline: var(--frame-pad);
+  margin-bottom: 12px;
+}
+
+.reel__track {
+  position: relative;
+  overflow: hidden;
+  /* clips enter and leave through soft edges */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+.reel__belt {
+  display: flex;
+  gap: 10px;
+  width: max-content;
+  will-change: transform;
+}
+
+.reel__clip {
+  position: relative;
+  flex: 0 0 auto;
+  height: clamp(112px, 11.5vw, 168px);
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--ft-line);
+  background:
+    radial-gradient(120% 90% at 70% 60%, color-mix(in srgb, var(--ft-accent) 18%, transparent), transparent 60%),
+    var(--ft-midnight);
+  overflow: hidden;
+  transition: border-color var(--dur-mid) var(--ease-out), transform var(--dur-mid) var(--ease-out);
+}
+.reel__clip video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  filter: blur(8px) saturate(0.9);
+  transition: opacity var(--dur-slow) var(--ease-out), filter var(--dur-slow) var(--ease-out);
+}
+/* emergence: each clip resolves into focus once it has a frame */
+.reel__clip.is-ready video { opacity: 1; filter: none; }
+.reel__clip.is-missing video { display: none; }
+
+.reel__clip:hover {
+  border-color: color-mix(in srgb, var(--ft-accent) 70%, transparent);
+  transform: translateY(-2px);
+}
+
+.reel__index {
+  position: absolute;
+  left: 8px;
+  top: 6px;
+  color: var(--ft-pearl);
+  text-shadow: 0 1px 6px rgba(5, 9, 14, 0.8);
+}
+.reel__pending {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  transform: scale(0.85);
+  transform-origin: right bottom;
+}
+
+/* reduced motion: a still, scrollable row */
+.reel__track.is-static { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+
+@media (max-width: 599px) {
+  .reel__head .section-note { display: none; }
+}

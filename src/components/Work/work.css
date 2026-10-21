@@ -1,0 +1,229 @@
+/* ==========================================================================
+   Observed Works — the major focal point (spec §25)
+   Three prominent editorial frames + one wide supporting case.
+   Hover = focus shift: the observed case sharpens, the others recede.
+   ========================================================================== */
+
+.work__intro {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: var(--grid-gap);
+  align-items: end;
+  margin-bottom: clamp(20px, 2.2vw, 30px);
+}
+.work__intro .t-body-sm { max-width: 30em; justify-self: end; }
+
+.work__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+
+.case { position: relative; min-width: 0; }
+.case--wide { grid-column: 1 / -1; }
+
+.case__link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid var(--ft-line);
+  background: rgba(10, 19, 32, 0.4);
+  transition: border-color var(--dur-mid) var(--ease-out), background-color var(--dur-mid) var(--ease-out);
+}
+
+/* viewfinder that converges on hover/focus */
+.case__link::after {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  pointer-events: none;
+  opacity: 0;
+  --t: 12px;
+  --c: var(--ft-green);
+  background:
+    linear-gradient(var(--c), var(--c)) top left / var(--t) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) top left / 1px var(--t) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--t) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / 1px var(--t) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--t) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 1px var(--t) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--t) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / 1px var(--t) no-repeat;
+  transition: inset var(--dur-mid) var(--ease-out), opacity var(--dur-mid) var(--ease-out);
+}
+
+.case__media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--ft-midnight);
+  border-bottom: 1px solid var(--ft-line-soft);
+}
+.case__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.02);
+  transition:
+    transform 1.2s var(--ease-out),
+    filter var(--dur-slow) var(--ease-out);
+}
+.case__pending { top: 10px; right: 10px; }
+
+.case__body {
+  display: grid;
+  gap: 10px;
+  padding: 16px 18px 18px;
+  flex: 1;
+  align-content: start;
+}
+
+.case__meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.case__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 1.87vw, 1.76rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: var(--ft-pearl);
+}
+.case__client {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--font-mono);
+  font-size: var(--mono-xs);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ft-green);
+}
+
+.case__context { max-width: 34em; }
+
+.case__cta { margin-top: 4px; }
+
+/* ---- Interaction: focus shift ------------------------------------------ */
+@media (hover: hover) {
+  .work__grid:has(.case__link:hover) .case__link:not(:hover) .case__media img {
+    filter: brightness(0.55) blur(2px) saturate(0.7);
+  }
+}
+.case__link:hover,
+.case__link:focus-visible {
+  border-color: var(--ft-line-strong);
+  background: rgba(10, 19, 32, 0.7);
+}
+.case__link:hover::after,
+.case__link:focus-visible::after { opacity: 1; inset: 4px; }
+.case__link:hover .case__media img,
+.case__link:focus-visible .case__media img { transform: scale(1.06); }
+.case__link:hover .link-arrow span[aria-hidden],
+.case__link:focus-visible .link-arrow span[aria-hidden] { transform: translate(4px, -2px); }
+.case__link:focus-visible { outline-offset: 2px; }
+
+/* ---- Wide supporting case ---------------------------------------------- */
+.case--wide .case__link {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+}
+.case--wide .case__media {
+  aspect-ratio: auto;
+  min-height: 150px;
+  border-bottom: 0;
+  border-right: 1px solid var(--ft-line-soft);
+}
+.case--wide .case__body {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-content: center;
+  column-gap: 24px;
+  padding: 20px 22px;
+}
+.case--wide .case__meta,
+.case--wide .case__title,
+.case--wide .case__context { grid-column: 1; }
+.case--wide .case__cta { grid-column: 2; grid-row: 1 / span 3; align-self: center; }
+
+@media (max-width: 1199px) {
+  .work__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .case--featured:first-child { grid-column: 1 / -1; }
+  .case--featured:first-child .case__media { aspect-ratio: 21 / 9; }
+}
+
+@media (max-width: 899px) {
+  .work__intro { grid-template-columns: 1fr; }
+  .work__intro .t-body-sm { justify-self: start; }
+  .work__grid { grid-template-columns: 1fr; }
+  .case--featured:first-child .case__media { aspect-ratio: 16 / 10; }
+  .case--wide .case__link { grid-template-columns: 1fr; }
+  .case--wide .case__media { min-height: 0; aspect-ratio: 16 / 7; border-right: 0; border-bottom: 1px solid var(--ft-line-soft); }
+  .case--wide .case__body { grid-template-columns: 1fr; }
+  .case--wide .case__cta { grid-column: 1; grid-row: auto; }
+}
+
+/* ---- More projects: a compact strip of Behance covers --------------------- */
+.work__more { margin-top: clamp(16px, 1.8vw, 24px); }
+.more__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 10px 0;
+  border-top: 1px solid var(--ft-line-soft);
+}
+.more__list {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: 8px;
+}
+.more__item { display: block; }
+.more__media {
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid var(--ft-line);
+  background: var(--ft-midnight);
+  transition: border-color var(--dur-mid) var(--ease-out);
+}
+.more__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.85) brightness(0.85);
+  transition: filter var(--dur-mid) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+}
+.more__title {
+  display: block;
+  margin-top: 6px;
+  color: var(--ft-mist);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color var(--dur-mid) var(--ease-out);
+}
+.more__item:hover .more__media,
+.more__item:focus-visible .more__media { border-color: color-mix(in srgb, var(--ft-accent) 70%, transparent); }
+.more__item:hover img,
+.more__item:focus-visible img { filter: none; transform: scale(1.05); }
+.more__item:hover .more__title,
+.more__item:focus-visible .more__title { color: var(--ft-pearl); }
+
+@media (max-width: 1199px) {
+  .more__list { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+@media (max-width: 599px) {
+  .more__list {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 6px;
+  }
+  .more__list li { flex: 0 0 42%; scroll-snap-align: start; }
+}
+
+img.is-broken { visibility: hidden; }

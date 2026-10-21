@@ -1,0 +1,422 @@
+/* ==========================================================================
+   Hero — entrance to a living visual instrument (spec §12, §44)
+   Phase 01: static poster as optical field; Phase 02 mounts WebGL in
+   .hero__canvas-slot and keeps the poster as fallback.
+   ========================================================================== */
+
+.hero {
+  --hero-h: clamp(600px, calc(100svh - var(--header-h) - var(--frame-gap) * 3 - 56px), 780px);
+  min-height: var(--hero-h);
+  padding: 0;
+  overflow: hidden;
+  display: grid;
+  border-color: rgba(233, 240, 244, 0.16);
+  background: var(--ft-black);
+}
+
+/* ---- Optical field ----------------------------------------------------- */
+.hero__optic {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero__poster {
+  position: absolute;
+  top: 0;
+  right: -4%;
+  width: 78%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 52% 50%;
+  /* feather the poster into the field so it reads as light, not a rectangle */
+  mask-image:
+    linear-gradient(90deg, transparent 0%, #000 34%, #000 88%, transparent 100%),
+    linear-gradient(180deg, transparent 0%, #000 10%, #000 86%, transparent 100%);
+  mask-composite: intersect;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0%, #000 34%, #000 88%, transparent 100%);
+}
+
+.hero__canvas-slot {
+  position: absolute;
+  inset: 0;
+}
+
+/* Live optical system — fades in over the poster after its first frame */
+.hero__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  filter: blur(10px);
+  transition: opacity 1.2s var(--ease-out), filter 1.4s var(--ease-out);
+}
+.hero.is-live .hero__canvas { opacity: 1; filter: blur(0); }
+.hero__poster { transition: opacity 1.2s var(--ease-out); }
+.hero.is-live .hero__poster { opacity: 0; }
+
+/* Readability field on the copy side */
+.hero__optic::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(5, 9, 14, 0.92) 0%, rgba(5, 9, 14, 0.72) 30%, rgba(5, 9, 14, 0.0) 58%),
+    linear-gradient(0deg, rgba(5, 9, 14, 0.75) 0%, transparent 26%);
+  pointer-events: none;
+}
+
+.hero .grid-overlay { z-index: 1; }
+
+/* ---- Content ----------------------------------------------------------- */
+.hero__content {
+  position: relative;
+  z-index: 2;
+  padding: clamp(28px, 3.4vw, 52px) var(--frame-pad) clamp(22px, 2.4vw, 32px);
+  grid-template-rows: 1fr auto;
+  row-gap: 32px;
+}
+
+.hero__copy {
+  grid-column: 1 / span 7;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* name — as in the banner: light first name, bold surname */
+.hero__name {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1.7vw, 1.7rem);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--ft-pearl);
+  margin-bottom: 14px;
+}
+.hero__name b { font-weight: 700; }
+
+.hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: clamp(22px, 2.6vw, 36px);
+  max-width: 100%;
+}
+.hero__eyebrow .tag {
+  height: auto;
+  min-height: 26px;
+  padding-block: 4px;
+  background: rgba(5, 9, 14, 0.5);
+  white-space: normal;
+}
+.hero__eyebrow .tag b { font-weight: 500; }
+.hero__eyebrow-line {
+  flex: 0 0 48px;
+  height: 1px;
+  background: var(--ft-line-strong);
+}
+
+.hero__title {
+  font-size: clamp(3.96rem, 8.14vw, 8.36rem);
+  margin-bottom: clamp(20px, 2.2vw, 30px);
+  text-shadow: 0 2px 40px rgba(5, 9, 14, 0.6);
+}
+
+.hero__lede {
+  max-width: 34em;
+  margin-bottom: clamp(26px, 2.8vw, 38px);
+}
+
+.hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.hero__ctas .btn--primary { min-width: 248px; }
+
+.hero__capabilities {
+  grid-column: 1 / span 7;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--ft-line-soft);
+  color: rgba(155, 170, 181, 0.9);
+}
+.hero__capabilities li { display: inline-flex; align-items: center; }
+.hero__capabilities li + li::before {
+  content: "×";
+  margin: 0 14px;
+  color: rgba(155, 170, 181, 0.45);
+}
+
+/* ---- Readout (instrument micro-UI) ------------------------------------- */
+.hero__readout {
+  position: absolute;
+  z-index: 2;
+  right: var(--frame-pad);
+  bottom: clamp(22px, 2.4vw, 32px);
+  width: 300px;
+  border: 1px solid var(--ft-line);
+  background: rgba(5, 9, 14, 0.62);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.readout__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--ft-line-soft);
+}
+
+.readout__body {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 14px;
+  align-items: center;
+  padding: 12px;
+}
+
+.readout__reticle {
+  width: 56px;
+  height: 56px;
+  fill: none;
+  stroke: rgba(233, 240, 244, 0.45);
+  stroke-width: 1;
+}
+.readout__reticle .is-accent { fill: var(--ft-green); stroke: none; }
+
+.readout__params { margin: 0; display: grid; gap: 7px; }
+.readout__params div {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  align-items: center;
+  gap: 8px;
+}
+.readout__params dt { color: var(--ft-mist); }
+.readout__params dd {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px;
+  color: var(--ft-pearl);
+}
+.readout__params i {
+  position: relative;
+  height: 1px;
+  background: var(--ft-line-strong);
+}
+.readout__params i::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -1px;
+  height: 3px;
+  width: calc(var(--v) * 100%);
+  background: var(--ft-green);
+}
+
+.readout__iter {
+  margin-left: auto;
+  color: rgba(155, 170, 181, 0.6);
+}
+
+.readout__ring {
+  transform-origin: 32px 32px;
+  transform: rotate(var(--spin, 0deg));
+}
+.readout__cross { stroke: rgba(233, 240, 244, 0.25); }
+.hero__readout[data-status="approved"] .readout__reticle circle:not(.is-accent) { stroke: var(--ft-green); }
+.hero__readout[data-status="approved"] .readout__reticle { animation: reticle-lock 0.5s var(--ease-out); }
+@keyframes reticle-lock {
+  from { transform: scale(1.18); opacity: 0.6; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.readout__foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px 10px;
+  border-top: 1px solid var(--ft-line-soft);
+  color: rgba(155, 170, 181, 0.75);
+}
+.readout__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ft-pearl);
+}
+.readout__led {
+  width: 6px;
+  height: 6px;
+  background: var(--ft-pearl);
+  animation: led-pulse 0.9s steps(2, jump-none) infinite;
+}
+.hero__readout[data-status="approved"] .readout__led {
+  background: var(--ft-green);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--ft-accent) 80%, transparent);
+  animation: none;
+}
+.hero__readout[data-status="approved"] [data-ro-status] { color: var(--ft-green); }
+.hero__readout[data-status="resetting"] .readout__led { background: var(--ft-mist); animation: none; }
+@keyframes led-pulse { 50% { opacity: 0.25; } }
+.readout__spark {
+  position: absolute;
+  top: 50%;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* ---- "form": the self-calibrating word -------------------------------- */
+.hero__line { display: block; white-space: nowrap; }
+/* lead line: smaller, so the calibrated word owns its own line below */
+.hero__line--lead {
+  font-size: 0.46em;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-weight: 500;
+  color: rgba(233, 240, 244, 0.9);
+  margin-bottom: 0.04em;
+}
+.hero__line--form {
+  font-size: 1.24em;
+  line-height: 0.92;
+  margin-left: -0.04em; /* optical alignment of the "f" stem */
+}
+
+/* Roboto Flex (OFL) — self-hosted by scripts/sync-fonts.mjs; real weight +
+   width axes for the four "form" states. Missing file → Space Grotesk emulation. */
+@font-face {
+  font-family: "FT Form";
+  src: url("/assets/fonts/form-flex-xtra.woff2") format("woff2"), url("/assets/fonts/form-flex.woff2") format("woff2");
+  font-weight: 100 1000;
+  font-stretch: 25% 151%;
+  font-display: swap;
+}
+
+.form-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.form-word__l {
+  --w: 100;
+  --wd: 100;
+  --fill: 1;
+  --sw: 0em;
+  --sx: 1;
+  --sk: 0deg;
+  --mx: 0em;
+  --tx: 0em;
+  display: inline-block;
+  margin-inline: var(--mx);
+  transform: translateX(var(--tx)) scaleX(var(--sx)) skewX(var(--sk));
+  transform-origin: 50% 80%;
+  font-weight: var(--w);
+  font-variation-settings: "wght" var(--w);
+  /* the calibrated word carries the accent (as in the banner) */
+  color: color-mix(in srgb, var(--ft-accent) calc(var(--fill) * 100%), transparent);
+  -webkit-text-stroke: var(--sw) var(--ft-accent);
+  text-shadow: 0 0 28px color-mix(in srgb, var(--ft-accent) 22%, transparent);
+}
+.form-word.has-flex .form-word__l {
+  font-family: "FT Form", var(--font-display);
+  font-variation-settings: "wght" var(--w), "wdth" var(--wd), "XTRA" var(--xt, 468);
+  letter-spacing: -0.01em;
+}
+
+/* approval glitch: heavy RGB split for a few stepped frames */
+.form-word.is-glitch .form-word__l {
+  text-shadow:
+    -6px 0 0 rgba(77, 214, 255, 0.85),
+    6px 0 0 rgba(255, 97, 194, 0.85),
+    0 0 18px color-mix(in srgb, var(--ft-accent) 35%, transparent);
+}
+
+.form-dot { transition: text-shadow var(--dur-mid) var(--ease-out); }
+.form-word.is-glitch + .form-dot,
+.form-word.is-approved + .form-dot {
+  text-shadow: 0 0 18px color-mix(in srgb, var(--ft-accent) 90%, transparent), 0 0 4px color-mix(in srgb, var(--ft-accent) 100%, transparent);
+}
+
+/* ---- Scroll cue + transition light ------------------------------------- */
+.hero__scroll {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: 18px;
+  display: none; /* enabled on very tall screens only */
+}
+
+.hero__light {
+  z-index: 4;
+  left: 22%;
+  right: -6%;
+  bottom: -1px;
+  transform: rotate(-0.0001deg);
+}
+
+/* ---- Responsive framing ------------------------------------------------ */
+@media (max-width: 1199px) {
+  .hero__copy,
+  .hero__capabilities { grid-column: 1 / -1; }
+  .hero__poster { width: 92%; right: -16%; }
+  .hero__readout { width: 236px; }
+}
+
+@media (max-width: 899px) {
+  .hero__readout { display: none; }
+  .hero__poster {
+    width: 100%;
+    right: 0;
+    height: 62%;
+    object-position: 58% 50%;
+    -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
+  }
+  .hero__optic::after {
+    background: linear-gradient(180deg, rgba(5, 9, 14, 0.15) 0%, rgba(5, 9, 14, 0.55) 40%, rgba(5, 9, 14, 0.96) 62%);
+  }
+  .hero { --hero-h: auto; }
+  .hero__content {
+    padding-top: min(52vw, 300px);
+    row-gap: 24px;
+  }
+}
+
+@media (max-width: 599px) {
+  .hero__title { font-size: clamp(2.8rem, 15vw, 4.8rem); }
+  .hero__eyebrow-line { display: none; }
+  .hero__ctas { width: 100%; flex-direction: column; }
+  .hero__ctas .btn { width: 100%; min-width: 0; }
+  .hero__capabilities li + li::before { margin: 0 9px; }
+}
+
+
+/* ---- FT-01 compact (−40%) --------------------------------------------- */
+.hero__readout {
+  width: 184px;
+  font-size: 9px;
+}
+.hero__readout .t-mono-xs,
+.hero__readout .index-box { font-size: 9px; letter-spacing: 0.08em; }
+.hero__readout .index-box { height: 18px; min-width: 0; padding: 0 5px; }
+.readout__head { padding: 6px 8px; gap: 6px; }
+.readout__body { grid-template-columns: 30px 1fr; gap: 8px; padding: 8px; }
+.readout__reticle { width: 30px; height: 30px; }
+.readout__params { gap: 4px; }
+.readout__params div { grid-template-columns: 34px 1fr; gap: 6px; }
+.readout__params dd { gap: 6px; }
+.readout__foot { padding: 5px 8px 6px; gap: 6px; }
+.readout__led { width: 5px; height: 5px; }
+.readout__status { gap: 6px; }

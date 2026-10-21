@@ -1,0 +1,90 @@
+/* ==========================================================================
+   Responsive — cross-component adjustments only.
+   Component-level framing lives with each component (mobile = a different
+   camera framing of the same world, spec §37).
+   ========================================================================== */
+
+@media (max-width: 599px) {
+  .section-head { flex-wrap: wrap; }
+  .section-note { text-align: left; }
+  .frame::before { --t: 8px; }
+}
+
+@media (min-height: 1100px) and (min-width: 1200px) {
+  .hero__scroll {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transform: translateX(-50%);
+  }
+  .hero__scroll span {
+    width: 1px;
+    height: 18px;
+    background: var(--ft-green);
+  }
+}
+
+/* Debug overlay (?debug=true) — 12/8/4 column grid for hierarchy validation */
+.debug-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+}
+.debug-grid .page {
+  height: 100%;
+}
+.debug-grid .grid { height: 100%; }
+.debug-grid .grid span {
+  background: rgba(255, 60, 120, 0.07);
+  border-inline: 1px solid rgba(255, 60, 120, 0.18);
+}
+.debug-hud {
+  position: fixed;
+  left: 12px;
+  bottom: 12px;
+  z-index: 91;
+  padding: 8px 10px;
+  background: rgba(5, 9, 14, 0.9);
+  border: 1px solid var(--ft-green-line);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--ft-green);
+  white-space: pre;
+  pointer-events: none;
+}
+.debug-tuner {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 92;
+  width: 280px;
+  max-height: calc(100vh - 120px);
+  overflow: auto;
+  padding: 10px 12px;
+  background: rgba(5, 9, 14, 0.94);
+  border: 1px solid var(--ft-green-line);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ft-mist);
+}
+.debug-tuner header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  color: var(--ft-pearl);
+}
+.debug-tuner header b { color: var(--ft-green); }
+.debug-tuner header label { margin-left: auto; display: inline-flex; gap: 4px; align-items: center; }
+.debug-tuner header button { border: 1px solid var(--ft-line); padding: 2px 6px; font-size: 11px; }
+.debug-tuner > label {
+  display: grid;
+  grid-template-columns: 1fr 90px 44px;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+}
+.debug-tuner input[type="range"] { width: 100%; accent-color: var(--ft-green); }
+.debug-tuner output { text-align: right; color: var(--ft-pearl); }

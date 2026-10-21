@@ -1,0 +1,11 @@
+{
+  "claude": "/assets/tools/claude.svg",
+  "figma": "/assets/tools/figma.svg",
+  "nano-banana": "/assets/tools/nano-banana.svg",
+  "magnific": "/assets/tools/magnific.svg",
+  "seedance": "/assets/tools/seedance.svg",
+  "suno": "/assets/tools/suno.svg",
+  "elevenlabs": "/assets/tools/elevenlabs.svg",
+  "blender": "/assets/tools/blender.svg",
+  "unity": "/assets/tools/unity.svg"
+}

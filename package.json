@@ -1,0 +1,28 @@
+{
+  "name": "finetune-portfolio",
+  "private": true,
+  "version": "0.1.0",
+  "description": "FineTune \u2014 portfolio of Luiz Gustavo Czaika.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --open",
+    "typecheck": "tsc --noEmit",
+    "icons": "node scripts/sync-icons.mjs",
+    "predev": "node scripts/sync-icons.mjs && node scripts/sync-fonts.mjs && node scripts/sync-covers.mjs",
+    "prebuild": "node scripts/sync-icons.mjs && node scripts/sync-fonts.mjs && node scripts/sync-covers.mjs",
+    "fonts": "node scripts/sync-fonts.mjs",
+    "covers": "node scripts/sync-covers.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.1.0",
+    "@fontsource-variable/space-grotesk": "^5.1.0",
+    "@fontsource/ibm-plex-mono": "^5.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vite": "^6.0.0",
+    "simple-icons": ">=13.0.0"
+  }
+}

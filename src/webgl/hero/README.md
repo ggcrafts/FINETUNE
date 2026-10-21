@@ -1,0 +1,1 @@
+Hero light-vortex (raw WebGL2): HeroScene orchestrates passes; LightTrails (ribbons + dust), OpticalObject (glass core), HeroPost (bloom, focus band, chromatic aberration, tonemap). Shaders live in ../shaders.

@@ -1,0 +1,182 @@
+/* ==========================================================================
+   Contact — clear final CTA with an optical focus target (spec §30)
+   ========================================================================== */
+
+/* now a block inside the About section: the CTA sits right after the introduction */
+.contact {
+  position: relative;
+  overflow: hidden;
+  margin-top: clamp(24px, 2.6vw, 40px);
+  padding-top: clamp(24px, 2.6vw, 40px);
+  border-top: 1px solid var(--ft-line-soft);
+  scroll-margin-top: calc(var(--header-h, 64px) + 24px);
+}
+
+.contact__optic {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: min(44%, 560px);
+  object-fit: cover;
+  object-position: 30% 50%;
+  opacity: 0.8;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 45%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 45%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.contact__layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 4fr) minmax(0, 1fr);
+  gap: var(--grid-gap);
+  align-items: center;
+}
+
+.contact__head h3 { font-size: clamp(2.5rem, 4.4vw, 4.6rem); max-width: 11em; line-height: 0.98; }
+
+.contact__body {
+  display: grid;
+  gap: 18px;
+  justify-items: start;
+  padding: 18px;
+  border: 1px solid var(--ft-line);
+  background: rgba(5, 9, 14, 0.7);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.contact__cta { min-width: 220px; }
+
+.contact__links {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  padding-top: 14px;
+  border-top: 1px solid var(--ft-line-soft);
+}
+.contact__links .link-arrow { text-transform: none; letter-spacing: 0.02em; font-size: 13.75px; }
+
+@media (max-width: 1199px) {
+  .contact__layout { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+}
+
+@media (max-width: 899px) {
+  .contact__layout { grid-template-columns: 1fr; }
+  .contact__optic { width: 70%; opacity: 0.45; }
+}
+
+@media (max-width: 599px) {
+  .contact__cta { width: 100%; }
+}
+
+/* ---- "Let's talk": iridescent glass CTA (+20%) --------------------------- */
+@property --ang {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.btn--glass {
+  min-height: 62px;
+  min-width: 290px;
+  padding: 0 24px 0 26px;
+  gap: 28px;
+  font-size: 0.95rem;
+  letter-spacing: 0.16em;
+  color: var(--ft-pearl);
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(135deg, rgba(233, 240, 244, 0.14), rgba(233, 240, 244, 0.03) 55%, rgba(233, 240, 244, 0.08)) padding-box;
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  backdrop-filter: blur(14px) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.06),
+    0 14px 46px -16px rgba(143, 107, 255, 0.55),
+    0 0 0 1px rgba(233, 240, 244, 0.06);
+  transition:
+    transform var(--dur-mid) var(--ease-out),
+    box-shadow var(--dur-mid) var(--ease-out);
+}
+
+/* spectral rim — slowly rotating, like light caught in the glass edge */
+.btn--glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  background: conic-gradient(from var(--ang), #4dd6ff, #8f6bff, #ff61c2, #ff9a4d, #e9f0f4, #4dd6ff);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: glass-rim 9s linear infinite;
+  z-index: -1;
+}
+
+/* travelling iridescent sheen */
+.btn--glass::after {
+  content: "";
+  position: absolute;
+  inset: -60% -30%;
+  background: linear-gradient(110deg,
+    transparent 38%,
+    rgba(77, 214, 255, 0.28) 45%,
+    rgba(255, 97, 194, 0.26) 50%,
+    rgba(255, 154, 77, 0.24) 55%,
+    transparent 62%);
+  transform: translateX(-55%);
+  animation: glass-sheen 7s var(--ease-optic) infinite;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.btn--glass .btn__arrow { font-size: 18px; color: var(--ft-pearl); }
+
+.btn--glass:hover,
+.btn--glass:focus-visible {
+  transform: translateY(-2px) scale(1.04);
+  background:
+    linear-gradient(135deg, rgba(233, 240, 244, 0.2), rgba(233, 240, 244, 0.05) 55%, rgba(233, 240, 244, 0.12)) padding-box;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.36),
+    0 18px 60px -14px rgba(143, 107, 255, 0.75),
+    0 0 40px -6px rgba(77, 214, 255, 0.45);
+}
+.btn--glass:hover::after { animation-duration: 3.2s; }
+
+@keyframes glass-rim { to { --ang: 360deg; } }
+@keyframes glass-sheen {
+  0%, 20% { transform: translateX(-55%); }
+  60%, 100% { transform: translateX(55%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn--glass::before, .btn--glass::after { animation: none; }
+}
+
+/* ---- black-hole exit layer (effects/blackHole.ts) ----------------------- */
+.blackhole {
+  --veil: 0;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  background: rgba(2, 4, 8, calc(var(--veil) * 0.96));
+}
+.blackhole canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.blackhole.is-done { background: #020408; }
+.blackhole.is-leaving { opacity: 0; transition: opacity 0.7s var(--ease-out); }
+.is-collapsing body { overflow: hidden; }
+.is-departing #main, .is-departing .site-header { opacity: 0.15; transition: opacity 0.6s; }

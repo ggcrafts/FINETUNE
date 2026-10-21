@@ -1,0 +1,110 @@
+/* ==========================================================================
+   Typography — Space Grotesk (display) · Inter (body) · IBM Plex Mono (labels)
+   Spec §7. Mono is for labels/data only, never paragraphs.
+   ========================================================================== */
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--body-md);
+  line-height: 1.6;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 0;
+  color: var(--ft-pearl);
+  text-wrap: balance;
+}
+
+.t-display-xl {
+  font-size: var(--display-xl);
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+}
+
+.t-display-lg {
+  font-size: var(--display-lg);
+  line-height: 0.94;
+  letter-spacing: -0.045em;
+}
+
+.t-display-md {
+  font-size: var(--display-md);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.t-display-sm {
+  font-size: var(--display-sm);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+
+.t-title {
+  font-family: var(--font-display);
+  font-size: var(--title-md);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.t-body-lg {
+  font-size: var(--body-lg);
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--ft-pearl) 82%, var(--ft-mist));
+}
+
+.t-body {
+  font-size: var(--body-md);
+  line-height: 1.65;
+  color: var(--ft-mist);
+}
+
+.t-body-sm {
+  font-size: var(--body-sm);
+  line-height: 1.6;
+  color: var(--ft-mist);
+}
+
+/* Mono label — section IDs, metadata, readouts */
+.t-mono {
+  font-family: var(--font-mono);
+  font-size: var(--mono-sm);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ft-mist);
+}
+
+.t-mono-xs {
+  font-family: var(--font-mono);
+  font-size: var(--mono-xs);
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ft-mist);
+}
+
+/* The calibrated period — a spectral accent closing key statements.
+   Gradient-clipped (two phases of the living hue); solid fallback first. */
+.accent-dot {
+  color: var(--ft-accent);
+}
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .accent-dot:not(.form-dot),
+  .section-id b {
+    background: var(--ft-accent-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+.t-green { color: var(--ft-green); }
+.t-pearl { color: var(--ft-pearl); }

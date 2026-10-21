@@ -1,0 +1,32 @@
+/* ==========================================================================
+   Footer — minimal signature (spec §31)
+   ========================================================================== */
+
+.site-footer { padding-bottom: var(--frame-gap); }
+
+.site-footer__inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 40px);
+  min-height: 64px;
+  padding: 0 clamp(14px, 1.6vw, 22px);
+  border: 1px solid var(--ft-line);
+}
+
+.site-footer__sig {
+  font-family: var(--font-display);
+  font-size: 16.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ft-pearl);
+}
+
+@media (max-width: 899px) {
+  .site-footer__inner {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 18px;
+  }
+  .site-footer .brand { border-right: 0; padding-right: 0; }
+}

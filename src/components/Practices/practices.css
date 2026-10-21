@@ -1,0 +1,209 @@
+/* ==========================================================================
+   Fields of Practice — editorial accordion rows + optical preview (spec §24)
+   ========================================================================== */
+
+.practices {
+  margin-top: clamp(28px, 3vw, 44px);
+  border-top: 1px solid var(--ft-line);
+}
+
+.practices__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 0;
+}
+.practices__head h3 { font-weight: 500; color: var(--ft-pearl); }
+
+.practices__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+  gap: var(--grid-gap);
+  align-items: stretch;
+}
+
+.practices__list {
+  border-top: 1px solid var(--ft-line-soft);
+}
+
+.practice {
+  position: relative;
+  border-bottom: 1px solid var(--ft-line-soft);
+  transition: background-color var(--dur-mid) var(--ease-out);
+}
+
+/* left calibration bar — line intensity rises with focus */
+.practice::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--ft-green);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--dur-mid) var(--ease-out);
+}
+.practice.is-active::before { transform: scaleY(1); }
+.practice.is-active { background: linear-gradient(90deg, color-mix(in srgb, var(--ft-accent) 5%, transparent), transparent 60%); }
+
+.practice__trigger {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto 18px;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 14px 16px 18px;
+  text-align: left;
+}
+
+.practice__index { color: var(--ft-mist); transition: color var(--dur-mid) var(--ease-out); }
+.practice.is-active .practice__index { color: var(--ft-green); }
+
+.practice__title {
+  color: rgba(233, 240, 244, 0.72);
+  transition: color var(--dur-mid) var(--ease-out);
+}
+.practice.is-active .practice__title,
+.practice__trigger:hover .practice__title,
+.practice__trigger:focus-visible .practice__title { color: var(--ft-pearl); }
+
+.practice__tags { color: rgba(155, 170, 181, 0.7); }
+
+/* plus → minus */
+.practice__icon {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  justify-self: end;
+}
+.practice__icon::before,
+.practice__icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--ft-mist);
+  transition: transform var(--dur-mid) var(--ease-out);
+}
+.practice__icon::after { transform: rotate(90deg); }
+.practice.is-active .practice__icon::after { transform: rotate(0deg); }
+
+/* Panels animate height between 0 and one shared height (--panel-h, the
+   tallest panel), so opening one row and closing another always sum to the
+   same list height — no jumps in the section or the page. */
+.practice__panel {
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+.practice.is-active .practice__panel {
+  height: var(--panel-h, auto);
+  opacity: 1;
+}
+.practices.is-ready .practice__panel {
+  transition:
+    height 760ms var(--ease-optic),
+    opacity var(--dur-slow) var(--ease-out);
+}
+
+.practice__inner {
+  padding: 0 18px 18px calc(18px + 56px + 16px);
+  max-width: calc(46em + 90px);
+}
+.practice__inner p {
+  color: var(--ft-mist);
+  /* emergence: copy comes into focus rather than fading up */
+  filter: blur(6px);
+  opacity: 0.2;
+  transition:
+    filter var(--dur-slow) var(--ease-out),
+    opacity var(--dur-slow) var(--ease-out);
+}
+.practice.is-active .practice__inner p {
+  filter: blur(0);
+  opacity: 1;
+}
+
+/* ---- Preview: one surface, four focal states --------------------------- */
+.practices__preview {
+  position: relative;
+  margin: 0;
+  min-height: 220px;
+  border: 1px solid var(--ft-line);
+  overflow: hidden;
+  background: var(--ft-midnight);
+}
+
+.practices__preview img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  filter: blur(14px) saturate(0.8);
+  transform: scale(1.06);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    filter var(--dur-slow) var(--ease-out),
+    transform 1.4s var(--ease-out);
+}
+.practices__preview img.is-active {
+  opacity: 1;
+  filter: blur(0) saturate(1);
+  transform: scale(1);
+}
+
+.practices__preview-cap {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  z-index: 2;
+  color: var(--ft-pearl);
+}
+.practices__preview-cap span { color: var(--ft-green); }
+
+/* center focus marks over the preview */
+.practices__preview::after {
+  content: "";
+  position: absolute;
+  inset: 22% 30%;
+  pointer-events: none;
+  --t: 10px;
+  --c: rgba(233, 240, 244, 0.5);
+  background:
+    linear-gradient(var(--c), var(--c)) top left / var(--t) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) top left / 1px var(--t) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--t) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / 1px var(--t) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--t) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 1px var(--t) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--t) 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / 1px var(--t) no-repeat;
+}
+
+@media (max-width: 1199px) {
+  .practice__trigger { grid-template-columns: 44px minmax(0, 1fr) auto 18px; }
+  .practice__inner { padding-left: calc(18px + 44px + 16px); }
+}
+
+@media (max-width: 899px) {
+  .practices__layout { grid-template-columns: 1fr; }
+  .practices__preview { order: -1; min-height: 0; aspect-ratio: 16 / 9; }
+}
+
+@media (max-width: 599px) {
+  .practices__head span { display: none; }
+  .practice__trigger { padding-inline: 12px 6px; gap: 10px; grid-template-columns: 32px minmax(0, 1fr) 14px; }
+  .practice__inner { padding: 0 8px 16px calc(12px + 32px + 10px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .practices.is-ready .practice__panel,
+  .practice__inner p { transition: none; }
+}
