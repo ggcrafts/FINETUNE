@@ -26,37 +26,23 @@ const PRACTICES = [
     d: "Scripts, Blender add-ons, automations and web prototypes that remove friction from production and open new visual possibilities.",
     dp: "Scripts, add-ons de Blender, automações e protótipos web que tiram o atrito da produção e abrem novas possibilidades visuais.", rel: [], tint: [0.62, 0.76, 1.0] },
 ];
+// Each process stage is paired with a career era (era.y = null → year placeholder until Luiz confirms).
 const PROCESS = [
-  { t: "Observe", tp: "Observar", k: "Brief · Audience · Intent", kp: "Briefing · Público · Intenção", order: 0.08, tint: [0.62, 0.72, 0.95],
+  { era: { y: null, t: "Visual design foundations", tp: "Fundamentos de design visual", w: "Degree · Industrial Design / Visual Programming", wp: "Graduação · Desenho Industrial / Programação Visual" }, t: "Observe", tp: "Observar", k: "Brief · Audience · Intent", kp: "Briefing · Público · Intenção", order: 0.08, tint: [0.62, 0.72, 0.95],
     d: "Listen before designing: the brief, the audience and what the piece has to make people feel.",
     dp: "Escutar antes de desenhar: o briefing, o público e o que a peça precisa fazer sentir." },
-  { t: "Shape", tp: "Moldar", k: "Idea · References · System", kp: "Ideia · Referências · Sistema", order: 0.41, tint: [0.5, 0.86, 1.0],
+  { era: { y: null, t: "Motion graphics", tp: "Motion graphics", w: "Where the practice started", wp: "Onde a prática começou" }, t: "Shape", tp: "Moldar", k: "Idea · References · System", kp: "Ideia · Referências · Sistema", order: 0.41, tint: [0.5, 0.86, 1.0],
     d: "Turn intent into one clear idea, a reference board and a visual system.",
     dp: "Transformar intenção em uma ideia clara, um painel de referências e um sistema visual." },
-  { t: "Explore", tp: "Explorar", k: "Design · 3D · AI · Code", kp: "Design · 3D · IA · Código", order: 0.63, tint: [0.86, 0.56, 1.0],
+  { era: { y: null, t: "3D, VFX & compositing", tp: "3D, VFX & composição", w: "Campaigns · content", wp: "Campanhas · conteúdo" }, t: "Explore", tp: "Explorar", k: "Design · 3D · AI · Code", kp: "Design · 3D · IA · Código", order: 0.63, tint: [0.86, 0.56, 1.0],
     d: "Push the idea through design, 3D, AI and code until the unexpected shows up.",
     dp: "Levar a ideia por design, 3D, IA e código até o inesperado aparecer." },
-  { t: "Refine", tp: "Refinar", k: "Light · Motion · Timing", kp: "Luz · Movimento · Timing", order: 0.98, tint: [0.9, 0.95, 1.0],
+  { era: { y: null, t: "Art & creative direction", tp: "Direção de arte & criativa", w: "Brand & immersive experiences", wp: "Experiências de marca e imersivas" }, t: "Refine", tp: "Refinar", k: "Light · Motion · Timing", kp: "Luz · Movimento · Timing", order: 0.98, tint: [0.9, 0.95, 1.0],
     d: "Calibrate light, motion and timing until every frame holds.",
     dp: "Calibrar luz, movimento e timing até cada frame se sustentar." },
-  { t: "Evolve", tp: "Evoluir", k: "Tools · Workflows · Next idea", kp: "Ferramentas · Workflows · Próxima ideia", order: 0.86, tint: [1.0, 0.76, 0.48],
+  { era: { y: "now", t: "AI workflows, code & automation", tp: "Workflows com IA, código & automação", w: "FineTune · postgraduate in 3D Technologies (in progress)", wp: "FineTune · pós em Tecnologias 3D (em andamento)" }, t: "Evolve", tp: "Evoluir", k: "Tools · Workflows · Next idea", kp: "Ferramentas · Workflows · Próxima ideia", order: 0.86, tint: [1.0, 0.76, 0.48],
     d: "Keep what worked as a tool or a workflow, so the next idea starts further ahead.",
     dp: "Guardar o que funcionou como ferramenta ou workflow, para a próxima ideia começar mais à frente." },
-];
-// Career line. Years are placeholders until Luiz confirms them; "now" entries are current.
-const TIMELINE = [
-  { y: null, t: "Visual design foundations", tp: "Fundamentos de design visual", w: "Degree · Industrial Design / Visual Programming", wp: "Graduação · Desenho Industrial / Programação Visual",
-    d: "Typography, grids and visual systems — the base everything else is built on.", dp: "Tipografia, grids e sistemas visuais — a base de todo o resto." },
-  { y: null, t: "Motion graphics", tp: "Motion graphics", w: "Where the practice started", wp: "Onde a prática começou",
-    d: "Motion, rhythm and timing in service of an idea.", dp: "Movimento, ritmo e timing a serviço de uma ideia." },
-  { y: null, t: "3D, VFX & compositing", tp: "3D, VFX & composição", w: "Campaigns · content", wp: "Campanhas · conteúdo", rel: [0, 2],
-    d: "Modeling, lighting, rendering and compositing join the toolkit.", dp: "Modelagem, iluminação, render e composição entram no repertório." },
-  { y: null, t: "Art & creative direction", tp: "Direção de arte & criativa", w: "Brand experiences", wp: "Experiências de marca", rel: [1],
-    d: "Leading the look of campaigns and immersive work from concept to delivery.", dp: "Conduzindo o visual de campanhas e trabalhos imersivos, do conceito à entrega." },
-  { y: "now", t: "AI-assisted workflows & automation", tp: "Workflows com IA & automação", w: "FineTune", wp: "FineTune",
-    d: "Generative tools, scripts and add-ons placed inside a directed pipeline.", dp: "Ferramentas generativas, scripts e add-ons dentro de um pipeline dirigido." },
-  { y: "now", t: "Postgraduate · 3D Technologies", tp: "Pós-graduação · Tecnologias 3D", w: "In progress", wp: "Em andamento",
-    d: "Going deeper into the technical side of 3D while the practice keeps evolving.", dp: "Aprofundando o lado técnico do 3D enquanto a prática segue evoluindo." },
 ];
 const N = PROJECTS.length;
 const PLATE_TINT = [0.60, 0.80, 1.0];
@@ -67,9 +53,14 @@ const FOV = (38 * Math.PI) / 180;
 const I18N = {
   pt: { tagline: "Motion Design & Tecnologia Criativa", navWork: "Trabalhos", navPractice: "Prática", navAbout: "Sobre", navContact: "Contato",
     pracEyebrow: "Áreas de atuação", pracT1: "Quatro disciplinas.", pracT2: "Um sistema.", lensPh: "Placeholder — trecho de reel por disciplina",
-    navProcess: "Processo", navAbout: "Trajetória", procEyebrow: "Processo", procT1: "Da possibilidade", procT2: "à precisão.",
+    navProcess: "Processo", navAbout: "Sobre", procEyebrow: "Processo · Trajetória", procT1: "Da possibilidade", procT2: "à precisão.",
     rdOrder: "Ordem", rdParts: "Partículas", tlEyebrow: "Trajetória", tlT1: "12+ anos.", tlT2: "Uma linha contínua.", tlYears: "anos de prática",
     nextEyebrow: "Próxima etapa, aguardando aprovação",
+    hLead: "Onde ideias ganham",
+    abEyebrow: "Sobre · Contato", abT1: "Vamos dar à sua próxima ideia", abT2: "uma forma.", idAvail: "Disponível · Remoto",
+    idRole: "Senior Motion Designer · Diretor de Arte · Creative Technologist",
+    idBio: "12+ anos em animação, 3D, VFX e experiências imersivas — hoje combinados com workflows assistidos por IA, código e automação.",
+    idF1: "Experiência", idF1v: "12+ anos", idF2: "Base", idF2v: "Curitiba, Brasil", idF3: "Atuação", idF3v: "Remoto · Internacional", idCta: "Entrar em contato",
     featured: "Observado", gateRole: "Luiz Gustavo Czaika", gateCta: "Clique para focar",
     eyebrow: "Senior Motion Designer · Diretor de Arte · Creative Technologist",
     lead: "Sistemas visuais onde motion, 3D, VFX, IA e tecnologia criativa convergem.", hint: "Role para observar", open: "Abrir case",
@@ -89,7 +80,7 @@ const mix = (a, b, t) => a + (b - a) * t;
 const S = {
   entered: false, focus: 0, focusT: 0, gateNear: 0,
   p: 0, pT: 0, time: 0, motion: !matchMedia("(prefers-reduced-motion: reduce)").matches,
-  psIdx: -1, psV: 0, stF: 0, stS: 0, post: 0, tlV: 0, tlP: 0,
+  hole: null, abV: 0, psIdx: -1, psV: 0, stF: 0, stS: 0, post: 0, tlV: 0, tlP: 0,
   prIdx: -1, prFrom: 0, prTo: 0, prT: 1, prQ: 0, prV: 0, prIn: 0,
   mx: 0, my: 0, mxT: 0, myT: 0, hover: 0, hoverT: 0, lang: "en", active: -2, past: false, caseOpen: false,
 };
@@ -105,14 +96,100 @@ function buildRing() {
   }
   const labels = ["MOTION", "3D", "VFX", "ART DIRECTION", "AI", "CREATIVE TECH", "COMPOSITING", "AUTOMATION"];
   let txt = `<defs><path id="lp" d="M0,-228 A228,228 0 1,1 -0.01,-228"/></defs>`;
-  labels.forEach((l, i) => { txt += `<text text-anchor="middle"><textPath href="#lp" startOffset="${((i + 0.5) / labels.length) * 100}%">${l}</textPath></text>`; });
+  labels.forEach((l, i) => { txt += `<text text-anchor="middle" data-g="${i}"><textPath href="#lp" startOffset="${((i + 0.5) / labels.length) * 100}%">${l}</textPath></text>`; });
   // aperture blades: thin arcs that close toward the centre when the pointer approaches
   let ap = "";
-  for (let i = 0; i < 6; i++) ap += `<circle class="ap" r="${120 + i * 13}" stroke-dasharray="${40 + i * 22} ${90 + i * 30}" transform="rotate(${i * 47})"/>`;
+  for (let i = 0; i < 6; i++) ap += `<circle class="ap" r="${146 + i * 6}" stroke-dasharray="${40 + i * 22} ${90 + i * 30}" transform="rotate(${i * 47})"/>`;
   ring.innerHTML = `<circle class="orbit" r="210"/><circle class="orbit" r="176"/>${ap}${ticks}${txt}
     <g class="needle" id="needle"><line x1="0" y1="-176" x2="0" y2="-214" stroke="#78D98A" stroke-width="1"/><circle class="dot" cy="-190" r="3.4"/></g>`;
 }
 buildRing();
+// Gate previews: one low-opacity clip or still per discipline, in ring order (clockwise from 12 o'clock).
+// Swap freely — any .webm/.mp4/.webp/.jpg path works. Stills are placeholders until a clip exists.
+const GATE = [
+  { n: "Motion", src: "./reel/clip-01.webm" },
+  { n: "3D", src: "./reel/clip-02.webm" },
+  { n: "VFX", src: "./reel/clip-03.webm" },
+  { n: "Art Direction", src: "./covers/bravecto.webp" },
+  { n: "AI", src: "./practice/practice-03.webp", ph: true },
+  { n: "Creative Tech", src: "./reel/clip-04.webm" },
+  { n: "Compositing", src: "./reel/clip-07.webm" },
+  { n: "Automation", src: "./practice/practice-04.webp", ph: true },
+];
+const gatePrev = $("#gatePrev"); let gateIdx = -1, gateAng = 0, gateIdle = 0, gateAuto = 0;
+GATE.forEach((g) => {
+  const vid = /\.(webm|mp4)$/.test(g.src), el = document.createElement(vid ? "video" : "img");
+  if (vid) { el.muted = true; el.loop = true; el.playsInline = true; el.preload = "none"; el.dataset.src = g.src; } else { el.loading = "lazy"; el.alt = ""; el.src = g.src; }
+  gatePrev.appendChild(el); g.el = el;
+});
+function setGate(i) {
+  if (i === gateIdx) return; gateIdx = i;
+  GATE.forEach((g, k) => { const on = k === i; g.el.classList.toggle("on", on);
+    if (g.el.tagName === "VIDEO") { if (on) { if (!g.el.src) g.el.src = g.el.dataset.src; g.el.play().catch(() => {}); } else g.el.pause(); } });
+  document.querySelectorAll("#ring text").forEach((t) => t.classList.toggle("on", +t.dataset.g === i));
+  gatePrev.classList.toggle("on", i >= 0);
+  $("#gateDisc").textContent = i >= 0 ? GATE[i].n + (GATE[i].ph ? " · placeholder" : "") : "\u00a0";
+  if (i < 0) return;
+  let target = (i + 0.5) * 45; while (target - gateAng > 180) target -= 360; while (target - gateAng < -180) target += 360;   // shortest way round
+  gateAng = target; gatePrev.style.setProperty("--ang", gateAng + "deg");
+}
+
+/* ───────────── "form": the self-calibrating word (ported from v2 formType.ts) ───────────── */
+const FORM_STATES = [
+  { label: "Thin", w: 100, wd: 100, fill: 1, sw: 0 },
+  { label: "Ultra Bold Stroke", w: 1000, wd: 112, fill: 0, sw: 0.018 },
+  { label: "Regular Wide", w: 400, wd: 151, fill: 1, sw: 0 },
+  { label: "Black Narrow", w: 860, wd: 45, fill: 1, sw: 0 },
+];
+const F = { STAGGER: 0.09, MORPH: 1.15, GLITCH: 0.26, HOLD: 1.5, WW: 170, WWD: 18, from: 3, to: 0, status: "calibrating", phase: 0, flex: false, seed: 77, still: false, acc: 1 };
+const formWord = $("#formWord"), formLetters = [...formWord.querySelectorAll(".fl")];
+const c01 = (v) => clamp(v, 0, 1), easeIO = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+(function detectFlex(tries) {
+  if (!document.fonts || tries <= 0) return;
+  document.fonts.load('400 1em "FT Form"').then((f) => { F.flex = f.length > 0; formWord.classList.toggle("has-flex", F.flex); if (!F.flex) setTimeout(() => detectFlex(tries - 1), 700); }).catch(() => {});
+})(4);
+function setLetter(el, w, wd, fill, sw, tx = 0, sk = 0, clip = "") {
+  let weight = w, sx = 1, mx = 0;
+  if (!F.flex) { weight = 300 + c01((w - 100) / 900) * 400; sx = 0.55 + c01((wd - 25) / 126) * 0.75; mx = (sx - 1) * 0.2; }   // Space Grotesk emulation
+  const xt = wd <= 100 ? 410 + ((wd - 25) / 75) * 58 : 468 + ((wd - 100) / 51) * 135;
+  const st = el.style;
+  st.setProperty("--w", weight.toFixed(1)); st.setProperty("--wd", wd.toFixed(1)); st.setProperty("--xt", xt.toFixed(0));
+  st.setProperty("--sx", sx.toFixed(3)); st.setProperty("--mx", mx.toFixed(3) + "em"); st.setProperty("--fill", fill.toFixed(2));
+  st.setProperty("--sw", sw.toFixed(4) + "em"); st.setProperty("--tx", tx.toFixed(3) + "em"); st.setProperty("--sk", sk.toFixed(2) + "deg"); st.clipPath = clip;
+}
+function formStatus(label, status) { $("#formState").textContent = label; $("#formStatus").textContent = S.lang === "pt" ? (status === "approved" ? "aprovado" : "calibrando") : status; }
+function tickForm(dt) {
+  if (!S.motion) { if (!F.still) { const s = FORM_STATES[2]; formLetters.forEach((el) => setLetter(el, s.w, s.wd, s.fill, s.sw)); formWord.classList.remove("is-glitch"); formStatus(s.label, "approved"); F.still = true; } return; }
+  F.still = false;
+  const n = formLetters.length, A = FORM_STATES[F.from], B = FORM_STATES[F.to], rnd = () => (F.seed = (F.seed * 16807) % 2147483647) / 2147483647;
+  F.phase += dt;
+  if (F.status === "calibrating") {
+    const end = (n - 1) * F.STAGGER + F.MORPH;
+    formLetters.forEach((el, i) => {
+      const p = c01((F.phase - i * F.STAGGER) / F.MORPH), e = easeIO(c01(p / 0.62));
+      const osc = Math.sin(p * Math.PI * 4.5) * Math.pow(1 - p, 1.6) * (p > 0 ? 1 : 0);   // damped wobble before it settles
+      setLetter(el, clamp(mix(A.w, B.w, e) + osc * F.WW, 100, 1000), clamp(mix(A.wd, B.wd, e) - osc * F.WWD, 25, 151), mix(A.fill, B.fill, e), mix(A.sw, B.sw, e));
+    });
+    if (F.phase >= end) { F.status = "approved"; F.phase = 0; formWord.classList.add("is-glitch"); formStatus(B.label, "approved"); }
+  } else {
+    const glitching = F.phase < F.GLITCH;
+    formLetters.forEach((el) => {
+      if (glitching) { const y0 = Math.floor(rnd() * 70), y1 = Math.min(100, y0 + 14 + Math.floor(rnd() * 30));
+        setLetter(el, B.w, B.wd, rnd() < 0.6 ? Math.max(B.fill, 0.25) : 0.25, B.sw || 0.01, (rnd() - 0.5) * 0.07, (rnd() - 0.5) * 10, rnd() < 0.5 ? `inset(${y0}% 0 ${100 - y1}% 0)` : "");
+      } else setLetter(el, B.w, B.wd, B.fill, B.sw);
+    });
+    if (!glitching) formWord.classList.remove("is-glitch");
+    if (F.phase >= F.GLITCH + F.HOLD) { F.from = F.to; F.to = (F.to + 1) % FORM_STATES.length; F.status = "calibrating"; F.phase = 0; formStatus(FORM_STATES[F.to].label, "calibrating"); }
+  }
+}
+// spectral accent for the word (v2 spectrum.ts): cyan → violet → rose → amber, 24 s cycle, ~12 fps
+const ACC = [[77, 214, 255], [77, 214, 255], [143, 107, 255], [255, 97, 194], [255, 154, 77]];
+function tickAccent(dt) {
+  F.acc += dt; if (F.acc < 1 / 12) return; F.acc = 0;
+  const p = (((S.time / 24) % 1) + 1) % 1 * ACC.length, i = Math.floor(p), f = p - i, t = f * f * (3 - 2 * f), a = ACC[i], b = ACC[(i + 1) % ACC.length];
+  const ch = (k) => Math.round(Math.pow(clamp(Math.pow(a[k] / 255, 2.2) + (Math.pow(b[k] / 255, 2.2) - Math.pow(a[k] / 255, 2.2)) * t, 0, 1), 1 / 2.2) * 255);
+  document.documentElement.style.setProperty("--acc", `rgb(${ch(0)} ${ch(1)} ${ch(2)})`);
+}
 
 /* ───────────── WebGL ───────────── */
 const canvas = $("#gl");
@@ -130,10 +207,10 @@ const BG_VS = `#version 300 es
 in vec2 aPos; void main(){ gl_Position=vec4(aPos,0.,1.); }`;
 // Galaxy: spiral-warped nebula + amber core + anamorphic streak (hero-approved.png language).
 const BG_FS = COMMON + `
-uniform vec2 uRes,uMouse; uniform float uTime,uCamZ,uCore,uFocus; uniform vec3 uTint,uTint2; out vec4 o;
+uniform vec2 uRes,uMouse; uniform float uTime,uCamZ,uCore,uFocus,uShift; uniform vec3 uTint,uTint2; out vec4 o;
 float fbm(vec2 p){ float a=.5,s=0.; for(int i=0;i<5;i++){ s+=a*noise(p); p=mat2(1.6,1.2,-1.2,1.6)*p; a*=.5; } return s; }
 void main(){
-  vec2 uv=(gl_FragCoord.xy-.5*uRes)/uRes.y; uv-=uMouse*vec2(.035,-.035);
+  vec2 uv=(gl_FragCoord.xy-.5*uRes)/uRes.y; uv.x-=uShift; uv-=uMouse*vec2(.035,-.035);
   float r=length(uv), a=atan(uv.y,uv.x);
   float sw=a+1.5/(r+.38)+uTime*.012-uCamZ*.022;
   vec2 q=vec2(cos(sw),sin(sw))*r;
@@ -277,6 +354,29 @@ void main(){
 const PS_FS = COMMON + `in vec3 vC; in float vA; out vec4 o;
 void main(){ float r=length(gl_PointCoord-.5)*2.; o=vec4(vC*smoothstep(1.,.15,r)*vA,0.); }`;
 
+// Contact exit: a luminous black hole (v2 blackhole.frag.glsl, re-timed to 1.2 s). Spectral accretion disc,
+// photon ring, lensing glow; uDark closes the frame to black, uFlash is the final collapse.
+const BH_FS = COMMON + `
+uniform vec2 uRes,uCenter; uniform float uRadius,uTime,uIntensity,uFlash,uDark; uniform vec3 uTint; out vec4 o;
+vec3 aces(vec3 x){ return clamp((x*(2.51*x+.03))/(x*(2.43*x+.59)+.14),0.,1.); }
+void main(){
+  vec2 frag=vec2(gl_FragCoord.x,uRes.y-gl_FragCoord.y); vec2 d=frag-uCenter; float r=max(uRadius,1.); float dist=length(d); float ang=atan(d.y,d.x);
+  float tilt=-.21; vec2 q=vec2(d.x*cos(tilt)-d.y*sin(tilt),d.x*sin(tilt)+d.y*cos(tilt)); q.y*=3.4; float qd=length(q)/r; float qa=atan(q.y,q.x);
+  float streaks=.55+.45*sin(qa*3.+log(max(qd,1e-3))*9.-uTime*9.);
+  float band=smoothstep(1.25,1.7,qd)*(1.-smoothstep(2.4,5.2,qd)); float doppler=.55+.45*cos(qa+.6);
+  vec3 disc=mix(mix(spectrum(qa/6.2831+qd*.12+uTime*.2),uTint,.35),vec3(1.,.95,.9),.35)*band*streaks*doppler*1.9;
+  float ring=exp(-pow((dist/r-1.06)*18.,2.))*2.6; vec3 ringCol=mix(spectrum(ang/6.2831+uTime*.3),vec3(1.),.55)*ring;
+  // thin light trails being pulled in — the site's line language
+  float tr=pow(.5+.5*sin(ang*13.+log(max(dist/r,1e-3))*11.+uTime*12.+sin(ang*3.)*1.5),90.)*smoothstep(1.1,2.2,dist/r)*exp(-dist/(r*4.))*.9;
+  vec3 glow=vec3(.55,.62,1.)*exp(-max(dist-r,0.)/(r*1.6))*.55;
+  vec3 col=(disc+ringCol+glow+tr*mix(uTint,vec3(1.),.4))*uIntensity;
+  float horizon=1.-smoothstep(r*.96,r,dist); col*=1.-horizon;
+  col+=vec3(1.,.98,.95)*uFlash*exp(-max(dist-r,0.)/(r*.5+30.))*1.6*(1.-horizon);
+  col=aces(col);
+  float a=clamp(max(max(max(col.r,col.g),col.b)*1.2+horizon,uDark),0.,1.);
+  o=vec4(col,a);
+}`;
+
 function program(vs, fs) {
   const mk = (t, src) => { const s = gl.createShader(t); gl.shaderSource(s, src); gl.compileShader(s);
     if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s) + "\n" + src.split("\n").slice(0, 6).join("\n")); return s; };
@@ -301,7 +401,7 @@ const M = {
 
 let R = null; // GL resources
 function initGL() {
-  const ps = program(PS_VS, PS_FS), bg = program(BG_VS, BG_FS), pane = program(PANE_VS, PANE_FS), tr = program(TR_VS, TR_FS), st = program(ST_VS, ST_FS);
+  const bh = program(BG_VS, BH_FS), ps = program(PS_VS, PS_FS), bg = program(BG_VS, BG_FS), pane = program(PANE_VS, PANE_FS), tr = program(TR_VS, TR_FS), st = program(ST_VS, ST_FS);
   const vao = (prog, setup) => { const v = gl.createVertexArray(); gl.bindVertexArray(v); setup(prog.p); gl.bindVertexArray(null); return v; };
   const buf = (data) => { const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW); return b; };
   const attr = (p, name, size, stride, off) => { const l = gl.getAttribLocation(p, name); if (l < 0) return; gl.enableVertexAttribArray(l); gl.vertexAttribPointer(l, size, gl.FLOAT, false, stride, off); };
@@ -340,7 +440,7 @@ function initGL() {
   };
   const tex = PROJECTS.map((pr) => loadTex(`./covers/${pr.slug}.webp`));
   const ptex = PRACTICES.map((_, i) => loadTex(`./practice/practice-0${i + 1}.webp`));
-  R = { ps, psVao, PARTS, bg, pane, tr, st, bgVao, paneVao, trVao, stVao, TRAILS, SEG, STARS, ghosts, tex, ptex };
+  R = { bh, ps, psVao, PARTS, bg, pane, tr, st, bgVao, paneVao, trVao, stVao, TRAILS, SEG, STARS, ghosts, tex, ptex };
 }
 
 let W = 1, H = 1, DPR = 1, dockD = 4.4;
@@ -355,7 +455,7 @@ function resize() {
 
 /* scroll → progress (in stops: 0 = title plate, 1..N = projects) */
 const unit = () => innerHeight * 1.1;
-const pracEl = $("#practice"), lens = $("#lens"), procEl = $("#process"), tlEl = $("#timeline"), inst = $("#instrument");
+const pracEl = $("#practice"), lens = $("#lens"), procEl = $("#process"), aboutEl = $("#about"), inst = $("#instrument");
 function readScroll() {
   S.pT = clamp(scrollY / unit(), 0, N); S.past = scrollY > unit() * (N + 0.4);
   const top = pracEl.offsetTop, span = pracEl.offsetHeight - innerHeight, ih = innerHeight;
@@ -371,14 +471,13 @@ function readScroll() {
   const pt = procEl.offsetTop, ps = procEl.offsetHeight - ih;
   const q = clamp((scrollY - pt) / ps, 0, 1), raw = q * 5, si = Math.min(4, Math.floor(raw));
   S.stF = si + (si < 4 ? sstep(0.6, 1, raw - si) : 0);
-  S.psV = sstep(pt - ih * 0.6, pt - ih * 0.1, scrollY) * (1 - sstep(pt + ps, pt + ps + ih * 0.6, scrollY));
+  S.psV = sstep(pt - ih * 0.6, pt - ih * 0.1, scrollY) * (1 - sstep(pt + ps + ih * 0.05, pt + ps + ih * 0.6, scrollY));
   const pidx = Math.min(4, Math.round(S.stF));
   if (pidx !== S.psIdx) setStage(pidx);
 
-  const tt = tlEl.offsetTop;
-  S.tlV = sstep(tt - ih * 0.5, tt + ih * 0.2, scrollY) * (1 - sstep(tt + tlEl.offsetHeight - ih * 0.6, tt + tlEl.offsetHeight, scrollY));
-  updateTimeline();
-  const navIdx = scrollY >= tt - ih * 0.3 ? 3 : scrollY >= pt - ih * 0.3 ? 2 : scrollY >= top - ih * 0.3 ? 1 : 0;
+  const at = aboutEl.offsetTop;
+  S.abV = sstep(at - ih * 0.7, at - ih * 0.1, scrollY); S.tlV = S.abV * 0.6; S.tlP = 0.35;
+  const navIdx = scrollY >= at - ih * 0.4 ? 3 : scrollY >= pt - ih * 0.3 ? 2 : scrollY >= top - ih * 0.3 ? 1 : 0;
   document.querySelectorAll(".nav a").forEach((a, k) => a.classList.toggle("on", S.entered && k === navIdx));
 }
 const easeStop = (p) => { const s = Math.floor(p), f = p - s; return s + mix(f, f * f * f * (f * (6 * f - 15) + 10), 0.8); };
@@ -421,13 +520,14 @@ function frame(now) {
   S.focus = mix(S.focus, S.focusT, clamp(k * (S.entered ? 0.32 : 0.6), 0, 1));
   S.mx = mix(S.mx, S.mxT, k * 0.5); S.my = mix(S.my, S.myT, k * 0.5); S.hover = mix(S.hover, S.hoverT, k);
 
-  const pe = easeStop(S.p), fo = S.focus, enter = sstep(0, 1, fo);
+  const pe = easeStop(S.p), fo = S.focus, enter = sstep(0, 1, fo), shard = S.entered ? sstep(0.3, 0.95, fo) : 0;
   S.stS = S.motion ? mix(S.stS, S.stF, clamp(k * 0.55, 0, 1)) : S.stF;
   const camZ = dockD - pe * D + (1 - enter) * 7.5 - sstep(0, 1, S.prIn) * 6.5 - S.post * 3.2;
   if (S.prT < 1) S.prT = Math.min(1, S.prT + (S.motion ? dt / 0.95 : 1));
   const tint = tintAt(pe);
   const aspect = W / H;
-  const P = M.persp(FOV, aspect, 0.1, 200);
+  const plateVis = S.entered ? sstep(0.6, 0.05, S.p) * sstep(0.2, 1, fo) : 0, shift = plateVis * 0.44 * sstep(1.05, 1.5, aspect);
+  const P = M.persp(FOV, aspect, 0.1, 200); P[8] = -shift;
   const V = M.mul(M.mul(M.rotX(S.my * 0.022), M.rotY(-S.mx * 0.034)), M.trans(-S.mx * 0.28, S.my * 0.18, -camZ));
   const VP = M.mul(P, V);
 
@@ -450,14 +550,17 @@ function frame(now) {
     }
   }
   updateRail();
+  const plateOn = S.entered && !S.past && S.p < 0.6;
+  if (plateOn && !S.caseOpen) { tickForm(dt); if (S.motion) tickAccent(dt); }
+  if (!S.entered && S.motion) { gateIdle += dt; if (gateIdle > 2.4) { gateAuto += dt; if (gateAuto > 2.6 || gateIdx < 0) { gateAuto = 0; setGate((gateIdx + 1) % GATE.length); needle.style.transform = `rotate(${(gateIdx + 0.5) * 45}deg)`; } } }
   if (!gl || !R) return;
 
   /* ── draw ── */
   gl.disable(gl.DEPTH_TEST); gl.disable(gl.BLEND);
   const t2 = [tint[2], tint[0] * .8 + .2, tint[1]];
   gl.useProgram(R.bg.p); gl.bindVertexArray(R.bgVao);
-  gl.uniform2f(R.bg.u.uRes, W, H); gl.uniform2f(R.bg.u.uMouse, S.mx, S.my); gl.uniform1f(R.bg.u.uTime, S.time); gl.uniform1f(R.bg.u.uCamZ, camZ);
-  gl.uniform1f(R.bg.u.uCore, mix(1, 0.55, sstep(0.3, 1, S.p)) * mix(0.5, 1, enter) * mix(1, 0.7, S.prV) * mix(1, 0.5, S.psV) * mix(1, 0.75, S.tlV)); gl.uniform1f(R.bg.u.uFocus, enter);
+  gl.uniform1f(R.bg.u.uShift, shift * aspect * 0.5); gl.uniform2f(R.bg.u.uRes, W, H); gl.uniform2f(R.bg.u.uMouse, S.mx, S.my); gl.uniform1f(R.bg.u.uTime, S.time); gl.uniform1f(R.bg.u.uCamZ, camZ);
+  gl.uniform1f(R.bg.u.uCore, mix(0.78, 0.55, sstep(0.3, 1, S.p)) * mix(0.5, 1, enter) * mix(1, 0.7, S.prV) * mix(1, 0.5, S.psV) * mix(1, 0.75, S.tlV)); gl.uniform1f(R.bg.u.uFocus, enter);
   gl.uniform3fv(R.bg.u.uTint, tint); gl.uniform3fv(R.bg.u.uTint2, t2);
   gl.drawArrays(gl.TRIANGLES, 0, 3);
 
@@ -474,7 +577,7 @@ function frame(now) {
   for (let i = 0; i < R.TRAILS; i++) gl.drawArrays(gl.TRIANGLE_STRIP, i * R.SEG * 2, R.SEG * 2);
   // panes + ghosts, far → near
   const list = [];
-  for (let i = 0; i < N; i++) { const p = panePose(i, camZ); if (p) p.alpha *= 1 - sstep(0.1, 0.8, S.prIn); if (p && p.alpha > 0.01 && p.d < 60) list.push({ ...p, i, ghost: 0 }); }
+  for (let i = 0; i < N; i++) { const p = panePose(i, camZ); if (p) p.alpha *= (1 - sstep(0.1, 0.8, S.prIn)) * shard; if (p && p.alpha > 0.01 && p.d < 60) list.push({ ...p, i, ghost: 0 }); }
   for (const g of R.ghosts) { const d = (((camZ - g.z) % 108) + 108) % 108; if (d > 0.6 && d < 46) list.push({ ...g, z: camZ - d, d, ghost: 1 }); }
   list.sort((a, b) => b.d - a.d);
   gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
@@ -487,7 +590,7 @@ function frame(now) {
     if (o.ghost) {
       w = PW * o.s; h = PH * o.s * 1.25;
       m = M.mul(M.trans(o.x, o.y + Math.sin(S.time * .2 + o.seed * 30) * .12, o.z), M.mul(M.rotY(o.ry + Math.sin(S.time * .13 + o.seed * 9) * .06), M.mul(M.rotZ(o.rz), M.scale(w, h))));
-      gl.uniform1f(R.pane.u.uGhost, 1); gl.uniform1f(R.pane.u.uAlpha, sstep(46, 30, o.d) * sstep(.6, 3.5, o.d) * mix(.45, 1, enter) * mix(1, .32, Math.max(S.psV, S.tlV)) * mix(1, .6, S.prV)); gl.uniform1f(R.pane.u.uBlur, Math.abs(o.d - dockD) * .12 + defocus);
+      gl.uniform1f(R.pane.u.uGhost, 1); gl.uniform1f(R.pane.u.uAlpha, sstep(46, 30, o.d) * sstep(.6, 3.5, o.d) * shard * mix(1, .32, Math.max(S.psV, S.tlV)) * mix(1, .6, S.prV)); gl.uniform1f(R.pane.u.uBlur, Math.abs(o.d - dockD) * .12 + defocus);
       gl.uniform1f(R.pane.u.uHover, 0); gl.uniform1f(R.pane.u.uDim, 1);
     } else {
       w = PW * o.sc; h = PH * o.sc;
@@ -529,6 +632,18 @@ function frame(now) {
       gl.drawArrays(gl.POINTS, 0, R.PARTS);
     }
   }
+  if (S.hole) {
+    const hb = S.hole, t = hb.fix ?? (now - hb.t0) / 1000, u = clamp(t / 1.2, 0, 1), diag = Math.hypot(W, H);
+    const grow = sstep(0, 0.62, u), swallow = sstep(0.6, 0.98, u), back = sstep(1.2, 1.75, t);
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    gl.useProgram(R.bh.p); gl.bindVertexArray(R.bgVao);
+    gl.uniform2f(R.bh.u.uRes, W, H); gl.uniform2f(R.bh.u.uCenter, hb.x * DPR, hb.y * DPR);
+    gl.uniform1f(R.bh.u.uRadius, (grow * Math.min(W, H) * 0.13 + swallow * swallow * diag) * (1 - back));
+    gl.uniform1f(R.bh.u.uTime, t); gl.uniform1f(R.bh.u.uIntensity, sstep(0, 0.18, u) * (1 - back));
+    gl.uniform1f(R.bh.u.uFlash, Math.exp(-Math.pow((u - 0.66) * 9, 2)) * 0.9); gl.uniform1f(R.bh.u.uDark, sstep(0.25, 0.9, u) * (1 - back));
+    gl.uniform3fv(R.bh.u.uTint, tint);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
   gl.bindVertexArray(null);
 }
 
@@ -562,7 +677,7 @@ function setPractice(idx) {
 
 /* ───────────── process ───────────── */
 const railNodes = $("#railNodes"), railBase = $("#railBase"), railLight = $("#railLight"), railHead = $("#railHead");
-let railLen = 0, lastOrder = "";
+let railLen = 0, lastOrder = "", lastYr = "";
 function buildProcess() {
   const pt = S.lang === "pt"; railNodes.innerHTML = "";
   PROCESS.forEach((p, k) => {
@@ -577,6 +692,8 @@ function buildProcess() {
 function setStage(i) {
   S.psIdx = i; const p = PROCESS[i], pt = S.lang === "pt";
   $("#procIdx").textContent = `0${i + 1} / 05`; $("#procName").textContent = pt ? p.tp : p.t; $("#procText").textContent = pt ? p.dp : p.d;
+  const e = p.era; $("#eraYear").textContent = e.y === "now" ? (pt ? "Hoje" : "Now") : "20··"; $("#eraPh").textContent = e.y ? "" : pt ? "ano · placeholder" : "year · placeholder";
+  $("#eraTitle").textContent = pt ? e.tp : e.t; $("#eraWhere").textContent = pt ? e.wp : e.w;
   const now = document.querySelector(".process__now"); now.classList.remove("swap"); void now.offsetWidth; now.classList.add("swap");
 }
 function layoutRail() {
@@ -594,49 +711,33 @@ function updateRail() {
   railNodes.querySelectorAll(".node").forEach((n, k) => { n.classList.toggle("on", k === S.psIdx); n.classList.toggle("past", k < st - 0.02 && k !== S.psIdx); });
   const a = Math.floor(st), b = Math.min(4, a + 1), o = mix(PROCESS[a].order, PROCESS[b].order, st - a).toFixed(2);
   if (o !== lastOrder) { $("#rdOrder").textContent = o; lastOrder = o; }
+  const yr = st > 3.96 ? "12+" : String(Math.floor((st / 4) * 12.2)).padStart(2, "0"); if (yr !== lastYr) { $("#yrs").textContent = yr; lastYr = yr; }
 }
 
-/* ───────────── timeline ───────────── */
-const tlList = $("#tlList"), tlBase = $("#tlBase"), tlLight = $("#tlLight"), tlDot = $("#tlDot");
-let tlTable = [], tlLen = 0, tlTop = 0;
-function buildTimeline() {
-  const pt = S.lang === "pt"; tlList.innerHTML = "";
-  TIMELINE.forEach((e, k) => {
-    const li = document.createElement("li"); li.className = "tl__item" + (k % 2 ? " r" : "");
-    const year = e.y === "now" ? (pt ? "Hoje" : "Now") : "20··";
-    li.innerHTML = `<article class="tl__card"><p class="tl__year">${year}${e.y ? "" : `<em>${pt ? "ano · placeholder" : "year · placeholder"}</em>`}</p>
-      <h3>${pt ? e.tp : e.t}</h3><p class="tl__where">${pt ? e.wp : e.w}</p><p class="tl__txt">${pt ? e.dp : e.d}</p>${e.rel ? '<div class="chips"></div>' : ""}</article>`.replace(/&(?!amp;)/g, "&amp;");
-    (e.rel || []).forEach((i) => { const b = document.createElement("button"); b.type = "button"; b.textContent = PROJECTS[i].title.split(" — ").pop(); b.onclick = () => goTo(i + 1); li.querySelector(".chips").appendChild(b); });
-    tlList.appendChild(li);
-  });
-  layoutTimeline();
-}
-function layoutTimeline() {
-  const track = $("#tlTrack"), W = track.clientWidth, H = track.clientHeight, narrow = innerWidth <= 820, cx = narrow ? 14 : W / 2;
-  let d = `M${cx},0`;
-  tlList.querySelectorAll(".tl__item").forEach((li) => {
-    const y = li.offsetTop + li.offsetHeight / 2, side = narrow ? 1 : li.classList.contains("r") ? 1 : -1, bx = cx + side * (narrow ? 10 : 46);
-    li.dataset.y = y;
-    d += ` L${cx},${y - 150} C${cx},${y - 80} ${bx},${y - 70} ${bx},${y} C${bx},${y + 70} ${cx},${y + 80} ${cx},${y + 150}`;
-  });
-  d += ` L${cx},${H}`;
-  tlBase.setAttribute("d", d); tlLight.setAttribute("d", d);
-  tlLen = tlBase.getTotalLength(); tlTable = [];
-  for (let k = 0; k <= 400; k++) tlTable.push(tlBase.getPointAtLength((tlLen * k) / 400).y);
-  tlTop = track.getBoundingClientRect().top + scrollY;
-  updateTimeline();
-}
-function updateTimeline() {
-  if (!tlLen) return;
-  const headY = scrollY + innerHeight * 0.6 - tlTop;
-  let lo = 0, hi = tlTable.length - 1;                     // y grows monotonically along the path
-  if (headY <= tlTable[0]) hi = 0; else if (headY >= tlTable[hi]) lo = hi; else { while (hi - lo > 1) { const m = (lo + hi) >> 1; if (tlTable[m] < headY) lo = m; else hi = m; } }
-  const u = clamp(lo / 400, 0, 1); S.tlP = u;
-  tlLight.style.strokeDashoffset = (1 - u).toFixed(4);
-  const p = tlBase.getPointAtLength(tlLen * u); tlDot.setAttribute("cx", p.x); tlDot.setAttribute("cy", p.y);
-  tlList.querySelectorAll(".tl__item").forEach((li) => li.classList.toggle("lit", +li.dataset.y <= headY + 30));
-  $("#tlYears").textContent = u > 0.97 ? "12+" : String(Math.floor(u * 12.4)).padStart(2, "0");
-}
+/* ───────────── about: ID card + black hole exit ───────────── */
+const idcard = $("#idcard"), talkBtn = $("#talkBtn"), mainEl = document.querySelector("main");
+$("#idwrap").addEventListener("pointermove", (e) => {
+  if (!S.motion || e.pointerType === "touch") return;
+  const r = idcard.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+  idcard.style.setProperty("--ry", ((x - 0.5) * 7).toFixed(2) + "deg"); idcard.style.setProperty("--rx", ((0.5 - y) * 5).toFixed(2) + "deg");
+  idcard.style.setProperty("--px", (x * 100).toFixed(1) + "%"); idcard.style.setProperty("--py", (y * 100).toFixed(1) + "%");
+});
+$("#idwrap").addEventListener("pointerleave", () => { idcard.style.setProperty("--rx", "0deg"); idcard.style.setProperty("--ry", "0deg"); });
+// "Get in touch": the page is pulled into a black hole for 1.2 s, then the link does its job (mailto) and the page returns.
+talkBtn.addEventListener("click", (ev) => {
+  if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button !== 0) return;
+  if (S.hole) { ev.preventDefault(); return; }
+  if (!S.motion || !gl || !R) return;                       // reduced motion / no WebGL: plain link
+  ev.preventDefault();
+  const r = talkBtn.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2, href = talkBtn.href;
+  S.hole = { x, y, t0: performance.now() }; document.body.classList.add("is-hole");
+  mainEl.style.transformOrigin = `${x}px ${scrollY + y}px`;
+  const pull = mainEl.animate([{ transform: "none", filter: "blur(0px)", opacity: 1 }, { transform: "scale(.55) rotate(14deg)", filter: "blur(2px)", opacity: 0.9, offset: 0.45 },
+    { transform: "scale(0) rotate(80deg)", filter: "blur(8px)", opacity: 0 }], { duration: 900, easing: "cubic-bezier(.5,0,.9,.4)", fill: "forwards" });
+  setTimeout(() => { if (!window.__ftNoMail) location.href = href; }, 1200);
+  setTimeout(() => { pull.cancel(); mainEl.style.transformOrigin = ""; mainEl.animate([{ opacity: 0, filter: "blur(14px)" }, { opacity: 1, filter: "blur(0px)" }], { duration: 600, easing: "ease-out" }); document.body.classList.remove("is-hole"); }, 1250);
+  setTimeout(() => { S.hole = null; }, 1800);
+});
 
 /* ───────────── DOM behaviour ───────────── */
 const pad = (n) => String(n).padStart(2, "0");
@@ -664,7 +765,7 @@ $("#gallery").style.setProperty("--stops", N + 1);
 // gate
 const gate = $("#gate"), needle = $("#needle");
 function enter() {
-  if (S.entered) return; S.entered = true; document.body.classList.remove("is-gate"); scrollTo(0, 0); readScroll();
+  if (S.entered) return; S.entered = true; setGate(-1); document.body.classList.remove("is-gate"); scrollTo(0, 0); readScroll();
 }
 gate.addEventListener("click", enter);
 addEventListener("pointermove", (e) => {
@@ -672,7 +773,9 @@ addEventListener("pointermove", (e) => {
   if (!S.entered) {
     const dx = e.clientX - innerWidth / 2, dy = e.clientY - innerHeight / 2, r = Math.hypot(dx, dy) / (Math.min(innerWidth, innerHeight) * 0.5);
     S.gateNear = 1 - clamp(r, 0, 1);
-    needle.style.transform = `rotate(${(Math.atan2(dy, dx) * 180) / Math.PI + 90}deg)`;
+    const deg = (((Math.atan2(dy, dx) * 180) / Math.PI + 90) % 360 + 360) % 360;
+    needle.style.transform = `rotate(${deg}deg)`;
+    gateIdle = 0; gateAuto = 0; setGate(r > 0.34 ? Math.floor(deg / 45) % 8 : -1);
     document.querySelectorAll(".ap").forEach((c, i) => (c.style.transform = `rotate(${i * 47 + S.gateNear * (60 + i * 25)}deg) scale(${1 - S.gateNear * 0.16})`));
   }
 });
@@ -704,18 +807,18 @@ $("#lang").addEventListener("click", () => {
   S.lang = S.lang === "en" ? "pt" : "en"; document.documentElement.lang = S.lang === "pt" ? "pt-BR" : "en";
   document.querySelectorAll("#lang b").forEach((b) => b.classList.toggle("on", b.dataset.l === S.lang));
   document.querySelectorAll("[data-i18n]").forEach((el) => (el.textContent = (S.lang === "pt" && I18N.pt[el.dataset.i18n]) || EN[el.dataset.i18n]));
-  setMotionLabel(); buildRows(); buildProcess(); buildTimeline(); if (S.active >= 0) onActive(S.active);
+  setMotionLabel(); buildRows(); buildProcess(); if (S.active >= 0) onActive(S.active);
 });
 const setMotionLabel = () => { $("#motionLbl").textContent = S.lang === "pt" ? (S.motion ? "Movimento on" : "Movimento off") : S.motion ? "Motion on" : "Motion off"; $("#motion").setAttribute("aria-pressed", S.motion); };
 $("#motion").addEventListener("click", () => { S.motion = !S.motion; setMotionLabel(); });
 setMotionLabel();
 
 addEventListener("scroll", readScroll, { passive: true });
-addEventListener("resize", () => { resize(); layoutRail(); layoutTimeline(); readScroll(); });
+addEventListener("resize", () => { resize(); layoutRail(); readScroll(); });
 resize(); buildRows();
 if (gl) { try { initGL(); } catch (err) { console.error("[FineTune] WebGL init failed:", err); document.documentElement.classList.add("no-gl"); R = null; } }
-buildProcess(); buildTimeline(); readScroll();
-if (document.fonts) document.fonts.ready.then(() => { layoutRail(); layoutTimeline(); });
+buildProcess(); readScroll();
+if (document.fonts) document.fonts.ready.then(() => { layoutRail(); });
 if (new URLSearchParams(location.search).has("skip") || location.hash === "#gallery") enter();
 window.__ft = { S, goTo, enter };
 requestAnimationFrame(frame);

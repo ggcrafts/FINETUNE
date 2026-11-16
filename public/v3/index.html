@@ -15,22 +15,27 @@
 <div class="grain" aria-hidden="true"></div>
 
 <header class="hdr">
-  <a class="brand" href="#top"><span class="brand__ft">FT</span><span class="brand__sep">/</span><span class="brand__name">Fine<b>Tune</b></span>
+  <a class="brand" href="#top"><svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="1.5" y="1.5" width="29" height="29" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7.5 22V10h7.2M7.5 16h5.6M17 10h8.5M21.2 10v12" fill="none" stroke="currentColor" stroke-width="2.4"/><rect class="logo__sq" x="26" y="26" width="6" height="6"/></svg><span class="brand__name">Fine<b>Tune</b></span>
     <small data-i18n="tagline">Motion Design &amp; Creative Technology</small></a>
   <nav class="nav" aria-label="Main">
     <a href="#top"><i>01</i><span data-i18n="navWork">Work</span></a>
     <a href="#practice"><i>02</i><span data-i18n="navPractice">Practice</span></a>
     <a href="#process"><i>03</i><span data-i18n="navProcess">Process</span></a>
-    <a href="#timeline"><i>04</i><span data-i18n="navAbout">Trajectory</span></a>
+    <a href="#about"><i>04</i><span data-i18n="navAbout">About</span></a>
   </nav>
   <div class="hdr__count" aria-live="polite"><span data-i18n="featured">Observed</span> <b id="count">00</b><em id="total">/ 08</em></div>
 </header>
 
 <!-- GATE: the focus ring -->
 <button class="gate" id="gate" type="button" aria-label="Click to focus and enter the gallery">
+  <span class="gate__prev" id="gatePrev" aria-hidden="true"></span>
   <svg class="gate__ring" id="ring" viewBox="-250 -250 500 500" aria-hidden="true"></svg>
-  <span class="gate__name">Fine<b>Tune</b></span>
-  <span class="gate__sub" data-i18n="gateRole">Luiz Gustavo Czaika</span>
+  <span class="logo logo--gate" aria-label="FineTune">
+    <svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="1.5" y="1.5" width="29" height="29" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7.5 22V10h7.2M7.5 16h5.6M17 10h8.5M21.2 10v12" fill="none" stroke="currentColor" stroke-width="2.4"/><rect class="logo__sq" x="26" y="26" width="6" height="6"/></svg>
+    <span class="logo__word">Fine<b>Tune</b></span>
+    <span class="logo__tag" data-i18n="tagline">Motion Design &amp; Creative Technology</span>
+  </span>
+  <span class="gate__sub"><b id="gateDisc">&nbsp;</b><i data-i18n="gateRole">Luiz Gustavo Czaika</i></span>
   <span class="gate__cta" data-i18n="gateCta">Click to focus</span>
 </button>
 
@@ -39,7 +44,8 @@
     <!-- title plate (stop 00) -->
     <div class="plate" id="plate">
       <p class="eyebrow" data-i18n="eyebrow">Senior Motion Designer · Art Director · Creative Technologist</p>
-      <h1>Where ideas<br>take <em>form.</em></h1>
+      <h1 aria-label="Where ideas take form."><span class="h-lead" data-i18n="hLead">Where ideas take</span><span class="h-form"><span class="form-word" id="formWord" aria-hidden="true"><span class="fl">f</span><span class="fl">o</span><span class="fl">r</span><span class="fl">m</span></span><span class="form-dot" aria-hidden="true">.</span></span></h1>
+      <p class="plate__state" aria-hidden="true"><span id="formState">Thin</span><span class="cap__bar"></span><span id="formStatus">calibrating</span></p>
       <p class="plate__lead" data-i18n="lead">Visual systems where motion, 3D, VFX, AI and creative technology converge.</p>
       <p class="plate__hint"><span class="plate__line"></span><span data-i18n="hint">Scroll to observe</span></p>
     </div>
@@ -74,17 +80,23 @@
   <section class="process" id="process" aria-labelledby="procTitle">
     <div class="process__pin">
       <header class="process__head">
-        <p class="eyebrow">03 / <span data-i18n="procEyebrow">Process</span></p>
+        <p class="eyebrow">03 / <span data-i18n="procEyebrow">Process · Trajectory</span></p>
         <h2 id="procTitle"><span data-i18n="procT1">From possibility</span><br><em data-i18n="procT2">to precision.</em></h2>
         <div class="process__now" aria-live="polite">
           <p class="process__label"><span id="procIdx">01</span><span class="cap__bar"></span><b id="procName">Observe</b></p>
           <p class="process__text" id="procText"></p>
+          <article class="era">
+            <p class="era__y"><span id="eraYear">20··</span><em id="eraPh"></em></p>
+            <h3 id="eraTitle"></h3>
+            <p class="era__w" id="eraWhere"></p>
+          </article>
         </div>
       </header>
-      <div class="instrument" id="instrument" aria-hidden="true">
+      <div class="instrument" id="instrument">
         <i class="c c1"></i><i class="c c2"></i><i class="c c3"></i><i class="c c4"></i>
         <span class="instrument__x"></span><span class="instrument__y"></span>
-        <p class="instrument__read"><span data-i18n="rdOrder">Order</span> <b id="rdOrder">0.00</b><span class="sep">·</span><span data-i18n="rdParts">Particles</span> <b id="rdParts">0</b></p>
+        <p class="years"><b id="yrs">00</b><span data-i18n="tlYears">years of practice</span></p>
+        <p class="instrument__read" aria-hidden="true"><span data-i18n="rdOrder">Order</span> <b id="rdOrder">0.00</b><span class="sep">·</span><span data-i18n="rdParts">Particles</span> <b id="rdParts">0</b></p>
       </div>
       <div class="rail">
         <svg class="rail__svg" id="railSvg" aria-hidden="true"><path class="rail__base" id="railBase"/><path class="rail__light" id="railLight" pathLength="1"/><circle class="rail__head" id="railHead" r="3.5"/></svg>
@@ -93,24 +105,43 @@
     </div>
   </section>
 
-  <section class="tl" id="timeline" aria-labelledby="tlTitle">
-    <div class="tl__sticky" aria-hidden="true"><p class="tl__count"><b id="tlYears">00</b><span data-i18n="tlYears">years of practice</span></p></div>
-    <header class="tl__head">
-      <p class="eyebrow">04 / <span data-i18n="tlEyebrow">Trajectory</span></p>
-      <h2 id="tlTitle"><span data-i18n="tlT1">12+ years.</span><br><em data-i18n="tlT2">One continuous line.</em></h2>
+  <section class="about" id="about" aria-labelledby="aboutTitle">
+    <header class="about__head">
+      <p class="eyebrow">04 / <span data-i18n="abEyebrow">About · Contact</span></p>
+      <h2 id="aboutTitle"><span data-i18n="abT1">Let's give your next idea</span> <em data-i18n="abT2">a form.</em></h2>
     </header>
-    <div class="tl__track" id="tlTrack">
-      <svg class="tl__svg" id="tlSvg" aria-hidden="true"><path class="tl__base" id="tlBase"/><path class="tl__light" id="tlLight" pathLength="1"/><circle class="tl__dot" id="tlDot" r="4.5"/></svg>
-      <ol class="tl__list" id="tlList"></ol>
+    <div class="idwrap" id="idwrap">
+      <article class="idcard" id="idcard">
+        <span class="idcard__sheen" aria-hidden="true"></span>
+        <header class="idcard__top">
+          <span class="idcard__brand"><svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="1.5" y="1.5" width="29" height="29" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7.5 22V10h7.2M7.5 16h5.6M17 10h8.5M21.2 10v12" fill="none" stroke="currentColor" stroke-width="2.4"/><rect class="logo__sq" x="26" y="26" width="6" height="6"/></svg><span>Fine<b>Tune</b></span></span>
+          <span class="idcard__no">LGC-01 <i></i> <span data-i18n="idAvail">Available · Remote</span></span>
+        </header>
+        <figure class="idcard__photo"><img src="./portrait/luiz-czaika.webp" width="960" height="1200" loading="lazy" decoding="async" alt="Portrait of Luiz Gustavo Czaika">
+          <i class="c c1"></i><i class="c c2"></i><i class="c c3"></i><i class="c c4"></i></figure>
+        <div class="idcard__body">
+          <p class="eyebrow" data-i18n="idRole">Senior Motion Designer · Art Director · Creative Technologist</p>
+          <h3>Luiz Gustavo<br>Czaika</h3>
+          <p class="idcard__bio" data-i18n="idBio">12+ years across animation, 3D, VFX and immersive experiences — now combined with AI-assisted workflows, code and automation.</p>
+          <dl class="idcard__facts">
+            <div><dt data-i18n="idF1">Experience</dt><dd data-i18n="idF1v">12+ years</dd></div>
+            <div><dt data-i18n="idF2">Based in</dt><dd data-i18n="idF2v">Curitiba, Brazil</dd></div>
+            <div><dt data-i18n="idF3">Working</dt><dd data-i18n="idF3v">Remote · International</dd></div>
+          </dl>
+          <div class="idcard__cta">
+            <a class="btn" id="talkBtn" href="mailto:lgczaika@gmail.com"><span data-i18n="idCta">Get in touch</span><i aria-hidden="true">→</i></a>
+            <ul class="idcard__links">
+              <li><a href="mailto:lgczaika@gmail.com">lgczaika@gmail.com</a></li>
+              <li><a href="https://www.linkedin.com/in/lgczaika" target="_blank" rel="noopener">linkedin.com/in/lgczaika ↗</a></li>
+              <li><a href="https://www.behance.net/lgczaika" target="_blank" rel="noopener">behance.net/lgczaika ↗</a></li>
+            </ul>
+          </div>
+        </div>
+        <footer class="idcard__foot"><span class="idcard__ticks" aria-hidden="true"></span><span class="idcard__sign">Observe. Create. Refine.</span></footer>
+      </article>
     </div>
-  </section>
-
-  <section class="next" id="next">
-    <p class="eyebrow">05 / <span data-i18n="nextEyebrow">Next stage, awaiting approval</span></p>
-    <h2 data-i18n="nextTitle">The light path continues.</h2>
-    <ul class="next__list">
-      <li><i>05</i><b data-i18n="n3">About &amp; contact</b><span data-i18n="n3d">Portrait, oversized signature, “Observe. Create. Refine.”</span></li>
-    </ul>
+    <p class="about__sig" aria-hidden="true">FineTune<i>.</i></p>
+    <footer class="foot"><span>FineTune — Motion Design &amp; Creative Technology</span><span>Curitiba, Brazil · © 2026</span></footer>
   </section>
 </main>
 
@@ -118,7 +149,7 @@
   <button type="button" id="lang" aria-label="Language"><b data-l="en" class="on">EN</b><b data-l="pt">PT</b></button>
   <button type="button" id="motion" aria-pressed="true"><span class="dock__dot"></span><span id="motionLbl">Motion on</span></button>
 </div>
-<a class="talk" href="#next"><span class="talk__dot"></span><span data-i18n="talk">Let's talk</span></a>
+<a class="talk" href="#about"><span class="talk__dot"></span><span data-i18n="talk">Let's talk</span></a>
 
 <!-- placeholder case -->
 <div class="case" id="case" role="dialog" aria-modal="true" aria-labelledby="caseTitle" hidden>
