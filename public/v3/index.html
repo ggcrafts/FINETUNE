@@ -20,8 +20,8 @@
   <nav class="nav" aria-label="Main">
     <a href="#top"><i>01</i><span data-i18n="navWork">Work</span></a>
     <a href="#practice"><i>02</i><span data-i18n="navPractice">Practice</span></a>
-    <a href="#next"><i>03</i><span data-i18n="navAbout">About</span></a>
-    <a href="#next"><i>04</i><span data-i18n="navContact">Contact</span></a>
+    <a href="#process"><i>03</i><span data-i18n="navProcess">Process</span></a>
+    <a href="#timeline"><i>04</i><span data-i18n="navAbout">Trajectory</span></a>
   </nav>
   <div class="hdr__count" aria-live="polite"><span data-i18n="featured">Observed</span> <b id="count">00</b><em id="total">/ 08</em></div>
 </header>
@@ -71,12 +71,45 @@
     </div>
   </section>
 
+  <section class="process" id="process" aria-labelledby="procTitle">
+    <div class="process__pin">
+      <header class="process__head">
+        <p class="eyebrow">03 / <span data-i18n="procEyebrow">Process</span></p>
+        <h2 id="procTitle"><span data-i18n="procT1">From possibility</span><br><em data-i18n="procT2">to precision.</em></h2>
+        <div class="process__now" aria-live="polite">
+          <p class="process__label"><span id="procIdx">01</span><span class="cap__bar"></span><b id="procName">Observe</b></p>
+          <p class="process__text" id="procText"></p>
+        </div>
+      </header>
+      <div class="instrument" id="instrument" aria-hidden="true">
+        <i class="c c1"></i><i class="c c2"></i><i class="c c3"></i><i class="c c4"></i>
+        <span class="instrument__x"></span><span class="instrument__y"></span>
+        <p class="instrument__read"><span data-i18n="rdOrder">Order</span> <b id="rdOrder">0.00</b><span class="sep">·</span><span data-i18n="rdParts">Particles</span> <b id="rdParts">0</b></p>
+      </div>
+      <div class="rail">
+        <svg class="rail__svg" id="railSvg" aria-hidden="true"><path class="rail__base" id="railBase"/><path class="rail__light" id="railLight" pathLength="1"/><circle class="rail__head" id="railHead" r="3.5"/></svg>
+        <ol class="rail__nodes" id="railNodes"></ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="tl" id="timeline" aria-labelledby="tlTitle">
+    <div class="tl__sticky" aria-hidden="true"><p class="tl__count"><b id="tlYears">00</b><span data-i18n="tlYears">years of practice</span></p></div>
+    <header class="tl__head">
+      <p class="eyebrow">04 / <span data-i18n="tlEyebrow">Trajectory</span></p>
+      <h2 id="tlTitle"><span data-i18n="tlT1">12+ years.</span><br><em data-i18n="tlT2">One continuous line.</em></h2>
+    </header>
+    <div class="tl__track" id="tlTrack">
+      <svg class="tl__svg" id="tlSvg" aria-hidden="true"><path class="tl__base" id="tlBase"/><path class="tl__light" id="tlLight" pathLength="1"/><circle class="tl__dot" id="tlDot" r="4.5"/></svg>
+      <ol class="tl__list" id="tlList"></ol>
+    </div>
+  </section>
+
   <section class="next" id="next">
-    <p class="eyebrow">03 — 04 / <span data-i18n="nextEyebrow">Next stages, awaiting approval</span></p>
+    <p class="eyebrow">05 / <span data-i18n="nextEyebrow">Next stage, awaiting approval</span></p>
     <h2 data-i18n="nextTitle">The light path continues.</h2>
     <ul class="next__list">
-      <li><i>03</i><b data-i18n="n2">Process &amp; timeline</b><span data-i18n="n2d">One continuous light trail through 12 years of work</span></li>
-      <li><i>04</i><b data-i18n="n3">About &amp; contact</b><span data-i18n="n3d">Oversized signature, “Observe. Create. Refine.”</span></li>
+      <li><i>05</i><b data-i18n="n3">About &amp; contact</b><span data-i18n="n3d">Portrait, oversized signature, “Observe. Create. Refine.”</span></li>
     </ul>
   </section>
 </main>

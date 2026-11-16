@@ -26,6 +26,38 @@ const PRACTICES = [
     d: "Scripts, Blender add-ons, automations and web prototypes that remove friction from production and open new visual possibilities.",
     dp: "Scripts, add-ons de Blender, automações e protótipos web que tiram o atrito da produção e abrem novas possibilidades visuais.", rel: [], tint: [0.62, 0.76, 1.0] },
 ];
+const PROCESS = [
+  { t: "Observe", tp: "Observar", k: "Brief · Audience · Intent", kp: "Briefing · Público · Intenção", order: 0.08, tint: [0.62, 0.72, 0.95],
+    d: "Listen before designing: the brief, the audience and what the piece has to make people feel.",
+    dp: "Escutar antes de desenhar: o briefing, o público e o que a peça precisa fazer sentir." },
+  { t: "Shape", tp: "Moldar", k: "Idea · References · System", kp: "Ideia · Referências · Sistema", order: 0.41, tint: [0.5, 0.86, 1.0],
+    d: "Turn intent into one clear idea, a reference board and a visual system.",
+    dp: "Transformar intenção em uma ideia clara, um painel de referências e um sistema visual." },
+  { t: "Explore", tp: "Explorar", k: "Design · 3D · AI · Code", kp: "Design · 3D · IA · Código", order: 0.63, tint: [0.86, 0.56, 1.0],
+    d: "Push the idea through design, 3D, AI and code until the unexpected shows up.",
+    dp: "Levar a ideia por design, 3D, IA e código até o inesperado aparecer." },
+  { t: "Refine", tp: "Refinar", k: "Light · Motion · Timing", kp: "Luz · Movimento · Timing", order: 0.98, tint: [0.9, 0.95, 1.0],
+    d: "Calibrate light, motion and timing until every frame holds.",
+    dp: "Calibrar luz, movimento e timing até cada frame se sustentar." },
+  { t: "Evolve", tp: "Evoluir", k: "Tools · Workflows · Next idea", kp: "Ferramentas · Workflows · Próxima ideia", order: 0.86, tint: [1.0, 0.76, 0.48],
+    d: "Keep what worked as a tool or a workflow, so the next idea starts further ahead.",
+    dp: "Guardar o que funcionou como ferramenta ou workflow, para a próxima ideia começar mais à frente." },
+];
+// Career line. Years are placeholders until Luiz confirms them; "now" entries are current.
+const TIMELINE = [
+  { y: null, t: "Visual design foundations", tp: "Fundamentos de design visual", w: "Degree · Industrial Design / Visual Programming", wp: "Graduação · Desenho Industrial / Programação Visual",
+    d: "Typography, grids and visual systems — the base everything else is built on.", dp: "Tipografia, grids e sistemas visuais — a base de todo o resto." },
+  { y: null, t: "Motion graphics", tp: "Motion graphics", w: "Where the practice started", wp: "Onde a prática começou",
+    d: "Motion, rhythm and timing in service of an idea.", dp: "Movimento, ritmo e timing a serviço de uma ideia." },
+  { y: null, t: "3D, VFX & compositing", tp: "3D, VFX & composição", w: "Campaigns · content", wp: "Campanhas · conteúdo", rel: [0, 2],
+    d: "Modeling, lighting, rendering and compositing join the toolkit.", dp: "Modelagem, iluminação, render e composição entram no repertório." },
+  { y: null, t: "Art & creative direction", tp: "Direção de arte & criativa", w: "Brand experiences", wp: "Experiências de marca", rel: [1],
+    d: "Leading the look of campaigns and immersive work from concept to delivery.", dp: "Conduzindo o visual de campanhas e trabalhos imersivos, do conceito à entrega." },
+  { y: "now", t: "AI-assisted workflows & automation", tp: "Workflows com IA & automação", w: "FineTune", wp: "FineTune",
+    d: "Generative tools, scripts and add-ons placed inside a directed pipeline.", dp: "Ferramentas generativas, scripts e add-ons dentro de um pipeline dirigido." },
+  { y: "now", t: "Postgraduate · 3D Technologies", tp: "Pós-graduação · Tecnologias 3D", w: "In progress", wp: "Em andamento",
+    d: "Going deeper into the technical side of 3D while the practice keeps evolving.", dp: "Aprofundando o lado técnico do 3D enquanto a prática segue evoluindo." },
+];
 const N = PROJECTS.length;
 const PLATE_TINT = [0.60, 0.80, 1.0];
 const D = 11;                       // world spacing between panes
@@ -35,13 +67,16 @@ const FOV = (38 * Math.PI) / 180;
 const I18N = {
   pt: { tagline: "Motion Design & Tecnologia Criativa", navWork: "Trabalhos", navPractice: "Prática", navAbout: "Sobre", navContact: "Contato",
     pracEyebrow: "Áreas de atuação", pracT1: "Quatro disciplinas.", pracT2: "Um sistema.", lensPh: "Placeholder — trecho de reel por disciplina",
+    navProcess: "Processo", navAbout: "Trajetória", procEyebrow: "Processo", procT1: "Da possibilidade", procT2: "à precisão.",
+    rdOrder: "Ordem", rdParts: "Partículas", tlEyebrow: "Trajetória", tlT1: "12+ anos.", tlT2: "Uma linha contínua.", tlYears: "anos de prática",
+    nextEyebrow: "Próxima etapa, aguardando aprovação",
     featured: "Observado", gateRole: "Luiz Gustavo Czaika", gateCta: "Clique para focar",
     eyebrow: "Senior Motion Designer · Diretor de Arte · Creative Technologist",
     lead: "Sistemas visuais onde motion, 3D, VFX, IA e tecnologia criativa convergem.", hint: "Role para observar", open: "Abrir case",
-    nextEyebrow: "Próximas etapas, aguardando aprovação", nextTitle: "O caminho de luz continua.",
+    nextTitle: "O caminho de luz continua.",
     n1: "Campos de prática", n1d: "Lista fixa + preview vivo, imagem resolvendo do desfoque ao foco",
     n2: "Processo & linha do tempo", n2d: "Uma única trilha de luz atravessando 12 anos de trabalho",
-    n3: "Sobre & contato", n3d: "Assinatura em escala gigante, “Observe. Create. Refine.”",
+    n3: "Sobre & contato", n3d: "Retrato, assinatura em escala gigante, “Observe. Create. Refine.”",
     talk: "Vamos conversar", phMedia: "Placeholder — vídeo / breakdown entra aqui",
     cChallenge: "Desafio", cIdea: "Ideia", cExec: "Execução", cOutcome: "Resultado" },
 };
@@ -54,6 +89,7 @@ const mix = (a, b, t) => a + (b - a) * t;
 const S = {
   entered: false, focus: 0, focusT: 0, gateNear: 0,
   p: 0, pT: 0, time: 0, motion: !matchMedia("(prefers-reduced-motion: reduce)").matches,
+  psIdx: -1, psV: 0, stF: 0, stS: 0, post: 0, tlV: 0, tlP: 0,
   prIdx: -1, prFrom: 0, prTo: 0, prT: 1, prQ: 0, prV: 0, prIn: 0,
   mx: 0, my: 0, mxT: 0, myT: 0, hover: 0, hoverT: 0, lang: "en", active: -2, past: false, caseOpen: false,
 };
@@ -204,6 +240,43 @@ precision highp float; in float vA; in float vK; uniform vec3 uTint; out vec4 o;
 void main(){ float r=length(gl_PointCoord-.5)*2.; float a=smoothstep(1.,.82,r)*(.55+.45*smoothstep(.4,.95,r));
   vec3 c=mix(vec3(.92,.96,1.),mix(vec3(1.,.8,.55),uTint,step(.5,vK)),.55*fract(vK*7.)); o=vec4(c*a*vA,0.); }`;
 
+// Process instrument: one particle field that moves from noise (Observe) through lines (Shape),
+// a spectral fan (Explore) and a single focused ring (Refine) to an outgoing spiral (Evolve).
+// Positions are procedural per stage; each particle carries its own delay so transitions read as emergence.
+const PS_VS = COMMON + `
+in vec4 aSeed; uniform vec4 uRect; uniform float uAsp,uStage,uTime,uPx,uAlpha; uniform vec3 uTint; out vec3 vC; out float vA;
+const float TAU=6.28318;
+vec2 form(int k, vec4 s, float t){
+  float a=uAsp;
+  if(k==0){ vec2 p=(s.xy*2.-1.)*vec2(a*.92,.92); return p+vec2(sin(t*.31+s.z*40.),cos(t*.27+s.w*30.))*.045; }
+  if(k==1){ float li=floor(s.z*7.); float x=(s.x*2.-1.)*a*.92; return vec2(x,(li-3.)*.24+sin(x*1.7+li*1.3+t*.35)*.07+(s.y-.5)*.01); }
+  if(k==2){ float ray=floor(s.z*26.); float ang=(ray/25.-.5)*1.05+sin(t*.18+ray*1.7)*.02; float r=pow(s.x,.8)*a*1.84;
+            return vec2(-a*.92,0.)+vec2(cos(ang),sin(ang)*.62)*r; }
+  if(k==3){ float ang=s.x*TAU+t*.04; if(s.w<.12) return vec2(cos(ang),sin(ang))*.2; return vec2(cos(ang),sin(ang))*(.66+(s.y-.5)*.012); }
+  if(s.w<.3){ float a2=s.y*TAU+t*.05; return vec2(cos(a2),sin(a2))*.66; }
+  float u=s.x, ang=u*TAU*2.2+t*.12; return vec2(cos(ang)*mix(.66,a*.92,u),sin(ang)*mix(.66,.92,u));
+}
+vec3 col(int k, vec4 s){
+  if(k==0) return vec3(.78,.84,.95)*.95;
+  if(k==1) return mix(vec3(.85,.92,1.),uTint,.45)*.85;
+  if(k==2) return spectrum(s.z*1.3+.1)*.9+.08;
+  if(k==3) return vec3(.95,.98,1.)*1.2;
+  return mix(vec3(1.,.78,.5),uTint,.3);
+}
+void main(){
+  float st=clamp(uStage,0.,4.); int i=int(floor(st)); int j=min(4,i+1); float f=st-float(i);
+  float ff=clamp((f-aSeed.w*.35)/.65,0.,1.); ff=ff*ff*(3.-2.*ff);
+  float mid=sin(3.14159*ff);
+  vec2 p=mix(form(i,aSeed,uTime),form(j,aSeed,uTime),ff);
+  p+=(vec2(noise(aSeed.xy*9.+uTime*.2),noise(aSeed.zw*9.-uTime*.2))-.5)*.2*mid;
+  gl_Position=vec4(uRect.xy+vec2(p.x/uAsp,p.y)*uRect.zw,0.,1.);
+  gl_PointSize=(1.3+aSeed.w*1.8+mid*3.2+float(i==0&&j==1)*(1.-ff)*.8)*uPx;
+  vC=mix(col(i,aSeed),col(j,aSeed),ff);
+  vA=uAlpha*(.5+.5*aSeed.y)/(1.+mid*1.6);
+}`;
+const PS_FS = COMMON + `in vec3 vC; in float vA; out vec4 o;
+void main(){ float r=length(gl_PointCoord-.5)*2.; o=vec4(vC*smoothstep(1.,.15,r)*vA,0.); }`;
+
 function program(vs, fs) {
   const mk = (t, src) => { const s = gl.createShader(t); gl.shaderSource(s, src); gl.compileShader(s);
     if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s) + "\n" + src.split("\n").slice(0, 6).join("\n")); return s; };
@@ -228,7 +301,7 @@ const M = {
 
 let R = null; // GL resources
 function initGL() {
-  const bg = program(BG_VS, BG_FS), pane = program(PANE_VS, PANE_FS), tr = program(TR_VS, TR_FS), st = program(ST_VS, ST_FS);
+  const ps = program(PS_VS, PS_FS), bg = program(BG_VS, BG_FS), pane = program(PANE_VS, PANE_FS), tr = program(TR_VS, TR_FS), st = program(ST_VS, ST_FS);
   const vao = (prog, setup) => { const v = gl.createVertexArray(); gl.bindVertexArray(v); setup(prog.p); gl.bindVertexArray(null); return v; };
   const buf = (data) => { const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW); return b; };
   const attr = (p, name, size, stride, off) => { const l = gl.getAttribLocation(p, name); if (l < 0) return; gl.enableVertexAttribArray(l); gl.vertexAttribPointer(l, size, gl.FLOAT, false, stride, off); };
@@ -242,6 +315,9 @@ function initGL() {
     for (let j = 0; j < SEG; j++) { const t = j / (SEG - 1); tv.push(t, -1, ...s, t, 1, ...s); } }
   const trVao = vao(tr, (p) => { buf(tv); attr(p, "aTS", 2, 24, 0); attr(p, "aSeed", 4, 24, 8); });
 
+  const PARTS = 4200, pv = [];
+  for (let i = 0; i < PARTS; i++) pv.push(rand(), rand(), rand(), rand());
+  const psVao = vao(ps, (p) => { buf(pv); attr(p, "aSeed", 4, 0, 0); });
   const STARS = 1500, sv = [];
   for (let i = 0; i < STARS; i++) sv.push(rand() * 2 - 1, rand() * 2 - 1, rand(), rand());
   const stVao = vao(st, (p) => { buf(sv); attr(p, "aSeed", 4, 0, 0); });
@@ -264,7 +340,7 @@ function initGL() {
   };
   const tex = PROJECTS.map((pr) => loadTex(`./covers/${pr.slug}.webp`));
   const ptex = PRACTICES.map((_, i) => loadTex(`./practice/practice-0${i + 1}.webp`));
-  R = { bg, pane, tr, st, bgVao, paneVao, trVao, stVao, TRAILS, SEG, STARS, ghosts, tex, ptex };
+  R = { ps, psVao, PARTS, bg, pane, tr, st, bgVao, paneVao, trVao, stVao, TRAILS, SEG, STARS, ghosts, tex, ptex };
 }
 
 let W = 1, H = 1, DPR = 1, dockD = 4.4;
@@ -279,7 +355,7 @@ function resize() {
 
 /* scroll → progress (in stops: 0 = title plate, 1..N = projects) */
 const unit = () => innerHeight * 1.1;
-const pracEl = $("#practice"), lens = $("#lens");
+const pracEl = $("#practice"), lens = $("#lens"), procEl = $("#process"), tlEl = $("#timeline"), inst = $("#instrument");
 function readScroll() {
   S.pT = clamp(scrollY / unit(), 0, N); S.past = scrollY > unit() * (N + 0.4);
   const top = pracEl.offsetTop, span = pracEl.offsetHeight - innerHeight, ih = innerHeight;
@@ -289,13 +365,31 @@ function readScroll() {
   const idx = S.prV > 0.02 ? Math.min(3, Math.floor(S.prQ * 3.999)) : -1;
   if (idx !== S.prIdx) setPractice(idx);
   if (idx >= 0) document.querySelectorAll(".row").forEach((r, k) => r.style.setProperty("--w", k === idx ? (S.prQ * 4 - idx).toFixed(3) : 0));
+  S.post = Math.max(0, scrollY - (top - ih)) / ih;                         // screens travelled since leaving the gallery
+
+  // process: each stage holds, then morphs into the next during the last 40% of its segment
+  const pt = procEl.offsetTop, ps = procEl.offsetHeight - ih;
+  const q = clamp((scrollY - pt) / ps, 0, 1), raw = q * 5, si = Math.min(4, Math.floor(raw));
+  S.stF = si + (si < 4 ? sstep(0.6, 1, raw - si) : 0);
+  S.psV = sstep(pt - ih * 0.6, pt - ih * 0.1, scrollY) * (1 - sstep(pt + ps, pt + ps + ih * 0.6, scrollY));
+  const pidx = Math.min(4, Math.round(S.stF));
+  if (pidx !== S.psIdx) setStage(pidx);
+
+  const tt = tlEl.offsetTop;
+  S.tlV = sstep(tt - ih * 0.5, tt + ih * 0.2, scrollY) * (1 - sstep(tt + tlEl.offsetHeight - ih * 0.6, tt + tlEl.offsetHeight, scrollY));
+  updateTimeline();
+  const navIdx = scrollY >= tt - ih * 0.3 ? 3 : scrollY >= pt - ih * 0.3 ? 2 : scrollY >= top - ih * 0.3 ? 1 : 0;
+  document.querySelectorAll(".nav a").forEach((a, k) => a.classList.toggle("on", S.entered && k === navIdx));
 }
 const easeStop = (p) => { const s = Math.floor(p), f = p - s; return s + mix(f, f * f * f * (f * (6 * f - 15) + 10), 0.8); };
 function tintAt(pe) {
   const list = [PLATE_TINT, ...PROJECTS.map((p) => p.tint)];
   const i = clamp(Math.floor(pe), 0, N), j = Math.min(N, i + 1), f = sstep(0.15, 0.85, pe - i);
   const pt = PRACTICES[Math.max(0, S.prIdx)].tint;
-  return [0, 1, 2].map((k) => mix(mix(list[i][k], list[j][k], f), pt[k], S.prV));
+  const a = Math.floor(S.stS), b = Math.min(4, a + 1), g = S.stS - a;
+  const proc = [0, 1, 2].map((k) => mix(PROCESS[a].tint[k], PROCESS[b].tint[k], g));
+  const warm = [1.0, 0.78, 0.52], cool = [0.6, 0.8, 1.0], tl = [0, 1, 2].map((k) => mix(cool[k], warm[k], S.tlP));
+  return [0, 1, 2].map((k) => mix(mix(mix(mix(list[i][k], list[j][k], f), pt[k], S.prV), proc[k], S.psV), tl[k], S.tlV));
 }
 
 /* per-frame pane pose */
@@ -328,7 +422,8 @@ function frame(now) {
   S.mx = mix(S.mx, S.mxT, k * 0.5); S.my = mix(S.my, S.myT, k * 0.5); S.hover = mix(S.hover, S.hoverT, k);
 
   const pe = easeStop(S.p), fo = S.focus, enter = sstep(0, 1, fo);
-  const camZ = dockD - pe * D + (1 - enter) * 7.5 - S.prIn * 6.5 - S.prQ * 14;
+  S.stS = S.motion ? mix(S.stS, S.stF, clamp(k * 0.55, 0, 1)) : S.stF;
+  const camZ = dockD - pe * D + (1 - enter) * 7.5 - sstep(0, 1, S.prIn) * 6.5 - S.post * 3.2;
   if (S.prT < 1) S.prT = Math.min(1, S.prT + (S.motion ? dt / 0.95 : 1));
   const tint = tintAt(pe);
   const aspect = W / H;
@@ -354,6 +449,7 @@ function frame(now) {
       cap.style.transform = `translate(${Math.max(16, l)}px,${Math.min(innerHeight - 150, bt + 20)}px)`;
     }
   }
+  updateRail();
   if (!gl || !R) return;
 
   /* ── draw ── */
@@ -361,7 +457,7 @@ function frame(now) {
   const t2 = [tint[2], tint[0] * .8 + .2, tint[1]];
   gl.useProgram(R.bg.p); gl.bindVertexArray(R.bgVao);
   gl.uniform2f(R.bg.u.uRes, W, H); gl.uniform2f(R.bg.u.uMouse, S.mx, S.my); gl.uniform1f(R.bg.u.uTime, S.time); gl.uniform1f(R.bg.u.uCamZ, camZ);
-  gl.uniform1f(R.bg.u.uCore, mix(1, 0.55, sstep(0.3, 1, S.p)) * mix(0.5, 1, enter) * mix(1, 0.7, S.prV)); gl.uniform1f(R.bg.u.uFocus, enter);
+  gl.uniform1f(R.bg.u.uCore, mix(1, 0.55, sstep(0.3, 1, S.p)) * mix(0.5, 1, enter) * mix(1, 0.7, S.prV) * mix(1, 0.5, S.psV) * mix(1, 0.75, S.tlV)); gl.uniform1f(R.bg.u.uFocus, enter);
   gl.uniform3fv(R.bg.u.uTint, tint); gl.uniform3fv(R.bg.u.uTint2, t2);
   gl.drawArrays(gl.TRIANGLES, 0, 3);
 
@@ -378,8 +474,8 @@ function frame(now) {
   for (let i = 0; i < R.TRAILS; i++) gl.drawArrays(gl.TRIANGLE_STRIP, i * R.SEG * 2, R.SEG * 2);
   // panes + ghosts, far → near
   const list = [];
-  for (let i = 0; i < N; i++) { const p = panePose(i, camZ); if (p && p.alpha > 0.01 && p.d < 60) list.push({ ...p, i, ghost: 0 }); }
-  for (const g of R.ghosts) { const d = camZ - g.z; if (d > 0.6 && d < 46) list.push({ ...g, d, ghost: 1 }); }
+  for (let i = 0; i < N; i++) { const p = panePose(i, camZ); if (p) p.alpha *= 1 - sstep(0.1, 0.8, S.prIn); if (p && p.alpha > 0.01 && p.d < 60) list.push({ ...p, i, ghost: 0 }); }
+  for (const g of R.ghosts) { const d = (((camZ - g.z) % 108) + 108) % 108; if (d > 0.6 && d < 46) list.push({ ...g, z: camZ - d, d, ghost: 1 }); }
   list.sort((a, b) => b.d - a.d);
   gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
   gl.useProgram(R.pane.p); gl.bindVertexArray(R.paneVao);
@@ -391,7 +487,7 @@ function frame(now) {
     if (o.ghost) {
       w = PW * o.s; h = PH * o.s * 1.25;
       m = M.mul(M.trans(o.x, o.y + Math.sin(S.time * .2 + o.seed * 30) * .12, o.z), M.mul(M.rotY(o.ry + Math.sin(S.time * .13 + o.seed * 9) * .06), M.mul(M.rotZ(o.rz), M.scale(w, h))));
-      gl.uniform1f(R.pane.u.uGhost, 1); gl.uniform1f(R.pane.u.uAlpha, sstep(46, 30, o.d) * sstep(.6, 3.5, o.d) * mix(.45, 1, enter)); gl.uniform1f(R.pane.u.uBlur, Math.abs(o.d - dockD) * .12 + defocus);
+      gl.uniform1f(R.pane.u.uGhost, 1); gl.uniform1f(R.pane.u.uAlpha, sstep(46, 30, o.d) * sstep(.6, 3.5, o.d) * mix(.45, 1, enter) * mix(1, .32, Math.max(S.psV, S.tlV)) * mix(1, .6, S.prV)); gl.uniform1f(R.pane.u.uBlur, Math.abs(o.d - dockD) * .12 + defocus);
       gl.uniform1f(R.pane.u.uHover, 0); gl.uniform1f(R.pane.u.uDim, 1);
     } else {
       w = PW * o.sc; h = PH * o.sc;
@@ -420,6 +516,17 @@ function frame(now) {
       gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, R.ptex[S.prTo]);
       gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, R.ptex[S.prFrom]);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
+  }
+  if (S.psV > 0.01) {
+    const r = inst.getBoundingClientRect();
+    if (r.bottom > 0 && r.top < innerHeight && r.height > 20) {
+      gl.blendFunc(gl.ONE, gl.ONE);
+      gl.useProgram(R.ps.p); gl.bindVertexArray(R.psVao);
+      gl.uniform4f(R.ps.u.uRect, (r.left + r.right) / innerWidth - 1, 1 - (r.top + r.bottom) / innerHeight, r.width / innerWidth, r.height / innerHeight);
+      gl.uniform1f(R.ps.u.uAsp, r.width / r.height); gl.uniform1f(R.ps.u.uStage, S.stS); gl.uniform1f(R.ps.u.uTime, S.time);
+      gl.uniform1f(R.ps.u.uPx, DPR); gl.uniform1f(R.ps.u.uAlpha, S.psV); gl.uniform3fv(R.ps.u.uTint, tint);
+      gl.drawArrays(gl.POINTS, 0, R.PARTS);
     }
   }
   gl.bindVertexArray(null);
@@ -451,6 +558,84 @@ function setPractice(idx) {
   if (idx < 0) return;
   if (prev < 0) { S.prFrom = S.prTo = idx; S.prT = 1; } else { S.prFrom = S.prTo; S.prTo = idx; S.prT = 0; }
   setLensMeta();
+}
+
+/* ───────────── process ───────────── */
+const railNodes = $("#railNodes"), railBase = $("#railBase"), railLight = $("#railLight"), railHead = $("#railHead");
+let railLen = 0, lastOrder = "";
+function buildProcess() {
+  const pt = S.lang === "pt"; railNodes.innerHTML = "";
+  PROCESS.forEach((p, k) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<button class="node" type="button"><span class="node__dot"></span><span class="node__i">0${k + 1}</span><span class="node__t">${pt ? p.tp : p.t}</span><span class="node__k">${pt ? p.kp : p.k}</span></button>`;
+    li.firstChild.onclick = () => { const span = procEl.offsetHeight - innerHeight; scrollTo({ top: procEl.offsetTop + ((k + 0.3) / 5) * span, behavior: S.motion ? "smooth" : "auto" }); };
+    railNodes.appendChild(li);
+  });
+  $("#rdParts").textContent = R ? R.PARTS.toLocaleString("en") : "0";
+  const i = Math.max(0, S.psIdx); S.psIdx = -1; setStage(i); layoutRail();
+}
+function setStage(i) {
+  S.psIdx = i; const p = PROCESS[i], pt = S.lang === "pt";
+  $("#procIdx").textContent = `0${i + 1} / 05`; $("#procName").textContent = pt ? p.tp : p.t; $("#procText").textContent = pt ? p.dp : p.d;
+  const now = document.querySelector(".process__now"); now.classList.remove("swap"); void now.offsetWidth; now.classList.add("swap");
+}
+function layoutRail() {
+  const box = railNodes.getBoundingClientRect(); if (!box.width) return;
+  const pts = [...railNodes.querySelectorAll(".node__dot")].map((d) => { const r = d.getBoundingClientRect(); return [r.left + r.width / 2 - box.left, r.top + r.height / 2 - box.top]; });
+  let d = `M${pts[0][0]},${pts[0][1]}`;
+  for (let k = 1; k < pts.length; k++) { const [x0, y0] = pts[k - 1], [x1, y1] = pts[k], mx = (x0 + x1) / 2, w = (k % 2 ? -1 : 1) * 9;
+    d += ` C${mx - (x1 - x0) * 0.2},${y0 + w} ${mx + (x1 - x0) * 0.2},${y1 + w} ${x1},${y1}`; }
+  railBase.setAttribute("d", d); railLight.setAttribute("d", d); railLen = railBase.getTotalLength();
+}
+function updateRail() {
+  const st = S.stS, prog = st / 4;
+  railLight.style.strokeDashoffset = (1 - prog).toFixed(4);
+  if (railLen) { const p = railBase.getPointAtLength(railLen * prog); railHead.setAttribute("cx", p.x); railHead.setAttribute("cy", p.y); }
+  railNodes.querySelectorAll(".node").forEach((n, k) => { n.classList.toggle("on", k === S.psIdx); n.classList.toggle("past", k < st - 0.02 && k !== S.psIdx); });
+  const a = Math.floor(st), b = Math.min(4, a + 1), o = mix(PROCESS[a].order, PROCESS[b].order, st - a).toFixed(2);
+  if (o !== lastOrder) { $("#rdOrder").textContent = o; lastOrder = o; }
+}
+
+/* ───────────── timeline ───────────── */
+const tlList = $("#tlList"), tlBase = $("#tlBase"), tlLight = $("#tlLight"), tlDot = $("#tlDot");
+let tlTable = [], tlLen = 0, tlTop = 0;
+function buildTimeline() {
+  const pt = S.lang === "pt"; tlList.innerHTML = "";
+  TIMELINE.forEach((e, k) => {
+    const li = document.createElement("li"); li.className = "tl__item" + (k % 2 ? " r" : "");
+    const year = e.y === "now" ? (pt ? "Hoje" : "Now") : "20··";
+    li.innerHTML = `<article class="tl__card"><p class="tl__year">${year}${e.y ? "" : `<em>${pt ? "ano · placeholder" : "year · placeholder"}</em>`}</p>
+      <h3>${pt ? e.tp : e.t}</h3><p class="tl__where">${pt ? e.wp : e.w}</p><p class="tl__txt">${pt ? e.dp : e.d}</p>${e.rel ? '<div class="chips"></div>' : ""}</article>`.replace(/&(?!amp;)/g, "&amp;");
+    (e.rel || []).forEach((i) => { const b = document.createElement("button"); b.type = "button"; b.textContent = PROJECTS[i].title.split(" — ").pop(); b.onclick = () => goTo(i + 1); li.querySelector(".chips").appendChild(b); });
+    tlList.appendChild(li);
+  });
+  layoutTimeline();
+}
+function layoutTimeline() {
+  const track = $("#tlTrack"), W = track.clientWidth, H = track.clientHeight, narrow = innerWidth <= 820, cx = narrow ? 14 : W / 2;
+  let d = `M${cx},0`;
+  tlList.querySelectorAll(".tl__item").forEach((li) => {
+    const y = li.offsetTop + li.offsetHeight / 2, side = narrow ? 1 : li.classList.contains("r") ? 1 : -1, bx = cx + side * (narrow ? 10 : 46);
+    li.dataset.y = y;
+    d += ` L${cx},${y - 150} C${cx},${y - 80} ${bx},${y - 70} ${bx},${y} C${bx},${y + 70} ${cx},${y + 80} ${cx},${y + 150}`;
+  });
+  d += ` L${cx},${H}`;
+  tlBase.setAttribute("d", d); tlLight.setAttribute("d", d);
+  tlLen = tlBase.getTotalLength(); tlTable = [];
+  for (let k = 0; k <= 400; k++) tlTable.push(tlBase.getPointAtLength((tlLen * k) / 400).y);
+  tlTop = track.getBoundingClientRect().top + scrollY;
+  updateTimeline();
+}
+function updateTimeline() {
+  if (!tlLen) return;
+  const headY = scrollY + innerHeight * 0.6 - tlTop;
+  let lo = 0, hi = tlTable.length - 1;                     // y grows monotonically along the path
+  if (headY <= tlTable[0]) hi = 0; else if (headY >= tlTable[hi]) lo = hi; else { while (hi - lo > 1) { const m = (lo + hi) >> 1; if (tlTable[m] < headY) lo = m; else hi = m; } }
+  const u = clamp(lo / 400, 0, 1); S.tlP = u;
+  tlLight.style.strokeDashoffset = (1 - u).toFixed(4);
+  const p = tlBase.getPointAtLength(tlLen * u); tlDot.setAttribute("cx", p.x); tlDot.setAttribute("cy", p.y);
+  tlList.querySelectorAll(".tl__item").forEach((li) => li.classList.toggle("lit", +li.dataset.y <= headY + 30));
+  $("#tlYears").textContent = u > 0.97 ? "12+" : String(Math.floor(u * 12.4)).padStart(2, "0");
 }
 
 /* ───────────── DOM behaviour ───────────── */
@@ -519,16 +704,18 @@ $("#lang").addEventListener("click", () => {
   S.lang = S.lang === "en" ? "pt" : "en"; document.documentElement.lang = S.lang === "pt" ? "pt-BR" : "en";
   document.querySelectorAll("#lang b").forEach((b) => b.classList.toggle("on", b.dataset.l === S.lang));
   document.querySelectorAll("[data-i18n]").forEach((el) => (el.textContent = (S.lang === "pt" && I18N.pt[el.dataset.i18n]) || EN[el.dataset.i18n]));
-  setMotionLabel(); buildRows(); if (S.active >= 0) onActive(S.active);
+  setMotionLabel(); buildRows(); buildProcess(); buildTimeline(); if (S.active >= 0) onActive(S.active);
 });
 const setMotionLabel = () => { $("#motionLbl").textContent = S.lang === "pt" ? (S.motion ? "Movimento on" : "Movimento off") : S.motion ? "Motion on" : "Motion off"; $("#motion").setAttribute("aria-pressed", S.motion); };
 $("#motion").addEventListener("click", () => { S.motion = !S.motion; setMotionLabel(); });
 setMotionLabel();
 
 addEventListener("scroll", readScroll, { passive: true });
-addEventListener("resize", () => { resize(); readScroll(); });
-resize(); buildRows(); readScroll();
+addEventListener("resize", () => { resize(); layoutRail(); layoutTimeline(); readScroll(); });
+resize(); buildRows();
 if (gl) { try { initGL(); } catch (err) { console.error("[FineTune] WebGL init failed:", err); document.documentElement.classList.add("no-gl"); R = null; } }
+buildProcess(); buildTimeline(); readScroll();
+if (document.fonts) document.fonts.ready.then(() => { layoutRail(); layoutTimeline(); });
 if (new URLSearchParams(location.search).has("skip") || location.hash === "#gallery") enter();
 window.__ft = { S, goTo, enter };
 requestAnimationFrame(frame);
