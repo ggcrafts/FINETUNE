@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FineTune v3 — Observatory prototype</title>
+<meta name="theme-color" content="#05090E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body class="is-gate">
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="hdr">
+  <a class="brand" href="#top"><span class="brand__ft">FT</span><span class="brand__sep">/</span><span class="brand__name">Fine<b>Tune</b></span>
+    <small data-i18n="tagline">Motion Design &amp; Creative Technology</small></a>
+  <nav class="nav" aria-label="Main">
+    <a href="#top"><i>01</i><span data-i18n="navWork">Work</span></a>
+    <a href="#practice"><i>02</i><span data-i18n="navPractice">Practice</span></a>
+    <a href="#next"><i>03</i><span data-i18n="navAbout">About</span></a>
+    <a href="#next"><i>04</i><span data-i18n="navContact">Contact</span></a>
+  </nav>
+  <div class="hdr__count" aria-live="polite"><span data-i18n="featured">Observed</span> <b id="count">00</b><em id="total">/ 08</em></div>
+</header>
+
+<!-- GATE: the focus ring -->
+<button class="gate" id="gate" type="button" aria-label="Click to focus and enter the gallery">
+  <svg class="gate__ring" id="ring" viewBox="-250 -250 500 500" aria-hidden="true"></svg>
+  <span class="gate__name">Fine<b>Tune</b></span>
+  <span class="gate__sub" data-i18n="gateRole">Luiz Gustavo Czaika</span>
+  <span class="gate__cta" data-i18n="gateCta">Click to focus</span>
+</button>
+
+<main id="top">
+  <section class="gallery" id="gallery" aria-label="Observed works">
+    <!-- title plate (stop 00) -->
+    <div class="plate" id="plate">
+      <p class="eyebrow" data-i18n="eyebrow">Senior Motion Designer · Art Director · Creative Technologist</p>
+      <h1>Where ideas<br>take <em>form.</em></h1>
+      <p class="plate__lead" data-i18n="lead">Visual systems where motion, 3D, VFX, AI and creative technology converge.</p>
+      <p class="plate__hint"><span class="plate__line"></span><span data-i18n="hint">Scroll to observe</span></p>
+    </div>
+
+    <!-- docked project caption + hit area -->
+    <button class="hit" id="hit" type="button" aria-label="Open case"><span class="hit__tag" data-i18n="open">Open case</span>
+      <i class="c c1"></i><i class="c c2"></i><i class="c c3"></i><i class="c c4"></i></button>
+    <div class="cap" id="cap">
+      <div class="cap__meta"><span id="capIdx">01</span><span class="cap__bar"></span><span id="capDisc">VFX · 3D · Compositing</span></div>
+      <h2 id="capTitle">—</h2>
+      <p id="capCtx"></p>
+    </div>
+
+    <ol class="pager" id="pager" aria-label="Projects"></ol>
+  </section>
+
+  <section class="practice" id="practice" aria-labelledby="pracTitle">
+    <div class="practice__pin">
+      <div class="practice__left">
+        <p class="eyebrow">02 / <span data-i18n="pracEyebrow">Fields of practice</span></p>
+        <h2 id="pracTitle"><span data-i18n="pracT1">Four disciplines.</span><br><em data-i18n="pracT2">One system.</em></h2>
+        <ol class="rows" id="rows"></ol>
+      </div>
+      <div class="practice__right">
+        <div class="lens" id="lens" aria-hidden="true"><i class="c c1"></i><i class="c c2"></i><i class="c c3"></i><i class="c c4"></i>
+          <span class="lens__ph" data-i18n="lensPh">Placeholder — reel excerpt per discipline</span></div>
+        <p class="lens__meta"><span id="lensIdx">01 / 04</span><span class="cap__bar"></span><span id="lensFocus"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="next" id="next">
+    <p class="eyebrow">03 — 04 / <span data-i18n="nextEyebrow">Next stages, awaiting approval</span></p>
+    <h2 data-i18n="nextTitle">The light path continues.</h2>
+    <ul class="next__list">
+      <li><i>03</i><b data-i18n="n2">Process &amp; timeline</b><span data-i18n="n2d">One continuous light trail through 12 years of work</span></li>
+      <li><i>04</i><b data-i18n="n3">About &amp; contact</b><span data-i18n="n3d">Oversized signature, “Observe. Create. Refine.”</span></li>
+    </ul>
+  </section>
+</main>
+
+<div class="dock">
+  <button type="button" id="lang" aria-label="Language"><b data-l="en" class="on">EN</b><b data-l="pt">PT</b></button>
+  <button type="button" id="motion" aria-pressed="true"><span class="dock__dot"></span><span id="motionLbl">Motion on</span></button>
+</div>
+<a class="talk" href="#next"><span class="talk__dot"></span><span data-i18n="talk">Let's talk</span></a>
+
+<!-- placeholder case -->
+<div class="case" id="case" role="dialog" aria-modal="true" aria-labelledby="caseTitle" hidden>
+  <div class="case__in">
+    <button class="case__x" id="caseX" type="button" aria-label="Close">Close <kbd>Esc</kbd></button>
+    <div class="case__media"><img id="caseImg" alt=""><span class="case__ph" data-i18n="phMedia">Placeholder — video / breakdown goes here</span></div>
+    <div class="case__body">
+      <p class="eyebrow" id="caseDisc"></p>
+      <h2 id="caseTitle"></h2>
+      <dl>
+        <div><dt data-i18n="cChallenge">Challenge</dt><dd class="ph"></dd></div>
+        <div><dt data-i18n="cIdea">Idea</dt><dd class="ph"></dd></div>
+        <div><dt data-i18n="cExec">Execution</dt><dd class="ph"></dd></div>
+        <div><dt data-i18n="cOutcome">Outcome</dt><dd class="ph"></dd></div>
+      </dl>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="./main.js"></script>
+</body>
+</html>
