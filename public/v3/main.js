@@ -274,7 +274,7 @@ const BG_VS = `#version 300 es
 in vec2 aPos; void main(){ gl_Position=vec4(aPos,0.,1.); }`;
 // Galaxy: spiral-warped nebula + amber core + anamorphic streak (hero-approved.png language).
 const BG_FS = COMMON + `
-uniform vec2 uRes,uMouse; uniform float uTime,uCamZ,uCore,uFocus,uShift; uniform vec3 uTint,uTint2; out vec4 o;
+uniform vec2 uRes,uMouse; uniform float uTime,uCamZ,uCore,uFocus,uShift,uLines; uniform vec3 uTint,uTint2; out vec4 o;
 float fbm(vec2 p){ float a=.5,s=0.; for(int i=0;i<5;i++){ s+=a*noise(p); p=mat2(1.6,1.2,-1.2,1.6)*p; a*=.5; } return s; }
 void main(){
   vec2 uv=(gl_FragCoord.xy-.5*uRes)/uRes.y; uv.x-=uShift; uv-=uMouse*vec2(.035,-.035);
@@ -288,7 +288,7 @@ void main(){
   col+=neb*mix(uTint,uTint2,n2)*.62;
   // thin orbital filaments
   float fil=pow(.5+.5*sin(log(r+.02)*26.+sw*3.+n*6.),24.)*exp(-r*1.6)*smoothstep(.05,.25,r);
-  col+=fil*mix(uTint,vec3(.9,.95,1.),.5)*.09;
+  col+=fil*mix(uTint,vec3(.9,.95,1.),.5)*.09*uLines;
   float core=exp(-r*5.2)*1.0+exp(-r*24.)*1.7;
   float streak=exp(-abs(uv.y)*52.)*exp(-abs(uv.x)*1.5)*.6;
   float rays=pow(noise(vec2(a*13.,uTime*.04+uCamZ*.02)),7.)*exp(-r*2.3);
@@ -544,7 +544,7 @@ function readScroll() {
   if (pidx !== S.psIdx) setStage(pidx);
 
   const at = aboutEl.offsetTop;
-  S.abV = sstep(at - ih * 0.7, at - ih * 0.1, scrollY); S.tlV = S.abV * 0.6; S.tlP = 0.35;
+  S.abV = sstep(at - ih * 0.7, at - ih * 0.1, scrollY); document.body.classList.toggle("in-about", S.abV > 0.5); S.tlV = S.abV * 0.6; S.tlP = 0.35;
   const navIdx = scrollY >= at - ih * 0.4 ? 3 : scrollY >= pt - ih * 0.3 ? 2 : scrollY >= top - ih * 0.3 ? 1 : 0;
   document.querySelectorAll(".nav a").forEach((a, k) => a.classList.toggle("on", S.entered && k === navIdx));
 }
@@ -651,7 +651,7 @@ function frame(now) {
   gl.disable(gl.DEPTH_TEST); gl.disable(gl.BLEND);
   const t2 = [tint[2], tint[0] * .8 + .2, tint[1]];
   gl.useProgram(R.bg.p); gl.bindVertexArray(R.bgVao);
-  gl.uniform1f(R.bg.u.uShift, shift * aspect * 0.5); gl.uniform2f(R.bg.u.uRes, W, H); gl.uniform2f(R.bg.u.uMouse, S.mx, S.my); gl.uniform1f(R.bg.u.uTime, S.time); gl.uniform1f(R.bg.u.uCamZ, camZ);
+  gl.uniform1f(R.bg.u.uShift, shift * aspect * 0.5); gl.uniform1f(R.bg.u.uLines, 1 - S.abV); gl.uniform2f(R.bg.u.uRes, W, H); gl.uniform2f(R.bg.u.uMouse, S.mx, S.my); gl.uniform1f(R.bg.u.uTime, S.time); gl.uniform1f(R.bg.u.uCamZ, camZ);
   gl.uniform1f(R.bg.u.uCore, mix(0.78, 0.55, sstep(0.3, 1, S.p)) * mix(0.5, 1, enter) * mix(1, 0.7, S.prV) * mix(1, 0.5, S.psV) * mix(1, 0.75, S.tlV)); gl.uniform1f(R.bg.u.uFocus, enter);
   gl.uniform3fv(R.bg.u.uTint, tint); gl.uniform3fv(R.bg.u.uTint2, t2);
   gl.drawArrays(gl.TRIANGLES, 0, 3);
@@ -659,17 +659,17 @@ function frame(now) {
   gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE);
   gl.useProgram(R.st.p); gl.bindVertexArray(R.stVao);
   gl.uniformMatrix4fv(R.st.u.uVP, false, VP); gl.uniform1f(R.st.u.uCamZ, camZ); gl.uniform1f(R.st.u.uDefocus, 1 - enter);
-  gl.uniform1f(R.st.u.uFocusD, dockD); gl.uniform1f(R.st.u.uPx, H / 900); gl.uniform3fv(R.st.u.uTint, tint);
+  gl.uniform1f(R.st.u.uFocusD, dockD); gl.uniform1f(R.st.u.uPx, H / 900 * clamp(1100 / innerHeight, 0.75, 1)); gl.uniform3fv(R.st.u.uTint, tint);
   gl.drawArrays(gl.POINTS, 0, R.STARS);
 
   gl.useProgram(R.tr.p); gl.bindVertexArray(R.trVao);
   gl.uniformMatrix4fv(R.tr.u.uVP, false, VP); gl.uniform1f(R.tr.u.uCamZ, camZ); gl.uniform1f(R.tr.u.uTime, S.time);
   gl.uniform1f(R.tr.u.uAspect, aspect); gl.uniform2f(R.tr.u.uRes, W, H); gl.uniform3fv(R.tr.u.uTint, tint);
-  gl.uniform1f(R.tr.u.uGain, mix(.14, 1, enter) * (1 + S.hover * .25));
+  gl.uniform1f(R.tr.u.uGain, (1 - S.abV) * mix(.14, 1, enter) * (1 + S.hover * .25));
   for (let i = 0; i < R.TRAILS; i++) gl.drawArrays(gl.TRIANGLE_STRIP, i * R.SEG * 2, R.SEG * 2);
   // panes + ghosts, far → near
   const list = [];
-  for (let i = 0; i < N; i++) { const p = panePose(i, camZ); if (p) p.alpha *= (1 - sstep(0.1, 0.8, S.prIn)) * shard * (1 - S.catT); if (p && p.alpha > 0.01 && p.d < 60) list.push({ ...p, i, ghost: 0 }); }
+  for (let i = 0; i < N; i++) { const p = panePose(i, camZ); if (p) p.alpha *= (1 - sstep(0.1, 0.8, S.prIn)) * shard * (1 - sstep(0, 0.45, S.catT)); if (p && p.alpha > 0.01 && p.d < 60) list.push({ ...p, i, ghost: 0 }); }
   if (S.catShown >= 0 && S.catT > 0.01) {
     const cz = -(S.catShown + 1) * D;
     CATS[S.catShown].jobs.forEach((ji, kk) => { const p = jobPose(kk, cz); if (p.alpha > 0.01) list.push({ ...p, d: camZ - p.z, i: ji, kk, job: 1, ghost: 0 }); });
@@ -724,7 +724,7 @@ function frame(now) {
       gl.useProgram(R.ps.p); gl.bindVertexArray(R.psVao);
       gl.uniform4f(R.ps.u.uRect, (r.left + r.right) / innerWidth - 1, 1 - (r.top + r.bottom) / innerHeight, r.width / innerWidth, r.height / innerHeight);
       gl.uniform1f(R.ps.u.uAsp, r.width / r.height); gl.uniform1f(R.ps.u.uStage, S.stS); gl.uniform1f(R.ps.u.uTime, S.time);
-      gl.uniform1f(R.ps.u.uPx, DPR); gl.uniform1f(R.ps.u.uAlpha, S.psV); gl.uniform3fv(R.ps.u.uTint, tint);
+      gl.uniform1f(R.ps.u.uPx, DPR * clamp(innerHeight / 950, 1, 1.7)); gl.uniform1f(R.ps.u.uAlpha, S.psV); gl.uniform3fv(R.ps.u.uTint, tint);
       gl.drawArrays(gl.POINTS, 0, R.PARTS);
     }
   }
