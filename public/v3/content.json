@@ -1,6 +1,6 @@
 {
   "format": "finetune-portfolio/1",
-  "updated": "2026-11-17T12:43:42.040Z",
+  "updated": "2026-11-17T13:17:56.536Z",
   "hero": {
     "eyebrow": {
       "en": "Senior Motion Designer · Art Director · Creative Technologist",
@@ -30,7 +30,7 @@
     },
     {
       "name": "AI",
-      "media": "practice/practice-03.webp"
+      "media": "media/nano-enemy/01-276fb346-fa01-4b3f-a01c-a91eae1e6bcf-rw-1920.webp"
     },
     {
       "name": "Creative Tech",
@@ -42,15 +42,115 @@
     },
     {
       "name": "Automation",
-      "media": "practice/practice-04.webp"
+      "media": "media/ggcrafts-ecomerce/video-9x16-093912-2-2.mp4"
     }
   ],
   "jobs": [
     {
+      "id": "reel-2017-2018",
+      "title": "Motion Reel",
+      "client": "",
+      "year": "2025",
+      "disciplines": "",
+      "tint": "#6600ff",
+      "context": {
+        "en": "",
+        "pt": "Motion Graphics Reel | Luiz Gustavo Czaika"
+      },
+      "categories": [
+        "motion-design"
+      ],
+      "tools": [
+        "after-effects",
+        "premiere",
+        "photoshop",
+        "illustrator",
+        "cinema-4d",
+        "blender"
+      ],
+      "cover": "media/reel-2017-2018/00-7057852e-1425-418b-a928-81414694d534-carw-4x3x1920-2.webp",
+      "video": "https://www-ccv.adobe.io/v1/player/ccv/29cqYQbEq_g/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
+      "gallery": [],
+      "challenge": {
+        "en": "",
+        "pt": ""
+      },
+      "idea": {
+        "en": "",
+        "pt": ""
+      },
+      "execution": {
+        "en": "",
+        "pt": "Motion Graphics ReelLuiz Gustavo Czaika\n\nMotion Graphics ReelLuiz Gustavo Czaika"
+      },
+      "outcome": {
+        "en": "",
+        "pt": ""
+      },
+      "role": "",
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": ""
+      },
+      "imported": "https://finetunemotion.myportfolio.com/reel-2017-2018"
+    },
+    {
+      "id": "implanta-it-solution-explainer-video",
+      "title": "Implanta IT Solution - Explainer Vídeo",
+      "client": "Implanta It Solutions",
+      "year": "2018",
+      "disciplines": "Motion Graphics • Project Management • Art Direction",
+      "tint": "#8fd8ff",
+      "context": {
+        "en": "",
+        "pt": ""
+      },
+      "categories": [
+        "motion-design",
+        "art-direction"
+      ],
+      "tools": [
+        "after-effects",
+        "photoshop",
+        "illustrator"
+      ],
+      "cover": "media/implanta-it-solution-explainer-video/00-47ea311d-9cbb-477f-b5ec-1ddb521eaab0-carw-4x3x1920.webp",
+      "video": "https://player.vimeo.com/video/383414558",
+      "gallery": [],
+      "challenge": {
+        "en": "",
+        "pt": ""
+      },
+      "idea": {
+        "en": "",
+        "pt": ""
+      },
+      "execution": {
+        "en": "",
+        "pt": ""
+      },
+      "outcome": {
+        "en": "",
+        "pt": ""
+      },
+      "role": "",
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": ""
+      },
+      "imported": "https://finetunemotion.myportfolio.com/implanta-it-solution-explainer-video"
+    },
+    {
       "id": "hbo-bff",
       "title": "HBO Max — BFF Nossa Voz",
-      "client": "",
-      "year": "",
+      "client": "Moove House",
+      "year": "2023",
       "disciplines": "VFX · 3D · Compositing",
       "tint": "#9e7aff",
       "context": {
@@ -58,9 +158,14 @@
         "pt": "VFX, 3D e composição para uma peça de campanha da HBO Max."
       },
       "categories": [
-        "3d-vfx"
+        "3d-vfx",
+        "motion-design"
       ],
-      "tools": [],
+      "tools": [
+        "after-effects",
+        "blender",
+        "photoshop"
+      ],
       "cover": "covers/hbo-bff.webp",
       "video": "https://www-ccv.adobe.io/v1/player/ccv/4GjKm9-Gwwr/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
       "gallery": [
@@ -420,92 +525,6 @@
       "imported": "https://finetunemotion.myportfolio.com/conectivo-matriculas-abertas-sae-digital"
     },
     {
-      "id": "reel-2017-2018",
-      "title": "Reel 2024",
-      "client": "",
-      "year": "",
-      "disciplines": "",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "",
-        "pt": "Motion Graphics ReelLuiz Gustavo Czaika Motion Graphics ReelLuiz Gustavo Czaika"
-      },
-      "categories": [],
-      "tools": [],
-      "cover": "media/reel-2017-2018/00-7057852e-1425-418b-a928-81414694d534-carw-4x3x1920.webp",
-      "video": "https://www-ccv.adobe.io/v1/player/ccv/29cqYQbEq_g/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
-      "gallery": [],
-      "challenge": {
-        "en": "",
-        "pt": ""
-      },
-      "idea": {
-        "en": "",
-        "pt": ""
-      },
-      "execution": {
-        "en": "",
-        "pt": "Motion Graphics ReelLuiz Gustavo Czaika\n\nMotion Graphics ReelLuiz Gustavo Czaika"
-      },
-      "outcome": {
-        "en": "",
-        "pt": ""
-      },
-      "role": "",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      },
-      "hidden": true,
-      "imported": "https://finetunemotion.myportfolio.com/reel-2017-2018"
-    },
-    {
-      "id": "implanta-it-solution-explainer-video",
-      "title": "Implanta IT Solution - Explainer Vídeo",
-      "client": "",
-      "year": "",
-      "disciplines": "",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "",
-        "pt": ""
-      },
-      "categories": [],
-      "tools": [],
-      "cover": "media/implanta-it-solution-explainer-video/00-47ea311d-9cbb-477f-b5ec-1ddb521eaab0-carw-4x3x1920.webp",
-      "video": "https://player.vimeo.com/video/383414558",
-      "gallery": [],
-      "challenge": {
-        "en": "",
-        "pt": ""
-      },
-      "idea": {
-        "en": "",
-        "pt": ""
-      },
-      "execution": {
-        "en": "",
-        "pt": ""
-      },
-      "outcome": {
-        "en": "",
-        "pt": ""
-      },
-      "role": "",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      },
-      "hidden": true,
-      "imported": "https://finetunemotion.myportfolio.com/implanta-it-solution-explainer-video"
-    },
-    {
       "id": "o-melhor-verao-das-nosas-vidas-abertura",
       "title": "O Melhor Verão das Nosas Vidas - Abertura",
       "client": "",
@@ -551,7 +570,7 @@
     {
       "id": "gabriel-guedes-oferta-agradavel-lyric",
       "title": "Gabriel Guedes - Oferta Agradável LYRIC",
-      "client": "",
+      "client": "Gabriel Guedes",
       "year": "",
       "disciplines": "",
       "tint": "#8fd8ff",
@@ -559,8 +578,14 @@
         "en": "",
         "pt": "Produção: Gabriel Guedes Produção musical: Gabriel Guedes e Ed Oliver Piano e voz: Gabriel Guedes Violoncelo: Renato de Sá Vídeo: Finetune Produção: FINETUNEMOTION.COM Direção e Animação: Luiz…"
       },
-      "categories": [],
-      "tools": [],
+      "categories": [
+        "motion-design",
+        "3d-vfx"
+      ],
+      "tools": [
+        "after-effects",
+        "blender"
+      ],
       "cover": "media/gabriel-guedes-oferta-agradavel-lyric/00-6e258121-3c49-4e93-ab7c-4a5d52edeb25-carw-16x10x1920.webp",
       "video": "https://www.youtube.com/embed/1kLN-NwJPBE",
       "gallery": [
@@ -579,7 +604,7 @@
       },
       "execution": {
         "en": "",
-        "pt": "Produção: Gabriel Guedes Produção musical: Gabriel Guedes e Ed Oliver Piano e voz: Gabriel Guedes Violoncelo: Renato de Sá ﻿Vídeo: Finetune Produção: FINETUNEMOTION.COM Direção e Animação: Luiz Gustavo Czaika Roteiro e Ilustração: Alessandra Gubert\n\nProdução: Gabriel Guedes Produção musical: Gabriel Guedes e Ed Oliver Piano e voz: Gabriel Guedes Violoncelo: Renato de Sá ﻿Vídeo: Finetune Produção: FINETUNEMOTION.COM Direção e Animação: Luiz Gustavo Czaika Roteiro e Ilustração: Alessandra Gubert"
+        "pt": "Direção Roteiro e Animação"
       },
       "outcome": {
         "en": "",
@@ -593,31 +618,31 @@
         },
         "url": ""
       },
-      "hidden": true,
       "imported": "https://finetunemotion.myportfolio.com/gabriel-guedes-oferta-agradavel-lyric"
     },
     {
       "id": "a-bencao-gabriel-guedes-ilustracoes",
       "title": "A Benção - Gabriel Guedes - Ilustrações",
-      "client": "",
+      "client": "Gabriel Guedes",
       "year": "",
-      "disciplines": "",
-      "tint": "#8fd8ff",
+      "disciplines": "Animação Infantil",
+      "tint": "#8bbb07",
       "context": {
         "en": "",
         "pt": "Ilustração e animação criadas para vídeo clipe infantil de Gabriel Guedes."
       },
-      "categories": [],
-      "tools": [],
+      "categories": [
+        "motion-design",
+        "art-direction"
+      ],
+      "tools": [
+        "after-effects",
+        "m",
+        "photoshop"
+      ],
       "cover": "media/a-bencao-gabriel-guedes-ilustracoes/00-ad031664-face-4fb5-a0fc-d10b6b435fdd-carw-16x10x1920.webp",
       "video": "https://www-ccv.adobe.io/v1/player/ccv/2NZIFoVW-4-/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
       "gallery": [
-        "media/a-bencao-gabriel-guedes-ilustracoes/01-156225dd-63c6-45fa-bae9-41109a944172-rw-1200.webp",
-        "media/a-bencao-gabriel-guedes-ilustracoes/02-1bdcc720-9479-4ea6-884a-302028f69f58-rw-1200.webp",
-        "media/a-bencao-gabriel-guedes-ilustracoes/03-f9c6cba6-9c95-44ec-8ec8-ba149da6a484-rw-1920.webp",
-        "media/a-bencao-gabriel-guedes-ilustracoes/04-a9c5fc4f-5b7f-49d9-a292-2c787b0df0cc-rw-1920.webp",
-        "media/a-bencao-gabriel-guedes-ilustracoes/05-200443fc-47c4-4627-b0c7-f1a433d9903e-rw-1920.webp",
-        "media/a-bencao-gabriel-guedes-ilustracoes/06-7c2f0ce9-450c-49ee-8ab0-8910f4f4e12b-rw-1920.webp",
         "media/a-bencao-gabriel-guedes-ilustracoes/07-71a72bce-c1bd-4aae-9e8d-b327764951ac-rw-1920.webp",
         "media/a-bencao-gabriel-guedes-ilustracoes/08-9b3280f2-5302-40e0-820a-c81f41b093b8-rw-1920.webp"
       ],
@@ -631,7 +656,7 @@
       },
       "execution": {
         "en": "",
-        "pt": "Ilustração e animação criadas para vídeo clipe infantil de Gabriel Guedes.\n\nIlustrações realizadas para vídeo clipe de Gabriel Guedes. Criado no Procreate.Animação e direção: Luiz Gustavo CzaikaObrigada ♥\n\nIlustrações realizadas para vídeo clipe de Gabriel Guedes. Criado no Procreate.Animação e direção: Luiz Gustavo CzaikaObrigada ♥"
+        "pt": "\n"
       },
       "outcome": {
         "en": "",
@@ -645,32 +670,33 @@
         },
         "url": ""
       },
-      "hidden": true,
       "imported": "https://finetunemotion.myportfolio.com/a-bencao-gabriel-guedes-ilustracoes"
     },
     {
       "id": "videoclipe-o-amor-de-deus",
       "title": "Videoclipe - O Amor de Deus",
-      "client": "",
+      "client": "Débora Cabral",
       "year": "",
-      "disciplines": "",
+      "disciplines": "Animação Infantil",
       "tint": "#8fd8ff",
       "context": {
         "en": "",
         "pt": "Desenvolvimento de personagens, cenário e animações para videoclipe infantil. Música de Débora Cabral"
       },
-      "categories": [],
+      "categories": [
+        "motion-design",
+        "art-direction"
+      ],
       "tools": [],
       "cover": "media/videoclipe-o-amor-de-deus/00-b0d9c94f-1c65-4c5d-a797-82a5384dff28-carw-16x10x1920.webp",
       "video": "https://www.youtube.com/embed/zO5r67sg7v0?si=nHcOCQOt4tP9dcK7",
       "gallery": [
+        "media/videoclipe-o-amor-de-deus/06-c9187d1b-8f52-41a4-820f-863ae29b2a7b-rw-1920.webp",
         "media/videoclipe-o-amor-de-deus/01-e032211d-4471-43db-951b-47e90ce82a19-rw-1920.webp",
         "media/videoclipe-o-amor-de-deus/02-b1bf126a-e3cc-4747-ad4f-87a93ae9f4bb-rw-1920.gif",
         "media/videoclipe-o-amor-de-deus/03-07e0b67c-aa25-462a-82f3-588160aca0dc-rw-1920.gif",
         "media/videoclipe-o-amor-de-deus/04-8ec0bca7-ec73-4dfe-bcef-896fa2d07dda-rw-1920.webp",
-        "media/videoclipe-o-amor-de-deus/05-06d543bd-8e50-4943-a4ea-7a2171f03423-rw-1920.webp",
-        "media/videoclipe-o-amor-de-deus/06-c9187d1b-8f52-41a4-820f-863ae29b2a7b-rw-1920.webp",
-        "media/videoclipe-o-amor-de-deus/07-674d1551-bf24-4ab8-902c-3b36098210df-rw-1200.webp"
+        "media/videoclipe-o-amor-de-deus/05-06d543bd-8e50-4943-a4ea-7a2171f03423-rw-1920.webp"
       ],
       "challenge": {
         "en": "",
@@ -702,7 +728,7 @@
     {
       "id": "gloria-e-aleluia-christmas-lyric-video",
       "title": "Glória e aleluia (Christmas) - Lyric Video",
-      "client": "",
+      "client": "Gabriel Guedes",
       "year": "",
       "disciplines": "",
       "tint": "#8fd8ff",
@@ -710,14 +736,20 @@
         "en": "",
         "pt": "Animation project"
       },
-      "categories": [],
-      "tools": [],
+      "categories": [
+        "motion-design",
+        "art-direction"
+      ],
+      "tools": [
+        "after-effects",
+        "photoshop"
+      ],
       "cover": "media/gloria-e-aleluia-christmas-lyric-video/00-2d64d997-1e4b-4d03-a652-bfea4864d941-carw-16x10x1920.webp",
       "video": "https://www.youtube.com/embed/fdMk6kT8hyc",
       "gallery": [
+        "media/gloria-e-aleluia-christmas-lyric-video/03-3e856dfa-5ecf-4f33-8800-ca0550233413-rw-1920.webp",
         "media/gloria-e-aleluia-christmas-lyric-video/01-13e02314-1050-4668-9c8a-e0f115a9bc75-rw-1920.webp",
-        "media/gloria-e-aleluia-christmas-lyric-video/02-72e0a9ea-8696-47d7-b968-e2a186c2bb7b-rw-1920.webp",
-        "media/gloria-e-aleluia-christmas-lyric-video/03-3e856dfa-5ecf-4f33-8800-ca0550233413-rw-1920.webp"
+        "media/gloria-e-aleluia-christmas-lyric-video/02-72e0a9ea-8696-47d7-b968-e2a186c2bb7b-rw-1920.webp"
       ],
       "challenge": {
         "en": "",
@@ -729,7 +761,7 @@
       },
       "execution": {
         "en": "",
-        "pt": "Animation project\n\nProdução: FINETUNE Motion Direção e Animação: Luiz Gustavo Czaika Roteiro e Letterings: Alessandra Gubert Ilustrações: Carolina Araújo\n\nProdução: FINETUNE Motion Direção e Animação: Luiz Gustavo Czaika Roteiro e Letterings: Alessandra Gubert Ilustrações: Carolina Araújo"
+        "pt": "Animation project\n\nProdução: FINETUNE Motion Direção e Animação: Luiz Gustavo Czaika Roteiro e Letterings: Alessandra Gubert Ilustrações: Carolina Araújo"
       },
       "outcome": {
         "en": "",
@@ -743,13 +775,12 @@
         },
         "url": ""
       },
-      "hidden": true,
       "imported": "https://finetunemotion.myportfolio.com/gloria-e-aleluia-christmas-lyric-video"
     },
     {
       "id": "secreto-lugar-animation",
       "title": "SECRETO LUGAR - Animation",
-      "client": "",
+      "client": "Simar Valadares",
       "year": "",
       "disciplines": "",
       "tint": "#8fd8ff",
@@ -757,8 +788,15 @@
         "en": "",
         "pt": "Animação 3D com personagem 2D"
       },
-      "categories": [],
-      "tools": [],
+      "categories": [
+        "motion-design",
+        "3d-vfx"
+      ],
+      "tools": [
+        "after-effects",
+        "blender",
+        "photoshop"
+      ],
       "cover": "media/secreto-lugar-animation/00-be53f58a-7ed4-43ed-86a4-766636826610-carw-16x10x1920.webp",
       "video": "https://www.youtube.com/embed/vRC_warrSog",
       "gallery": [
@@ -789,13 +827,12 @@
         },
         "url": ""
       },
-      "hidden": true,
       "imported": "https://finetunemotion.myportfolio.com/secreto-lugar-animation"
     },
     {
       "id": "voo-sem-retorno-animacao",
       "title": "Vôo sem retorno - Animação",
-      "client": "",
+      "client": "Jocelino Rodrigues",
       "year": "",
       "disciplines": "",
       "tint": "#8fd8ff",
@@ -803,8 +840,14 @@
         "en": "",
         "pt": "Música e letra: Jocelino Rodrigues MÚSICOS Jocelino Rodrigues: voz, guitarras, e coros Alexandre Reis: percussões e bateria Francisco Esteves: guitarra eléctrica Valter Lima: baixo eléctrico Carolina…"
       },
-      "categories": [],
-      "tools": [],
+      "categories": [
+        "motion-design",
+        "art-direction"
+      ],
+      "tools": [
+        "after-effects",
+        "photoshop"
+      ],
       "cover": "media/voo-sem-retorno-animacao/00-145feaed-bae2-4546-8625-b7786d05c76f-carw-4x3x1920.webp",
       "video": "https://www.youtube.com/embed/KJzdOAk3DiI",
       "gallery": [],
@@ -818,7 +861,7 @@
       },
       "execution": {
         "en": "",
-        "pt": "Música e letra: Jocelino Rodrigues  MÚSICOS Jocelino Rodrigues: voz, guitarras, e coros Alexandre Reis: percussões e bateria Francisco Esteves: guitarra eléctrica Valter Lima: baixo eléctrico Carolina Marques: flauta transversal FICHA TÉCNICA Produção: Jocelino Rodrigues e Alexandre Reis Gravado em Penela em Maio 2016 por Alexandre Reis. Misturado e masterizado por André Tavares (Atlântico Blue Studios). VIDEOCLIP Produção: Jocelino Rodrigues e Isabelle Verona Brust Direcção: Jocelino Rodrigues e Débora Pimentel Guião: Jocelino Rodrigues e Hannah Wauchope Ilustração: Débora Pimentel (https://www.behance.net/pimenteldebora) Animação: Luiz Gustavo - Fine Tune Motion (https://finetunemotion.myportfolio.com/) e Renker Amantéa (https://vimeo.com/renker)\n\nMúsica e letra: Jocelino Rodrigues  MÚSICOS Jocelino Rodrigues: voz, guitarras, e coros Alexandre Reis: percussões e bateria Francisco Esteves: guitarra eléctrica Valter Lima: baixo eléctrico Carolina Marques: flauta transversal FICHA TÉCNICA Produção: Jocelino Rodrigues e Alexandre Reis Gravado em Penela em Maio 2016 por Alexandre Reis. Misturado e masterizado por André Tavares (Atlântico Blue Studios). VIDEOCLIP Produção: Jocelino Rodrigues e Isabelle Verona Brust Direcção: Jocelino Rodrigues e Débora Pimentel Guião: Jocelino Rodrigues e Hannah Wauchope Ilustração: Débora Pimentel (https://www.behance.net/pimenteldebora) Animação: Luiz Gustavo - Fine Tune Motion (https://finetunemotion.myportfolio.com/) e Renker Amantéa (https://vimeo.com/renker)"
+        "pt": "Música e letra: Jocelino Rodrigues  MÚSICOS Jocelino Rodrigues: voz, guitarras, e coros Alexandre Reis: percussões e bateria Francisco Esteves: guitarra eléctrica Valter Lima: baixo eléctrico Carolina Marques: flauta transversal FICHA TÉCNICA Produção: Jocelino Rodrigues e Alexandre Reis Gravado em Penela em Maio 2016 por Alexandre Reis. Misturado e masterizado por André Tavares (Atlântico Blue Studios). VIDEOCLIP Produção: Jocelino Rodrigues e Isabelle Verona Brust Direcção: Jocelino Rodrigues e Débora Pimentel Guião: Jocelino Rodrigues e Hannah Wauchope Ilustração: Débora Pimentel Animação: Luiz Gustavo - Fine Tune Motion  e Renker Amantéa \n"
       },
       "outcome": {
         "en": "",
@@ -832,21 +875,22 @@
         },
         "url": "https://www.youtube.com/redirect?redir_token=r8RXE8GCuVz4LhAv24_4U0IU8rd8MTUyODkxMTE5MEAxNTI4ODI0Nzkw&v=KJzdOAk3DiI&q=https%3A%2F%2Fwww.behance.net%2Fpimenteldebora&event=video_description"
       },
-      "hidden": true,
       "imported": "https://finetunemotion.myportfolio.com/voo-sem-retorno-animacao"
     },
     {
       "id": "alcance-kids-vinhetas",
       "title": "Alcance KIDS - Vinhetas",
-      "client": "",
+      "client": "Comunidade Alcance",
       "year": "",
-      "disciplines": "",
+      "disciplines": "Animação Infantil",
       "tint": "#8fd8ff",
       "context": {
         "en": "",
         "pt": ""
       },
-      "categories": [],
+      "categories": [
+        "motion-design"
+      ],
       "tools": [],
       "cover": "media/alcance-kids-vinhetas/00-d8c20f5a-2cdd-4c71-8110-cb7fdbd2128f-carw-16x10x1920.webp",
       "video": "https://www-ccv.adobe.io/v1/player/ccv/FTBJw4zCIYd/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
@@ -889,18 +933,24 @@
       "client": "",
       "year": "",
       "disciplines": "",
-      "tint": "#8fd8ff",
+      "tint": "#8000ff",
       "context": {
         "en": "",
-        "pt": "GGCRAFTS.COM.BR GGCRAFTS.COM.BR"
+        "pt": "GGCRAFTS.COM.BR"
       },
-      "categories": [],
+      "categories": [
+        "art-direction",
+        "ai-creative-tech"
+      ],
       "tools": [],
       "cover": "media/ggcrafts-ecomerce/00-a5b51d6d-1b45-4681-a7fe-0480195d8091-carw-16x10x1920.webp",
       "video": "https://www-ccv.adobe.io/v1/player/ccv/4PknnREXQbq/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
       "gallery": [
+        "media/ggcrafts-ecomerce/bf26-reels-ggbox-sfx-1.mp4",
         "media/ggcrafts-ecomerce/01-b118b4e5-b2a5-4dcc-a26d-a72b6dbbdfaa-rw-1920.webp",
-        "media/ggcrafts-ecomerce/02-96bd0f1f-0003-4cbb-aeee-164afd04d019-rw-1200.webp"
+        "media/ggcrafts-ecomerce/02-96bd0f1f-0003-4cbb-aeee-164afd04d019-rw-1200.webp",
+        "media/ggcrafts-ecomerce/bf26-c01-stories.webp",
+        "media/ggcrafts-ecomerce/video-9x16-093912-2-2.mp4"
       ],
       "challenge": {
         "en": "",
@@ -926,7 +976,6 @@
         },
         "url": ""
       },
-      "hidden": true,
       "imported": "https://finetunemotion.myportfolio.com/ggcrafts-ecomerce"
     },
     {
@@ -988,7 +1037,9 @@
         "en": "",
         "pt": "Lyric vídeo"
       },
-      "categories": [],
+      "categories": [
+        "motion-design"
+      ],
       "tools": [],
       "cover": "media/lyric-video-me-leva-pra-casa/00-5604b6d6-4c31-4d07-930e-ccd44e9a191a-rwc-0x145x1280x802x1.webp",
       "video": "https://www.youtube.com/embed/80SJ8XHqKqM?autoplay=1",
@@ -1017,22 +1068,27 @@
         },
         "url": ""
       },
-      "hidden": true,
       "imported": "https://finetunemotion.myportfolio.com/lyric-video-me-leva-pra-casa"
     },
     {
       "id": "do-re-mundo-animacao-infantil",
       "title": "Dó-Ré Mundo - Animação infantil",
-      "client": "",
+      "client": "Moove House",
       "year": "",
-      "disciplines": "",
+      "disciplines": "Animação Infantil",
       "tint": "#8fd8ff",
       "context": {
         "en": "",
         "pt": ""
       },
-      "categories": [],
-      "tools": [],
+      "categories": [
+        "motion-design"
+      ],
+      "tools": [
+        "after-effects",
+        "photoshop",
+        "illustrator"
+      ],
       "cover": "media/do-re-mundo-animacao-infantil/00-bd34b7e1-e8b6-4538-a32d-a450b2f65649-rwc-30x0x1125x706x11.webp",
       "video": "https://www.youtube.com/embed/f6R5hVuDpzo",
       "gallery": [
@@ -1063,13 +1119,12 @@
         },
         "url": ""
       },
-      "hidden": true,
       "imported": "https://finetunemotion.myportfolio.com/do-re-mundo-animacao-infantil"
     },
     {
       "id": "cooldown-animation-test-non-official",
       "title": "CoolDown - Animation test (non-official)",
-      "client": "",
+      "client": "Cooldown",
       "year": "",
       "disciplines": "",
       "tint": "#8fd8ff",
@@ -1077,8 +1132,14 @@
         "en": "",
         "pt": "non-official animation for study purpose only After effects + Element 3D"
       },
-      "categories": [],
-      "tools": [],
+      "categories": [
+        "motion-design",
+        "3d-vfx"
+      ],
+      "tools": [
+        "after-effects",
+        "blender"
+      ],
       "cover": "media/cooldown-animation-test-non-official/00-afc8cf98eda17ff99c8e7106f478a568f75685e01d4c7774dc2042055.webp",
       "video": "https://player.vimeo.com/video/235693169?autoplay=1&loop=1&muted=1",
       "gallery": [],
@@ -1106,7 +1167,6 @@
         },
         "url": ""
       },
-      "hidden": true,
       "imported": "https://finetunemotion.myportfolio.com/cooldown-animation-test-non-official"
     },
     {
@@ -1120,8 +1180,14 @@
         "en": "",
         "pt": "Ficha Técnica:Produtora Filme: Moove HouseProdutor executivo: Denis KnauthDireção: Adolpho KnauthFotografia: Daniel TalentoEdição: Tamara MesquitaVFX / Finalização: Luiz Gustavo CzaikaProdutora de…"
       },
-      "categories": [],
-      "tools": [],
+      "categories": [
+        "motion-design"
+      ],
+      "tools": [
+        "after-effects",
+        "illustrator",
+        "photoshop"
+      ],
       "cover": "media/yes-idiomas-matriculas-2018/00-a5b2bd26-cccd-4fcb-93a2-a1aea0dda412-rwc-101x0x1721x1080x.webp",
       "video": "https://www.youtube.com/embed/TSvg8VpOJ4E",
       "gallery": [
@@ -1137,7 +1203,7 @@
       },
       "execution": {
         "en": "",
-        "pt": "Ficha Técnica:Produtora Filme: Moove HouseProdutor executivo: Denis KnauthDireção: Adolpho KnauthFotografia: Daniel TalentoEdição: Tamara MesquitaVFX / Finalização: Luiz Gustavo CzaikaProdutora de Audio: Prof PardalLinks: http://www.blogdoadonis.com.br/2018/01/22/por-target-maisa-volta/http://www.janela.com.br/2018/01/22/curso-yes-volta-a-ter-maisa-agora-em-campanha-da-x-tudo/\n\nFicha Técnica:Produtora Filme: Moove HouseProdutor executivo: Denis KnauthDireção: Adolpho KnauthFotografia: Daniel TalentoEdição: Tamara MesquitaVFX / Finalização: Luiz Gustavo CzaikaProdutora de Audio: Prof PardalLinks: http://www.blogdoadonis.com.br/2018/01/22/por-target-maisa-volta/http://www.janela.com.br/2018/01/22/curso-yes-volta-a-ter-maisa-agora-em-campanha-da-x-tudo/"
+        "pt": "Ficha Técnica:Produtora Filme: Moove HouseProdutor executivo: Denis KnauthDireção: Adolpho KnauthFotografia: Daniel TalentoEdição: Tamara MesquitaVFX / Finalização: Luiz Gustavo CzaikaProdutora de Audio: Prof \n"
       },
       "outcome": {
         "en": "",
@@ -1151,7 +1217,6 @@
         },
         "url": ""
       },
-      "hidden": true,
       "imported": "https://finetunemotion.myportfolio.com/yes-idiomas-matriculas-2018"
     },
     {
@@ -1165,8 +1230,13 @@
         "en": "",
         "pt": "Animated Vignette with charactere animation"
       },
-      "categories": [],
-      "tools": [],
+      "categories": [
+        "motion-design"
+      ],
+      "tools": [
+        "after-effects",
+        "illustrator"
+      ],
       "cover": "media/milky-way-motion-graphics/00-c914a8c66baf975b9397ac9be122c397a38a1928daecc89f6be49d90f.webp",
       "video": "https://player.vimeo.com/video/228712006?autoplay=1&loop=1&title=0&byline=0&portrait=0&muted=1",
       "gallery": [
@@ -1197,7 +1267,6 @@
         },
         "url": ""
       },
-      "hidden": true,
       "imported": "https://finetunemotion.myportfolio.com/milky-way-motion-graphics"
     },
     {
@@ -1296,16 +1365,21 @@
     {
       "id": "comfrio-3d-architecture",
       "title": "3D Architecture / Augmented Reallity",
-      "client": "",
-      "year": "",
+      "client": "Moove House",
+      "year": "2017",
       "disciplines": "",
-      "tint": "#8fd8ff",
+      "tint": "#0376e2",
       "context": {
         "en": "",
         "pt": "3D Modeling and Camera tracking"
       },
-      "categories": [],
-      "tools": [],
+      "categories": [
+        "3d-vfx"
+      ],
+      "tools": [
+        "after-effects",
+        "unity"
+      ],
       "cover": "media/comfrio-3d-architecture/00-465e772c228a64e4f66ee5b68dcf217ea4f0426ba1e4a0699b8d3d15c.webp",
       "video": "",
       "gallery": [
@@ -1321,7 +1395,7 @@
       },
       "execution": {
         "en": "",
-        "pt": "3D Modeling and Camera tracking\n\nA realidade aumentada está ficando cada vez mais mais otimizadas. À medida que os preços continuam a cair, há menos razões pelas quais cada arquiteto, engenheiro, empreiteiro e proprietário não devem usar alguma forma de AR para trazer seus projetos à vida, oferecendo uma experiência mais imersiva de projetos arquitetônicos, mas também produtos e áreas relacionadas à construção de espaços.As ferramentas AR estão se tornando um padrão industrial que oferece interações rápidas para melhor apresentar e vender projetos de qualquer escala.A Fine Tune oferece serviços de realidade aumentada em pequena escala, que pode ser utilizado em Tablets ou até mesmo em alguns celulares para visualização de plantas através de marcadores em papel, adesivos impressos em espaços personalizados e até mesmo diretamente na planta baixa.Outro serviço é a simulação em 3D do projeto no terreno vazio, em filmagens terrestres ou aéreas.\n\nA realidade aumentada está ficando cada vez mais mais otimizadas. À medida que os preços continuam a cair, há menos razões pelas quais cada arquiteto, engenheiro, empreiteiro e proprietário não devem usar alguma forma de AR para trazer seus projetos à vida, oferecendo uma experiência mais imersiva de projetos arquitetônicos, mas também produtos e áreas relacionadas à construção de espaços.As ferramentas AR estão se tornando um padrão industrial que oferece interações rápidas para melhor apresentar e vender projetos de qualquer escala.A Fine Tune oferece serviços de realidade aumentada em pequena escala, que pode ser utilizado em Tablets ou até mesmo em alguns celulares para visualização de plantas através de marcadores em papel, adesivos impressos em espaços personalizados e até mesmo diretamente na planta baixa.Outro serviço é a simulação em 3D do projeto no terreno vazio, em filmagens terrestres ou aéreas."
+        "pt": "3D Modeling and Camera tracking\n\n"
       },
       "outcome": {
         "en": "",
@@ -1865,7 +1939,7 @@
     "email": "lgczaika@gmail.com",
     "linkedin": "https://www.linkedin.com/in/lgczaika",
     "behance": "https://www.behance.net/lgczaika",
-    "portrait": "portrait/luiz-czaika.webp"
+    "portrait": "portrait/magnific-amplie-o-enquadramento-da-imagem-posicionando-a-pe--2.webp"
   },
   "tools": [
     {
@@ -2047,6 +2121,12 @@
       "label": "Three.js",
       "mono": "3js",
       "icon": "tools/threejs.svg"
+    },
+    {
+      "id": "m",
+      "label": "Moho",
+      "mono": "MH",
+      "icon": ""
     }
   ],
   "categories": [
