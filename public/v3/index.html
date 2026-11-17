@@ -151,21 +151,30 @@
 </div>
 <a class="talk" href="#about"><span class="talk__dot"></span><span data-i18n="talk">Let's talk</span></a>
 
-<!-- placeholder case -->
+<!-- case study -->
 <div class="case" id="case" role="dialog" aria-modal="true" aria-labelledby="caseTitle" hidden>
-  <div class="case__in">
+  <div class="case__in" id="caseIn">
     <button class="case__x" id="caseX" type="button" aria-label="Close">Close <kbd>Esc</kbd></button>
-    <div class="case__media"><img id="caseImg" alt=""><span class="case__ph" data-i18n="phMedia">Placeholder — video / breakdown goes here</span></div>
+    <div class="case__media" id="caseMedia"></div>
+    <div class="case__thumbs" id="caseThumbs"></div>
     <div class="case__body">
-      <p class="eyebrow" id="caseDisc"></p>
-      <h2 id="caseTitle"></h2>
-      <dl>
-        <div><dt data-i18n="cChallenge">Challenge</dt><dd class="ph"></dd></div>
-        <div><dt data-i18n="cIdea">Idea</dt><dd class="ph"></dd></div>
-        <div><dt data-i18n="cExec">Execution</dt><dd class="ph"></dd></div>
-        <div><dt data-i18n="cOutcome">Outcome</dt><dd class="ph"></dd></div>
+      <header class="case__head">
+        <p class="eyebrow" id="caseDisc"></p>
+        <h2 id="caseTitle"></h2>
+        <p class="case__meta" id="caseMeta"></p>
+        <p class="case__ctx" id="caseCtx"></p>
+      </header>
+      <dl id="caseDl">
+        <div data-k="challenge"><dt data-i18n="cChallenge">Challenge</dt><dd></dd></div>
+        <div data-k="idea"><dt data-i18n="cIdea">Idea</dt><dd></dd></div>
+        <div data-k="execution"><dt data-i18n="cExec">Execution</dt><dd></dd></div>
+        <div data-k="outcome"><dt data-i18n="cOutcome">Outcome</dt><dd></dd></div>
       </dl>
     </div>
+    <footer class="case__foot">
+      <p class="case__credits" id="caseCredits"><span data-k="role"><b data-i18n="cRole">Role</b><span></span></span><span data-k="tools"><b data-i18n="cTools">Tools</b><span></span></span></p>
+      <a class="btn" id="caseLink" href="#" target="_blank" rel="noopener" hidden><span>View project</span><i aria-hidden="true">↗</i></a>
+    </footer>
   </div>
 </div>
 

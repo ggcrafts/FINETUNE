@@ -44,6 +44,54 @@ const PROCESS = [
     d: "Keep what worked as a tool or a workflow, so the next idea starts further ahead.",
     dp: "Guardar o que funcionou como ferramenta ou workflow, para a próxima ideia começar mais à frente." },
 ];
+/* ───────────── content: content.json (written by Portfolio Update) ───────────── */
+// The arrays above are the fallback when content.json is missing. `?draft` (the editor's live
+// preview) reads the unsaved draft from localStorage instead of the file.
+const QS = new URLSearchParams(location.search);
+const tx = (v, lang) => (v == null ? "" : typeof v === "string" ? v : v[lang] || v.en || "");
+const hex3 = (h, d) => { const m = /^#?([0-9a-f]{6})$/i.exec(h || ""); return m ? [0, 2, 4].map((i) => parseInt(m[1].slice(i, i + 2), 16) / 255) : d; };
+let CONTENT = null;
+if (QS.has("draft")) { try { CONTENT = JSON.parse(localStorage.getItem("portfolio-update:draft")); } catch { CONTENT = null; } }
+if (!CONTENT) { try { const r = await fetch("./content.json", { cache: "no-cache" }); if (r.ok) CONTENT = await r.json(); } catch { CONTENT = null; } }
+const C = CONTENT || {};
+const TINTS = PROJECTS.map((p) => p.tint);
+if (Array.isArray(C.jobs) && C.jobs.length) {
+  PROJECTS.length = 0;
+  C.jobs.forEach((j, i) => PROJECTS.push({ slug: j.id, title: j.title || "Untitled", disc: j.disciplines || "", ctx: tx(j.context, "en"), pt: tx(j.context, "pt"),
+    tint: hex3(j.tint, TINTS[i % TINTS.length]), cover: j.cover || "", job: j }));
+}
+PROJECTS.forEach((p) => { if (p.cover === undefined) p.cover = `covers/${p.slug}.webp`; if (!p.job) p.job = {}; });
+PRACTICES.forEach((p, i) => { p.img = `practice/practice-0${i + 1}.webp`; });
+(C.practices || []).slice(0, PRACTICES.length).forEach((c, i) => {
+  const p = PRACTICES[i];
+  Object.assign(p, { t: tx(c.title, "en") || p.t, tp: tx(c.title, "pt") || p.tp, k: tx(c.keys, "en"), kp: tx(c.keys, "pt"), d: tx(c.text, "en"), dp: tx(c.text, "pt"),
+    img: c.image || "", tint: hex3(c.tint, p.tint), rel: (c.jobs || []).map((id) => PROJECTS.findIndex((x) => x.slug === id)).filter((k) => k >= 0) });
+});
+(C.process || []).slice(0, PROCESS.length).forEach((c, i) => {
+  const p = PROCESS[i], e = c.era || {};
+  Object.assign(p, { t: tx(c.name, "en") || p.t, tp: tx(c.name, "pt") || p.tp, k: tx(c.keys, "en"), kp: tx(c.keys, "pt"), d: tx(c.text, "en"), dp: tx(c.text, "pt"),
+    era: { y: (e.year || "").trim() || null, t: tx(e.title, "en"), tp: tx(e.title, "pt"), w: tx(e.where, "en"), wp: tx(e.where, "pt") } });
+});
+// Gate previews: one low-opacity clip or still per discipline, in ring order (clockwise from 12 o'clock).
+const GATE = (Array.isArray(C.gate) && C.gate.length === 8 ? C.gate.map((g) => ({ n: g.name || "—", src: g.media ? "./" + g.media : "", ph: !g.media })) : [
+  { n: "Motion", src: "./reel/clip-01.webm" }, { n: "3D", src: "./reel/clip-02.webm" }, { n: "VFX", src: "./reel/clip-03.webm" },
+  { n: "Art Direction", src: "./covers/bravecto.webp" }, { n: "AI", src: "./practice/practice-03.webp", ph: true }, { n: "Creative Tech", src: "./reel/clip-04.webm" },
+  { n: "Compositing", src: "./reel/clip-07.webm" }, { n: "Automation", src: "./practice/practice-04.webp", ph: true }]);
+// hero + about copy (applied to the DOM just before the EN strings are captured)
+function applyContent() {
+  const setI = (key, v) => { if (v == null) return; document.querySelectorAll(`[data-i18n="${key}"]`).forEach((el) => (el.textContent = tx(v, "en"))); I18N.pt[key] = tx(v, "pt"); };
+  if (C.hero) { setI("eyebrow", C.hero.eyebrow); setI("lead", C.hero.lead); }
+  const a = C.about; if (!a) return;
+  setI("idRole", a.role); setI("idBio", a.bio); setI("idAvail", a.availability);
+  (a.facts || []).slice(0, 3).forEach((f, i) => { setI("idF" + (i + 1), f.label); setI("idF" + (i + 1) + "v", f.value); });
+  if (a.name) { const parts = a.name.trim().split(/\s+/), last = parts.length > 1 ? parts.pop() : "", h3 = $(".idcard__body h3"); h3.replaceChildren(parts.join(" ")); if (last) h3.append(document.createElement("br"), last); }
+  if (a.portrait) { const img = $(".idcard__photo img"); img.src = "./" + a.portrait; img.alt = "Portrait of " + (a.name || ""); }
+  const li = document.querySelectorAll(".idcard__links li"), show = (k, href, text) => { li[k].hidden = !href; const l = li[k].firstElementChild; if (href) { l.href = href; l.textContent = text; } };
+  if (a.email) $("#talkBtn").href = "mailto:" + a.email;
+  show(0, a.email && "mailto:" + a.email, a.email);
+  show(1, a.linkedin, (a.linkedin || "").replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "") + " ↗");
+  show(2, a.behance, (a.behance || "").replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "") + " ↗");
+}
 const N = PROJECTS.length;
 const PLATE_TINT = [0.60, 0.80, 1.0];
 const D = 11;                       // world spacing between panes
@@ -69,7 +117,7 @@ const I18N = {
     n2: "Processo & linha do tempo", n2d: "Uma única trilha de luz atravessando 12 anos de trabalho",
     n3: "Sobre & contato", n3d: "Retrato, assinatura em escala gigante, “Observe. Create. Refine.”",
     talk: "Vamos conversar", phMedia: "Placeholder — vídeo / breakdown entra aqui",
-    cChallenge: "Desafio", cIdea: "Ideia", cExec: "Execução", cOutcome: "Resultado" },
+    cChallenge: "Desafio", cIdea: "Ideia", cExec: "Execução", cOutcome: "Resultado", cRole: "Função", cTools: "Ferramentas", cMore: "Ver projeto" },
 };
 const $ = (s) => document.querySelector(s);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -94,7 +142,7 @@ function buildRing() {
     const a = (i / 180) * Math.PI * 2, maj = i % 15 === 0, r0 = maj ? 196 : 203, r1 = 210;
     ticks += `<line class="tick${maj ? " maj" : ""}" x1="${Math.cos(a) * r0}" y1="${Math.sin(a) * r0}" x2="${Math.cos(a) * r1}" y2="${Math.sin(a) * r1}"/>`;
   }
-  const labels = ["MOTION", "3D", "VFX", "ART DIRECTION", "AI", "CREATIVE TECH", "COMPOSITING", "AUTOMATION"];
+  const labels = GATE.map((g) => g.n.toUpperCase());
   let txt = `<defs><path id="lp" d="M0,-228 A228,228 0 1,1 -0.01,-228"/></defs>`;
   labels.forEach((l, i) => { txt += `<text text-anchor="middle" data-g="${i}"><textPath href="#lp" startOffset="${((i + 0.5) / labels.length) * 100}%">${l}</textPath></text>`; });
   // aperture blades: thin arcs that close toward the centre when the pointer approaches
@@ -104,22 +152,10 @@ function buildRing() {
     <g class="needle" id="needle"><line x1="0" y1="-176" x2="0" y2="-214" stroke="#78D98A" stroke-width="1"/><circle class="dot" cy="-190" r="3.4"/></g>`;
 }
 buildRing();
-// Gate previews: one low-opacity clip or still per discipline, in ring order (clockwise from 12 o'clock).
-// Swap freely — any .webm/.mp4/.webp/.jpg path works. Stills are placeholders until a clip exists.
-const GATE = [
-  { n: "Motion", src: "./reel/clip-01.webm" },
-  { n: "3D", src: "./reel/clip-02.webm" },
-  { n: "VFX", src: "./reel/clip-03.webm" },
-  { n: "Art Direction", src: "./covers/bravecto.webp" },
-  { n: "AI", src: "./practice/practice-03.webp", ph: true },
-  { n: "Creative Tech", src: "./reel/clip-04.webm" },
-  { n: "Compositing", src: "./reel/clip-07.webm" },
-  { n: "Automation", src: "./practice/practice-04.webp", ph: true },
-];
 const gatePrev = $("#gatePrev"); let gateIdx = -1, gateAng = 0, gateIdle = 0, gateAuto = 0;
 GATE.forEach((g) => {
   const vid = /\.(webm|mp4)$/.test(g.src), el = document.createElement(vid ? "video" : "img");
-  if (vid) { el.muted = true; el.loop = true; el.playsInline = true; el.preload = "none"; el.dataset.src = g.src; } else { el.loading = "lazy"; el.alt = ""; el.src = g.src; }
+  if (vid) { el.muted = true; el.loop = true; el.playsInline = true; el.preload = "none"; el.dataset.src = g.src; } else { el.loading = "lazy"; el.alt = ""; if (g.src) el.src = g.src; }
   gatePrev.appendChild(el); g.el = el;
 });
 function setGate(i) {
@@ -435,11 +471,11 @@ function initGL() {
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img); gl.generateMipmap(gl.TEXTURE_2D);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE); };
-    img.src = src;
+    if (src) img.src = src;
     return t;
   };
-  const tex = PROJECTS.map((pr) => loadTex(`./covers/${pr.slug}.webp`));
-  const ptex = PRACTICES.map((_, i) => loadTex(`./practice/practice-0${i + 1}.webp`));
+  const tex = PROJECTS.map((pr) => loadTex(pr.cover ? "./" + pr.cover : null));
+  const ptex = PRACTICES.map((p) => loadTex(p.img ? "./" + p.img : null));
   R = { bh, ps, psVao, PARTS, bg, pane, tr, st, bgVao, paneVao, trVao, stVao, TRAILS, SEG, STARS, ghosts, tex, ptex };
 }
 
@@ -666,7 +702,7 @@ function buildRows() {
 }
 function setLensMeta() { const i = Math.max(0, S.prIdx), p = PRACTICES[i];
   $("#lensIdx").textContent = `0${i + 1} / 04`; $("#lensFocus").textContent = S.lang === "pt" ? p.kp : p.k;
-  lens.style.setProperty("--cover", `url(./practice/practice-0${i + 1}.webp)`); }
+  lens.style.setProperty("--cover", p.img ? `url(./${p.img})` : "none"); }
 function setPractice(idx) {
   const prev = S.prIdx; S.prIdx = idx;
   document.querySelectorAll(".row").forEach((r, k) => { r.classList.toggle("on", k === idx); r.querySelector(".row__btn").setAttribute("aria-expanded", k === idx); });
@@ -692,7 +728,7 @@ function buildProcess() {
 function setStage(i) {
   S.psIdx = i; const p = PROCESS[i], pt = S.lang === "pt";
   $("#procIdx").textContent = `0${i + 1} / 05`; $("#procName").textContent = pt ? p.tp : p.t; $("#procText").textContent = pt ? p.dp : p.d;
-  const e = p.era; $("#eraYear").textContent = e.y === "now" ? (pt ? "Hoje" : "Now") : "20··"; $("#eraPh").textContent = e.y ? "" : pt ? "ano · placeholder" : "year · placeholder";
+  const e = p.era; $("#eraYear").textContent = !e.y ? "20··" : /^(now|hoje|atual)$/i.test(e.y) ? (pt ? "Hoje" : "Now") : e.y; $("#eraPh").textContent = e.y ? "" : pt ? "ano · placeholder" : "year · placeholder";
   $("#eraTitle").textContent = pt ? e.tp : e.t; $("#eraWhere").textContent = pt ? e.wp : e.w;
   const now = document.querySelector(".process__now"); now.classList.remove("swap"); void now.offsetWidth; now.classList.add("swap");
 }
@@ -749,7 +785,7 @@ function onActive(i) {
   $("#capIdx").textContent = pad(i + 1); $("#capDisc").textContent = pr.disc; $("#capTitle").textContent = pr.title;
   $("#capCtx").textContent = S.lang === "pt" ? pr.pt : pr.ctx;
   document.documentElement.style.setProperty("--tint", `rgb(${pr.tint.map((v) => Math.round(v * 255)).join(",")})`);
-  hit.style.setProperty("--cover", `url(./covers/${pr.slug}.webp)`);
+  hit.style.setProperty("--cover", pr.cover ? `url(./${pr.cover})` : "none");
 }
 function goTo(stop) { scrollTo({ top: stop * unit() + 1, behavior: S.motion ? "smooth" : "auto" }); }
 
@@ -782,12 +818,48 @@ addEventListener("pointermove", (e) => {
 hit.addEventListener("pointerenter", () => (S.hoverT = 1)); hit.addEventListener("pointerleave", () => (S.hoverT = 0));
 hit.addEventListener("focus", () => (S.hoverT = 1)); hit.addEventListener("blur", () => (S.hoverT = 0));
 
-// case placeholder
-const caseEl = $("#case");
+// case study: video (YouTube / Vimeo / file), cover, gallery, Challenge → Outcome, external link
+const caseEl = $("#case"), caseIn = $("#caseIn"), caseMedia = $("#caseMedia"), caseThumbs = $("#caseThumbs");
+let caseItems = [], caseIdx = -1;
+function embedOf(url) {
+  const u = (url || "").trim(); if (!u) return null;
+  let m = u.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{11})/);
+  if (m) return { kind: "iframe", src: `https://www.youtube-nocookie.com/embed/${m[1]}?rel=0&modestbranding=1&playsinline=1` };
+  m = u.match(/vimeo\.com\/(?:video\/)?(\d+)(?:\/([\da-f]+))?/);
+  if (m) { const hsh = m[2] || (u.match(/[?&]h=([\da-f]+)/) || [])[1]; return { kind: "iframe", src: `https://player.vimeo.com/video/${m[1]}?dnt=1${hsh ? "&h=" + hsh : ""}` }; }
+  if (/\.(mp4|webm|mov)(\?|$)/i.test(u)) return { kind: "video", src: /^https?:/.test(u) ? u : "./" + u.replace(/^\.?\//, "") };
+  if (/^https:\/\//.test(u)) return { kind: "iframe", src: u };
+  return null;
+}
+function showStage(k) {
+  const it = caseItems[k]; if (!it) return;
+  let el;
+  if (it.kind === "iframe") { el = document.createElement("iframe"); el.src = it.src; el.title = it.alt; el.allow = "autoplay; fullscreen; picture-in-picture; encrypted-media"; el.allowFullscreen = true; el.referrerPolicy = "strict-origin-when-cross-origin"; }
+  else if (it.kind === "video") { el = document.createElement("video"); el.src = it.src; el.controls = true; el.playsInline = true; el.preload = "metadata"; }
+  else { el = new Image(); el.src = it.src; el.alt = it.alt; el.decoding = "async"; }
+  caseMedia.replaceChildren(el); caseMedia.dataset.kind = it.kind;
+  caseThumbs.querySelectorAll("button").forEach((b, i) => b.classList.toggle("on", i === k));
+}
 function openCase(i) { const pr = PROJECTS[i]; if (!pr) return;
-  $("#caseImg").src = `./covers/${pr.slug}.webp`; $("#caseImg").alt = pr.title + " — cover"; $("#caseTitle").textContent = pr.title; $("#caseDisc").textContent = pr.disc;
-  caseEl.hidden = false; document.body.classList.add("is-case"); S.caseOpen = true; $("#caseX").focus(); }
-function closeCase() { if (caseEl.hidden) return; caseEl.hidden = true; document.body.classList.remove("is-case"); S.caseOpen = false; hit.focus({ preventScroll: true }); }
+  const j = pr.job || {}, L = S.lang === "pt" ? "pt" : "en"; caseIdx = i; caseItems = [];
+  const v = embedOf(j.video); if (v) caseItems.push({ ...v, alt: pr.title + " — video" });
+  if (pr.cover) caseItems.push({ kind: "img", src: "./" + pr.cover, alt: pr.title + " — cover" });
+  (j.gallery || []).forEach((g, k) => caseItems.push(/\.(mp4|webm|mov)$/i.test(g) ? { kind: "video", src: "./" + g, alt: `${pr.title} — ${k + 1}` } : { kind: "img", src: "./" + g, alt: `${pr.title} — ${k + 1}` }));
+  caseThumbs.replaceChildren(...(caseItems.length > 1 ? caseItems.map((it, k) => {
+    const b = document.createElement("button"); b.type = "button"; b.setAttribute("aria-label", it.alt);
+    if (it.kind === "img") { const im = new Image(); im.src = it.src; im.alt = ""; im.loading = "lazy"; b.append(im); } else { const sp = document.createElement("span"); sp.className = "play"; sp.textContent = "Video"; b.append(sp); }
+    b.onclick = () => showStage(k); return b; }) : []));
+  $("#caseDisc").textContent = pr.disc; $("#caseTitle").textContent = pr.title;
+  $("#caseMeta").textContent = [j.client, j.year].filter(Boolean).join(" · ");
+  $("#caseCtx").textContent = L === "pt" ? pr.pt : pr.ctx;
+  let any = false;
+  document.querySelectorAll("#caseDl > div").forEach((row) => { const t = tx(j[row.dataset.k], L); row.hidden = !t; row.lastElementChild.textContent = t; row.lastElementChild.className = ""; if (t) any = true; });
+  if (!any) document.querySelectorAll("#caseDl > div").forEach((row) => { row.hidden = false; row.lastElementChild.className = "ph"; });
+  ["role", "tools"].forEach((k) => { const el = document.querySelector(`#caseCredits [data-k="${k}"]`); el.hidden = !j[k]; el.lastElementChild.textContent = j[k] || ""; });
+  const link = $("#caseLink"), url = j.link && j.link.url;
+  link.hidden = !url; if (url) { link.href = url; link.firstElementChild.textContent = tx(j.link.label, L) || (L === "pt" ? I18N.pt.cMore : "View project"); }
+  caseEl.hidden = false; caseIn.scrollTop = 0; showStage(0); document.body.classList.add("is-case"); S.caseOpen = true; if (window.self === window.top) $("#caseX").focus(); }
+function closeCase() { if (caseEl.hidden) return; caseEl.hidden = true; caseMedia.replaceChildren(); document.body.classList.remove("is-case"); S.caseOpen = false; hit.focus({ preventScroll: true }); }
 hit.addEventListener("click", () => openCase(S.active));
 $("#caseX").addEventListener("click", closeCase);
 caseEl.addEventListener("click", (e) => { if (e.target === caseEl) closeCase(); });
@@ -802,12 +874,13 @@ addEventListener("keydown", (e) => {
 });
 
 // dock
+applyContent();
 const EN = {}; document.querySelectorAll("[data-i18n]").forEach((el) => (EN[el.dataset.i18n] = el.textContent));
 $("#lang").addEventListener("click", () => {
   S.lang = S.lang === "en" ? "pt" : "en"; document.documentElement.lang = S.lang === "pt" ? "pt-BR" : "en";
   document.querySelectorAll("#lang b").forEach((b) => b.classList.toggle("on", b.dataset.l === S.lang));
   document.querySelectorAll("[data-i18n]").forEach((el) => (el.textContent = (S.lang === "pt" && I18N.pt[el.dataset.i18n]) || EN[el.dataset.i18n]));
-  setMotionLabel(); buildRows(); buildProcess(); if (S.active >= 0) onActive(S.active);
+  setMotionLabel(); buildRows(); buildProcess(); if (S.active >= 0) onActive(S.active); if (S.caseOpen) openCase(caseIdx);
 });
 const setMotionLabel = () => { $("#motionLbl").textContent = S.lang === "pt" ? (S.motion ? "Movimento on" : "Movimento off") : S.motion ? "Motion on" : "Motion off"; $("#motion").setAttribute("aria-pressed", S.motion); };
 $("#motion").addEventListener("click", () => { S.motion = !S.motion; setMotionLabel(); });
@@ -819,6 +892,11 @@ resize(); buildRows();
 if (gl) { try { initGL(); } catch (err) { console.error("[FineTune] WebGL init failed:", err); document.documentElement.classList.add("no-gl"); R = null; } }
 buildProcess(); readScroll();
 if (document.fonts) document.fonts.ready.then(() => { layoutRail(); });
-if (new URLSearchParams(location.search).has("skip") || location.hash === "#gallery") enter();
+// deep links (used by Portfolio Update's preview): ?skip ?lang=pt ?case=<id> ?at=practice|process|about
+if (QS.get("lang") === "pt") $("#lang").click();
+const qCase = QS.get("case"), qAt = QS.get("at");
+if (QS.has("skip") || qCase || qAt || location.hash === "#gallery") enter();
+if (qCase) { const k = PROJECTS.findIndex((p) => p.slug === qCase); if (k >= 0) { scrollTo(0, (k + 1) * unit() + 1); readScroll(); S.p = S.pT; openCase(k); } }
+else if (qAt && document.getElementById(qAt)) { const el = document.getElementById(qAt); scrollTo(0, el.offsetTop + (qAt === "about" ? 0 : innerHeight * 0.25)); readScroll(); }
 window.__ft = { S, goTo, enter };
 requestAnimationFrame(frame);

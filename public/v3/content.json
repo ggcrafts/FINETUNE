@@ -1,0 +1,625 @@
+{
+  "format": "finetune-portfolio/1",
+  "updated": "2026-11-17T09:32:20.167Z",
+  "hero": {
+    "eyebrow": {
+      "en": "Senior Motion Designer · Art Director · Creative Technologist",
+      "pt": "Senior Motion Designer · Diretor de Arte · Creative Technologist"
+    },
+    "lead": {
+      "en": "Visual systems where motion, 3D, VFX, AI and creative technology converge.",
+      "pt": "Sistemas visuais onde motion, 3D, VFX, IA e tecnologia criativa convergem."
+    }
+  },
+  "gate": [
+    {
+      "name": "Motion",
+      "media": "reel/clip-01.webm"
+    },
+    {
+      "name": "3D",
+      "media": "reel/clip-02.webm"
+    },
+    {
+      "name": "VFX",
+      "media": "reel/clip-03.webm"
+    },
+    {
+      "name": "Art Direction",
+      "media": "covers/bravecto.webp"
+    },
+    {
+      "name": "AI",
+      "media": "practice/practice-03.webp"
+    },
+    {
+      "name": "Creative Tech",
+      "media": "reel/clip-04.webm"
+    },
+    {
+      "name": "Compositing",
+      "media": "reel/clip-07.webm"
+    },
+    {
+      "name": "Automation",
+      "media": "practice/practice-04.webp"
+    }
+  ],
+  "jobs": [
+    {
+      "id": "hbo-bff",
+      "title": "HBO Max — BFF Nossa Voz",
+      "client": "",
+      "year": "",
+      "disciplines": "VFX · 3D · Compositing",
+      "tint": "#9e7aff",
+      "context": {
+        "en": "VFX, 3D and compositing for an HBO Max campaign piece.",
+        "pt": "VFX, 3D e composição para uma peça de campanha da HBO Max."
+      },
+      "cover": "covers/hbo-bff.webp",
+      "video": "",
+      "gallery": [],
+      "challenge": {
+        "en": "",
+        "pt": ""
+      },
+      "idea": {
+        "en": "",
+        "pt": ""
+      },
+      "execution": {
+        "en": "",
+        "pt": ""
+      },
+      "outcome": {
+        "en": "",
+        "pt": ""
+      },
+      "role": "",
+      "tools": "",
+      "link": {
+        "label": {
+          "en": "View on Behance",
+          "pt": "Ver no Behance"
+        },
+        "url": "https://www.behance.net/gallery/194284575/VFX-HBOMax-BFF-Nossa-Voz"
+      }
+    },
+    {
+      "id": "bravecto",
+      "title": "Bravecto Experience",
+      "client": "",
+      "year": "",
+      "disciplines": "Art Direction · 3D · Immersive",
+      "tint": "#ffb35c",
+      "context": {
+        "en": "Art direction and 3D for an immersive brand experience.",
+        "pt": "Direção de arte e 3D para uma experiência de marca imersiva."
+      },
+      "cover": "covers/bravecto.webp",
+      "video": "",
+      "gallery": [],
+      "challenge": {
+        "en": "",
+        "pt": ""
+      },
+      "idea": {
+        "en": "",
+        "pt": ""
+      },
+      "execution": {
+        "en": "",
+        "pt": ""
+      },
+      "outcome": {
+        "en": "",
+        "pt": ""
+      },
+      "role": "",
+      "tools": "",
+      "link": {
+        "label": {
+          "en": "View on Behance",
+          "pt": "Ver no Behance"
+        },
+        "url": "https://www.behance.net/gallery/195282279/Bravecto-Experience-Direcao-de-projeto"
+      }
+    },
+    {
+      "id": "yes",
+      "title": "YES! — Diga Sim ao Mundo",
+      "client": "",
+      "year": "",
+      "disciplines": "Motion Design · VFX · Storytelling",
+      "tint": "#6bd6ff",
+      "context": {
+        "en": "Motion design and VFX carrying a language-school campaign.",
+        "pt": "Motion design e VFX construindo a história de uma campanha."
+      },
+      "cover": "covers/yes.webp",
+      "video": "",
+      "gallery": [],
+      "challenge": {
+        "en": "",
+        "pt": ""
+      },
+      "idea": {
+        "en": "",
+        "pt": ""
+      },
+      "execution": {
+        "en": "",
+        "pt": ""
+      },
+      "outcome": {
+        "en": "",
+        "pt": ""
+      },
+      "role": "",
+      "tools": "",
+      "link": {
+        "label": {
+          "en": "View on Behance",
+          "pt": "Ver no Behance"
+        },
+        "url": "https://www.behance.net/gallery/194456335/Vinheta-YES-Idiomas-Diga-Sim-ao-Mundo-Diga-YES"
+      }
+    },
+    {
+      "id": "hbo-use-sua-voz",
+      "title": "HBO — Use Sua Voz",
+      "client": "",
+      "year": "",
+      "disciplines": "",
+      "tint": "#ff73b8",
+      "context": {
+        "en": "",
+        "pt": ""
+      },
+      "cover": "covers/hbo-use-sua-voz.webp",
+      "video": "",
+      "gallery": [],
+      "challenge": {
+        "en": "",
+        "pt": ""
+      },
+      "idea": {
+        "en": "",
+        "pt": ""
+      },
+      "execution": {
+        "en": "",
+        "pt": ""
+      },
+      "outcome": {
+        "en": "",
+        "pt": ""
+      },
+      "role": "",
+      "tools": "",
+      "link": {
+        "label": {
+          "en": "View on Behance",
+          "pt": "Ver no Behance"
+        },
+        "url": "https://www.behance.net/gallery/194283311/Abertura-HBOMax-Use-Sua-Voz"
+      }
+    },
+    {
+      "id": "cleopatra",
+      "title": "Cleopatra",
+      "client": "",
+      "year": "",
+      "disciplines": "",
+      "tint": "#ffd180",
+      "context": {
+        "en": "",
+        "pt": ""
+      },
+      "cover": "covers/cleopatra.webp",
+      "video": "",
+      "gallery": [],
+      "challenge": {
+        "en": "",
+        "pt": ""
+      },
+      "idea": {
+        "en": "",
+        "pt": ""
+      },
+      "execution": {
+        "en": "",
+        "pt": ""
+      },
+      "outcome": {
+        "en": "",
+        "pt": ""
+      },
+      "role": "",
+      "tools": "",
+      "link": {
+        "label": {
+          "en": "View on Behance",
+          "pt": "Ver no Behance"
+        },
+        "url": "https://www.behance.net/gallery/144381729/Paralax-animation-for-Mobile-game-Cleopatra"
+      }
+    },
+    {
+      "id": "melhor-verao",
+      "title": "Melhor Verão",
+      "client": "",
+      "year": "",
+      "disciplines": "",
+      "tint": "#73f2db",
+      "context": {
+        "en": "",
+        "pt": ""
+      },
+      "cover": "covers/melhor-verao.webp",
+      "video": "",
+      "gallery": [],
+      "challenge": {
+        "en": "",
+        "pt": ""
+      },
+      "idea": {
+        "en": "",
+        "pt": ""
+      },
+      "execution": {
+        "en": "",
+        "pt": ""
+      },
+      "outcome": {
+        "en": "",
+        "pt": ""
+      },
+      "role": "",
+      "tools": "",
+      "link": {
+        "label": {
+          "en": "View on Behance",
+          "pt": "Ver no Behance"
+        },
+        "url": "https://www.behance.net/gallery/143936867/VFX-Abertura-O-MELHOR-VERAO-DAS-NOSSAS-VIDAS"
+      }
+    },
+    {
+      "id": "true-riches",
+      "title": "True Riches",
+      "client": "",
+      "year": "",
+      "disciplines": "",
+      "tint": "#8f9eff",
+      "context": {
+        "en": "",
+        "pt": ""
+      },
+      "cover": "covers/true-riches.webp",
+      "video": "",
+      "gallery": [],
+      "challenge": {
+        "en": "",
+        "pt": ""
+      },
+      "idea": {
+        "en": "",
+        "pt": ""
+      },
+      "execution": {
+        "en": "",
+        "pt": ""
+      },
+      "outcome": {
+        "en": "",
+        "pt": ""
+      },
+      "role": "",
+      "tools": "",
+      "link": {
+        "label": {
+          "en": "View on Behance",
+          "pt": "Ver no Behance"
+        },
+        "url": "https://www.behance.net/gallery/143962405/TRUE-RICHES-TWE-WAY-SERVICE-TEASER"
+      }
+    },
+    {
+      "id": "conectivo",
+      "title": "Conectivo",
+      "client": "",
+      "year": "",
+      "disciplines": "",
+      "tint": "#db8fff",
+      "context": {
+        "en": "",
+        "pt": ""
+      },
+      "cover": "covers/conectivo.webp",
+      "video": "",
+      "gallery": [],
+      "challenge": {
+        "en": "",
+        "pt": ""
+      },
+      "idea": {
+        "en": "",
+        "pt": ""
+      },
+      "execution": {
+        "en": "",
+        "pt": ""
+      },
+      "outcome": {
+        "en": "",
+        "pt": ""
+      },
+      "role": "",
+      "tools": "",
+      "link": {
+        "label": {
+          "en": "View on Behance",
+          "pt": "Ver no Behance"
+        },
+        "url": "https://www.behance.net/gallery/144190393/Conectivo-Matriculas-abertas-(SAE-Digital)"
+      }
+    }
+  ],
+  "practices": [
+    {
+      "title": {
+        "en": "Art Direction & Design",
+        "pt": "Direção de Arte & Design"
+      },
+      "keys": {
+        "en": "Concept · Key visuals · Systems",
+        "pt": "Conceito · Key visuals · Sistemas"
+      },
+      "text": {
+        "en": "Visual languages built around one clear idea — from the first frame and key visual to the system that keeps every piece coherent.",
+        "pt": "Linguagens visuais construídas em torno de uma ideia clara — do primeiro frame e do key visual ao sistema que mantém cada peça coerente."
+      },
+      "image": "practice/practice-01.webp",
+      "tint": "#bd9eff",
+      "jobs": [
+        "bravecto",
+        "cleopatra"
+      ]
+    },
+    {
+      "title": {
+        "en": "Motion, 3D & VFX",
+        "pt": "Motion, 3D & VFX"
+      },
+      "keys": {
+        "en": "Animation · Lookdev · Compositing",
+        "pt": "Animação · Lookdev · Composição"
+      },
+      "text": {
+        "en": "Animation, modeling, shading, lighting, rendering and compositing for campaigns, content and immersive experiences.",
+        "pt": "Animação, modelagem, shading, iluminação, render e composição para campanhas, conteúdo e experiências imersivas."
+      },
+      "image": "practice/practice-02.webp",
+      "tint": "#ffbd75",
+      "jobs": [
+        "hbo-bff",
+        "yes",
+        "hbo-use-sua-voz"
+      ]
+    },
+    {
+      "title": {
+        "en": "AI-Assisted Creation",
+        "pt": "Criação Assistida por IA"
+      },
+      "keys": {
+        "en": "Previs · Generation · Iteration",
+        "pt": "Previs · Geração · Iteração"
+      },
+      "text": {
+        "en": "Generative tools placed inside a directed pipeline — used to explore faster, while art direction decides what stays.",
+        "pt": "Ferramentas generativas dentro de um pipeline dirigido — para explorar mais rápido, enquanto a direção de arte decide o que fica."
+      },
+      "image": "practice/practice-03.webp",
+      "tint": "#80e0ff",
+      "jobs": []
+    },
+    {
+      "title": {
+        "en": "Creative Technology",
+        "pt": "Tecnologia Criativa"
+      },
+      "keys": {
+        "en": "Automation · Tools · Web 3D",
+        "pt": "Automação · Ferramentas · Web 3D"
+      },
+      "text": {
+        "en": "Scripts, Blender add-ons, automations and web prototypes that remove friction from production and open new visual possibilities.",
+        "pt": "Scripts, add-ons de Blender, automações e protótipos web que tiram o atrito da produção e abrem novas possibilidades visuais."
+      },
+      "image": "practice/practice-04.webp",
+      "tint": "#9ec2ff",
+      "jobs": []
+    }
+  ],
+  "process": [
+    {
+      "name": {
+        "en": "Observe",
+        "pt": "Observar"
+      },
+      "keys": {
+        "en": "Brief · Audience · Intent",
+        "pt": "Briefing · Público · Intenção"
+      },
+      "text": {
+        "en": "Listen before designing: the brief, the audience and what the piece has to make people feel.",
+        "pt": "Escutar antes de desenhar: o briefing, o público e o que a peça precisa fazer sentir."
+      },
+      "era": {
+        "year": "",
+        "title": {
+          "en": "Visual design foundations",
+          "pt": "Fundamentos de design visual"
+        },
+        "where": {
+          "en": "Degree · Industrial Design / Visual Programming",
+          "pt": "Graduação · Desenho Industrial / Programação Visual"
+        }
+      }
+    },
+    {
+      "name": {
+        "en": "Shape",
+        "pt": "Moldar"
+      },
+      "keys": {
+        "en": "Idea · References · System",
+        "pt": "Ideia · Referências · Sistema"
+      },
+      "text": {
+        "en": "Turn intent into one clear idea, a reference board and a visual system.",
+        "pt": "Transformar intenção em uma ideia clara, um painel de referências e um sistema visual."
+      },
+      "era": {
+        "year": "",
+        "title": {
+          "en": "Motion graphics",
+          "pt": "Motion graphics"
+        },
+        "where": {
+          "en": "Where the practice started",
+          "pt": "Onde a prática começou"
+        }
+      }
+    },
+    {
+      "name": {
+        "en": "Explore",
+        "pt": "Explorar"
+      },
+      "keys": {
+        "en": "Design · 3D · AI · Code",
+        "pt": "Design · 3D · IA · Código"
+      },
+      "text": {
+        "en": "Push the idea through design, 3D, AI and code until the unexpected shows up.",
+        "pt": "Levar a ideia por design, 3D, IA e código até o inesperado aparecer."
+      },
+      "era": {
+        "year": "",
+        "title": {
+          "en": "3D, VFX & compositing",
+          "pt": "3D, VFX & composição"
+        },
+        "where": {
+          "en": "Campaigns · content",
+          "pt": "Campanhas · conteúdo"
+        }
+      }
+    },
+    {
+      "name": {
+        "en": "Refine",
+        "pt": "Refinar"
+      },
+      "keys": {
+        "en": "Light · Motion · Timing",
+        "pt": "Luz · Movimento · Timing"
+      },
+      "text": {
+        "en": "Calibrate light, motion and timing until every frame holds.",
+        "pt": "Calibrar luz, movimento e timing até cada frame se sustentar."
+      },
+      "era": {
+        "year": "",
+        "title": {
+          "en": "Art & creative direction",
+          "pt": "Direção de arte & criativa"
+        },
+        "where": {
+          "en": "Brand & immersive experiences",
+          "pt": "Experiências de marca e imersivas"
+        }
+      }
+    },
+    {
+      "name": {
+        "en": "Evolve",
+        "pt": "Evoluir"
+      },
+      "keys": {
+        "en": "Tools · Workflows · Next idea",
+        "pt": "Ferramentas · Workflows · Próxima ideia"
+      },
+      "text": {
+        "en": "Keep what worked as a tool or a workflow, so the next idea starts further ahead.",
+        "pt": "Guardar o que funcionou como ferramenta ou workflow, para a próxima ideia começar mais à frente."
+      },
+      "era": {
+        "year": "now",
+        "title": {
+          "en": "AI workflows, code & automation",
+          "pt": "Workflows com IA, código & automação"
+        },
+        "where": {
+          "en": "FineTune · postgraduate in 3D Technologies (in progress)",
+          "pt": "FineTune · pós em Tecnologias 3D (em andamento)"
+        }
+      }
+    }
+  ],
+  "about": {
+    "name": "Luiz Gustavo Czaika",
+    "role": {
+      "en": "Senior Motion Designer · Art Director · Creative Technologist",
+      "pt": "Senior Motion Designer · Diretor de Arte · Creative Technologist"
+    },
+    "bio": {
+      "en": "12+ years across animation, 3D, VFX and immersive experiences — now combined with AI-assisted workflows, code and automation.",
+      "pt": "12+ anos em animação, 3D, VFX e experiências imersivas — hoje combinados com workflows assistidos por IA, código e automação."
+    },
+    "availability": {
+      "en": "Available · Remote",
+      "pt": "Disponível · Remoto"
+    },
+    "facts": [
+      {
+        "label": {
+          "en": "Experience",
+          "pt": "Experiência"
+        },
+        "value": {
+          "en": "12+ years",
+          "pt": "12+ anos"
+        }
+      },
+      {
+        "label": {
+          "en": "Based in",
+          "pt": "Base"
+        },
+        "value": {
+          "en": "Curitiba, Brazil",
+          "pt": "Curitiba, Brasil"
+        }
+      },
+      {
+        "label": {
+          "en": "Working",
+          "pt": "Atuação"
+        },
+        "value": {
+          "en": "Remote · International",
+          "pt": "Remoto · Internacional"
+        }
+      }
+    ],
+    "email": "lgczaika@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/lgczaika",
+    "behance": "https://www.behance.net/lgczaika",
+    "portrait": "portrait/luiz-czaika.webp"
+  }
+}
