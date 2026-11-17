@@ -22,7 +22,7 @@ function h(tag, attrs, ...kids) {
   for (const [k, v] of Object.entries(attrs || {})) {
     if (v == null || v === false) continue;
     if (k === "class") el.className = v;
-    else if (k === "style" && typeof v === "object") Object.assign(el.style, v);
+    else if (k === "style" && typeof v === "object") for (const [sk, sv] of Object.entries(v)) { if (sk.startsWith("--")) el.style.setProperty(sk, sv); else el.style[sk] = sv; }
     else if (k.startsWith("on") && typeof v === "function") el.addEventListener(k.slice(2), v);
     else if (k === "value" || k === "checked") el[k] = v;
     else el.setAttribute(k, v === true ? "" : v);
@@ -66,13 +66,13 @@ const curJob = () => jobs().find((j) => j.id === E.sel.id);
 
 function blankJob(id) {
   return { id, title: "", client: "", year: String(new Date().getFullYear()), disciplines: "", tint: "#8fd8ff", context: { en: "", pt: "" },
-    cover: "", video: "", gallery: [], challenge: { en: "", pt: "" }, idea: { en: "", pt: "" }, execution: { en: "", pt: "" }, outcome: { en: "", pt: "" },
+    categories: [], tools: [], cover: "", video: "", gallery: [], challenge: { en: "", pt: "" }, idea: { en: "", pt: "" }, execution: { en: "", pt: "" }, outcome: { en: "", pt: "" },
     role: "", tools: "", link: { label: { en: "View project", pt: "Ver projeto" }, url: "" } };
 }
 function blankContent() {
   const t = () => ({ en: "", pt: "" });
   return { format: "finetune-portfolio/1", updated: "", hero: { eyebrow: t(), lead: t() }, gate: Array.from({ length: 8 }, () => ({ name: "", media: "" })),
-    jobs: [], practices: Array.from({ length: 4 }, (_, i) => ({ title: t(), keys: t(), text: t(), image: "", tint: "#8fd8ff", jobs: [] })),
+    categories: [], tools: [], jobs: [], practices: Array.from({ length: 4 }, (_, i) => ({ title: t(), keys: t(), text: t(), image: "", tint: "#8fd8ff", jobs: [] })),
     process: Array.from({ length: 5 }, () => ({ name: t(), keys: t(), text: t(), era: { year: "", title: t(), where: t() } })),
     about: { name: "", role: t(), bio: t(), availability: t(), facts: [0, 1, 2].map(() => ({ label: t(), value: t() })), email: "", linkedin: "", behance: "", portrait: "" } };
 }
@@ -86,6 +86,16 @@ function uniqueId(base, except) {
 function ptMissing(j) {
   return ["context", "challenge", "idea", "execution", "outcome"].filter((k) => j[k] && j[k].en && !j[k].pt).length + (j.link?.label?.en && !j.link.label.pt ? 1 : 0);
 }
+
+const cats = () => E.data.categories;
+const toolsReg = () => E.data.tools;
+const catName = (id) => { const c = cats().find((x) => x.id === id); return c ? tv(c.name) : id; };
+/** tool icon tinted like the site (CSS mask), or its monogram */
+function toolIcon(t) {
+  return t.icon ? h("span", { class: "ticon", style: { "--icon": `url("${url(t.icon)}")` } }) : h("span", { class: "ticon ticon--mono" }, t.mono || (t.label || "?").slice(0, 2));
+}
+function uniqueCatId(base, except) { let id = slug(base) || "categoria", n = 2; while (cats().some((c) => c !== except && c.id === id)) id = `${slug(base) || "categoria"}-${n++}`; return id; }
+function uniqueToolId(base, except) { let id = slug(base) || "ferramenta", n = 2; while (toolsReg().some((t) => t !== except && t.id === id)) id = `${slug(base) || "ferramenta"}-${n++}`; return id; }
 
 /* ───────────── change tracking, draft + preview ───────────── */
 const writeDraft = debounce(() => { try { localStorage.setItem(DRAFT_KEY, JSON.stringify(E.data)); localStorage.setItem(DIRTY_KEY, E.dirty ? "1" : "0"); } catch { /* storage full / blocked */ } }, 250);
@@ -322,10 +332,12 @@ function video(j) {
 
 /* ───────────── nav ───────────── */
 const PAGES = [
-  { type: "hero", i: "01", t: "Hero & Gate", sub: "Abertura e as 8 prévias do anel" },
-  { type: "practices", i: "02", t: "Práticas", sub: "As 4 disciplinas" },
-  { type: "process", i: "03", t: "Processo & Carreira", sub: "5 fases + anos de trajetória" },
-  { type: "about", i: "04", t: "Sobre & Contato", sub: "Cartão, foto e links" },
+  { type: "categories", i: "01", t: "Categorias", sub: "As lâminas do corredor" },
+  { type: "hero", i: "02", t: "Hero & Gate", sub: "Abertura e as 8 prévias do anel" },
+  { type: "practices", i: "03", t: "Práticas", sub: "As 4 disciplinas" },
+  { type: "process", i: "04", t: "Processo & Carreira", sub: "5 fases + anos de trajetória" },
+  { type: "about", i: "05", t: "Sobre & Contato", sub: "Cartão, foto e links" },
+  { type: "tools", i: "06", t: "Ferramentas", sub: "Ícones disponíveis para os jobs" },
 ];
 function select(sel) { E.sel = sel; renderNav(); renderMain(); reloadPreview(); $("#form").scrollTop = 0; }
 function renderNav() {
@@ -334,8 +346,8 @@ function renderNav() {
     const miss = ptMissing(j), b = h("button", { type: "button", class: "navit" + (E.sel.type === "job" && E.sel.id === j.id ? " on" : ""), draggable: "true", onclick: () => select({ type: "job", id: j.id }) },
       h("span", { class: "navit__grip", "aria-hidden": "true" }, "⋮⋮"),
       h("span", { class: "navit__th", style: { backgroundImage: j.cover && !isVideo(j.cover) ? `url("${url(j.cover)}")` : "none" } }),
-      h("span", { class: "navit__t" }, h("b", {}, j.title || "Sem título"), h("small", {}, `${pad(i + 1)} · ${j.disciplines || j.id}`)),
-      h("span", { class: "navit__f" }, !j.cover && h("span", { class: "flag", title: "Sem capa" }, "capa"), miss > 0 && h("span", { class: "flag", title: `${miss} texto(s) sem versão PT` }, "PT " + miss)));
+      h("span", { class: "navit__t" }, h("b", {}, j.title || "Sem título"), h("small", {}, `${pad(i + 1)} · ${(j.categories || []).map(catName).join(" + ") || "sem categoria"}`)),
+      h("span", { class: "navit__f" }, !(j.categories || []).length && h("span", { class: "flag", title: "Sem categoria: aparece em “Selected work”" }, "cat"), !j.cover && h("span", { class: "flag", title: "Sem capa" }, "capa"), miss > 0 && h("span", { class: "flag", title: `${miss} texto(s) sem versão PT` }, "PT " + miss)));
     b.addEventListener("dragstart", (e) => { from = i; b.classList.add("dragging"); e.dataTransfer.setData("text/x-job", j.id); e.dataTransfer.effectAllowed = "move"; });
     b.addEventListener("dragend", () => { from = -1; b.classList.remove("dragging"); });
     b.addEventListener("dragover", (e) => { if (from < 0) return; e.preventDefault(); b.classList.add("drag-over"); });
@@ -380,7 +392,14 @@ function jobForm(j) {
         field("Ano", txt(j, "year", { ph: "2025" })),
         field("Disciplinas", txt(j, "disciplines", { ph: "VFX · 3D · Compositing" }), "Separe com ·"),
         field("Cor da luz", color(j, "tint"), "Tinge a galáxia quando o job está em foco."),
-        field("Contexto — uma linha", tr(j, "context", { multi: true, rows: 2 }), null, "full"))),
+        field("Contexto — uma linha", tr(j, "context", { multi: true, rows: 2 }), null, "full"),
+        h("div", { class: "f full" }, h("span", { class: "f__l" }, "Categorias"),
+          h("div", { class: "chips" }, cats().map((c) => {
+            const cb = h("input", { type: "checkbox", checked: (j.categories || []).includes(c.id) });
+            cb.addEventListener("change", () => { j.categories = (j.categories || []).filter((x) => x !== c.id); if (cb.checked) j.categories.push(c.id); changed(); });
+            return h("label", { class: "chk" }, cb, tv(c.name) || c.id);
+          }), h("button", { class: "mini", type: "button", onclick: () => select({ type: "categories" }) }, "Gerenciar categorias")),
+          h("small", { class: "f__h" }, "O job aparece como slide dentro de cada categoria marcada. Sem categoria, vai para “Selected work”.")))),
     sec("02", "Capa", "a lâmina de vidro da galeria 3D",
       media(j, "cover", { dir: () => `media/${j.id}`, maxW: 1600, ratio: COVER_RATIO, aspect: "404/316", empty: "Recortada automaticamente na proporção da lâmina (1,28 : 1)." })),
     sec("03", "Vídeo", "o primeiro item do case", video(j)),
@@ -388,9 +407,9 @@ function jobForm(j) {
     sec("05", "Case", "Desafio → Ideia → Execução → Resultado",
       h("div", { class: "grid2" },
         ...Object.entries(lab).map(([k, l]) => field(l, tr(j, k, { multi: true, rows: 3 }))),
-        field("Função", txt(j, "role", { ph: "Direção de arte, 3D, composição" })),
-        field("Ferramentas", txt(j, "tools", { ph: "Blender, After Effects, Nuke" })))),
-    sec("06", "Link externo", "botão no final do case",
+        field("Função", txt(j, "role", { ph: "Direção de arte, 3D, composição" }), null, "full"))),
+    sec("06", "Ferramentas", "ícones no slide e no case", toolPicker(j)),
+    sec("07", "Link externo", "botão no final do case",
       h("div", { class: "grid2" },
         field("Texto do botão", tr(j.link || (j.link = { label: { en: "", pt: "" }, url: "" }), "label", { ph: "View on Behance" })),
         field("URL", h("div", { class: "row", style: { flexWrap: "nowrap" } }, txt(j.link, "url", { ph: "https://www.behance.net/gallery/…" }),
@@ -399,6 +418,78 @@ function jobForm(j) {
   ];
 }
 
+function toolPicker(j) {
+  if (!Array.isArray(j.tools)) j.tools = [];
+  const box = h("div", { class: "tpick" });
+  const draw = () => {
+    const chosen = j.tools.map((id) => toolsReg().find((t) => t.id === id)).filter(Boolean);
+    box.replaceChildren(
+      h("div", { class: "tpick__sel" }, chosen.length ? chosen.map((t) => h("span", { class: "tchip on" }, toolIcon(t), t.label)) : h("small", { class: "f__h" }, "Nenhuma ferramenta marcada.")),
+      h("div", { class: "tpick__all" }, toolsReg().map((t) => h("button", { type: "button", class: "tchip" + (j.tools.includes(t.id) ? " on" : ""), title: t.label,
+        onclick: () => { j.tools = j.tools.includes(t.id) ? j.tools.filter((x) => x !== t.id) : [...j.tools, t.id]; changed(); draw(); } }, toolIcon(t), t.label))),
+      h("div", { class: "row" }, h("small", { class: "f__h" }, "A ordem segue a ordem dos cliques. Falta alguma?"), h("button", { class: "mini", type: "button", onclick: () => select({ type: "tools" }) }, "Gerenciar ferramentas")));
+  };
+  draw(); return box;
+}
+function categoriesForm() {
+  const list = cats();
+  const move = (i, d) => { const k = i + d; if (k < 0 || k >= list.length) return; [list[i], list[k]] = [list[k], list[i]]; changed(); renderMain(); };
+  return [h("p", { class: "intro" }, "Cada categoria é uma lâmina no corredor 3D; ao entrar nela, os jobs viram slides laterais. Categorias sem jobs ficam escondidas no site. Um job pode estar em mais de uma."),
+    h("div", { class: "row", style: { marginBottom: "14px" } }, h("button", { class: "btn", type: "button", onclick: () => {
+      list.push({ id: uniqueCatId("nova-categoria"), name: { en: "", pt: "" }, text: { en: "", pt: "" }, cover: "", tint: "#8fd8ff" }); changed(); renderMain();
+      setTimeout(() => { const f = $("#form"); f.scrollTop = f.scrollHeight; }, 30); } }, "+ Nova categoria")),
+    ...list.map((c, i) => {
+      const members = jobs().filter((j) => (j.categories || []).includes(c.id));
+      let armed = false;
+      const del = h("button", { class: "mini warn", type: "button", onclick: () => {
+        if (!armed) { armed = true; del.textContent = "Clique de novo"; setTimeout(() => { armed = false; del.textContent = "Excluir"; }, 3000); return; }
+        list.splice(i, 1); jobs().forEach((j) => { j.categories = (j.categories || []).filter((x) => x !== c.id); }); changed(); renderMain(); } }, "Excluir");
+      const idIn = h("input", { class: "in", value: c.id, spellcheck: "false" });
+      idIn.addEventListener("change", () => { const old = c.id, nid = uniqueCatId(idIn.value, c); idIn.value = nid; if (nid === old) return; c.id = nid; jobs().forEach((j) => { j.categories = (j.categories || []).map((x) => (x === old ? nid : x)); }); changed(); });
+      return h("section", { class: "sec" },
+        h("header", { class: "sec__h" }, h("i", {}, pad(i + 1)), h("b", {}, tv(c.name) || "Nova categoria"), h("small", {}, `${members.length} job(s)`),
+          h("button", { class: "mini", type: "button", title: "Subir", onclick: () => move(i, -1) }, "↑"), h("button", { class: "mini", type: "button", title: "Descer", onclick: () => move(i, 1) }, "↓"), del),
+        h("div", { class: "sec__b" },
+          h("div", { class: "grid2" },
+            h("div", { class: "f", style: { alignContent: "start", gap: "12px" } },
+              field("Nome", tr(c, "name", { ph: "Motion Design" })),
+              field("Frase", tr(c, "text", { multi: true, rows: 2 })),
+              h("div", { class: "grid2" }, field("ID", idIn, "Usado no link ?cat=<id>."), field("Cor da luz", color(c, "tint")))),
+            field("Capa da categoria", media(c, "cover", { dir: () => "media/categories", maxW: 1600, ratio: COVER_RATIO, aspect: "404/316", empty: "Vazia: usa a capa do primeiro job." }))),
+          h("div", { class: "f" }, h("span", { class: "f__l" }, "Jobs nesta categoria"),
+            h("div", { class: "chips" }, jobs().map((j) => {
+              const cb = h("input", { type: "checkbox", checked: (j.categories || []).includes(c.id) });
+              cb.addEventListener("change", () => { j.categories = (j.categories || []).filter((x) => x !== c.id); if (cb.checked) j.categories.push(c.id); changed(); });
+              return h("label", { class: "chk" }, cb, j.title || j.id);
+            })),
+            h("small", { class: "f__h" }, "A ordem dos slides segue a ordem da lista de jobs (arraste na barra lateral)."))));
+    })];
+}
+function toolsForm() {
+  const list = toolsReg();
+  return [h("p", { class: "intro" }, "Biblioteca de ferramentas que aparecem como ícones nos jobs. Sem ícone, o site mostra o monograma (como no portfólio anterior). Ícones de uma cor só (SVG ou PNG transparente) ficam melhores: o site os pinta na cor da interface."),
+    h("div", { class: "row", style: { marginBottom: "14px" } }, h("button", { class: "btn", type: "button", onclick: () => {
+      list.push({ id: uniqueToolId("nova-ferramenta"), label: "", mono: "", icon: "" }); changed(); renderMain(); setTimeout(() => { const f = $("#form"); f.scrollTop = f.scrollHeight; }, 30); } }, "+ Nova ferramenta")),
+    h("div", { class: "tgrid" }, list.map((t, i) => {
+      const used = jobs().filter((j) => (j.tools || []).includes(t.id)).length;
+      const prev = h("span", { class: "tgrid__pv" }, toolIcon(t));
+      const redraw = () => prev.replaceChildren(toolIcon(t));
+      let armed = false;
+      const del = h("button", { class: "mini warn", type: "button", onclick: () => {
+        if (!armed) { armed = true; del.textContent = "Confirmar"; setTimeout(() => { armed = false; del.textContent = "Excluir"; }, 3000); return; }
+        list.splice(i, 1); jobs().forEach((j) => { j.tools = (j.tools || []).filter((x) => x !== t.id); }); changed(); renderMain(); } }, "Excluir");
+      const icon = h("div", { class: "row" },
+        h("button", { class: "mini", type: "button", onclick: async () => { const f = await pick({ accept: "image/svg+xml,image/png,image/webp" }); if (!f.length) return;
+          const [p] = await importFiles(f, { dir: "tools", maxW: 256, videos: false }); if (p) { t.icon = p; changed(); redraw(); } } }, t.icon ? "Trocar ícone" : "Importar ícone"),
+        h("button", { class: "mini", type: "button", onclick: () => { t.icon = ""; changed(); redraw(); } }, "Sem ícone"));
+      return h("div", { class: "card" },
+        h("div", { class: "card__h" }, prev, h("span", { style: { flex: "1" } }, t.label || "Nova ferramenta"), h("small", { class: "f__h" }, used ? `${used} job(s)` : ""), del),
+        h("div", { class: "grid2" },
+          field("Nome", txt(t, "label", { ph: "After Effects", onInput: (v) => { if (/^nova-ferramenta/.test(t.id) && v.trim()) t.id = uniqueToolId(v, t); } })),
+          field("Monograma", txt(t, "mono", { ph: "Ae", onInput: redraw }))),
+        icon);
+    }))];
+}
 function heroForm() {
   const d = E.data;
   return [
@@ -476,7 +567,7 @@ function renderMain() {
     title = j.title || "Sem título"; crumb = "Jobs"; form.replaceChildren(...jobForm(j));
   } else {
     const p = PAGES.find((x) => x.type === sel.type); title = p.t; crumb = "Site";
-    form.replaceChildren(...({ hero: heroForm, practices: practicesForm, process: processForm, about: aboutForm })[sel.type]());
+    form.replaceChildren(...({ categories: categoriesForm, tools: toolsForm, hero: heroForm, practices: practicesForm, process: processForm, about: aboutForm })[sel.type]());
   }
   $("#barTitle").textContent = title; $("#crumb").textContent = crumb + " · textos em " + E.lang.toUpperCase();
 }
@@ -487,6 +578,7 @@ function previewURL() {
   const s = E.sel;
   if (s.type === "job") q.push("case=" + encodeURIComponent(s.id));
   else if (s.type === "hero") { /* gate first: the previews are visible */ }
+  else if (s.type === "categories" || s.type === "tools") { const c = cats().find((x) => jobs().some((j) => (j.categories || []).includes(x.id))); q.push(c ? "cat=" + encodeURIComponent(c.id) : "skip"); }
   else q.push("at=" + ({ practices: "practice", process: "process", about: "about" })[s.type]);
   return SITE + "index.html?" + q.join("&");
 }
@@ -516,7 +608,13 @@ function normalize(d) {
   d.format = "finetune-portfolio/1";
   for (const k of ["hero", "about"]) d[k] = { ...b[k], ...(d[k] || {}) };
   for (const k of ["gate", "practices", "process"]) { const arr = Array.isArray(d[k]) ? d[k] : []; d[k] = b[k].map((x, i) => ({ ...x, ...(arr[i] || {}) })); }
-  d.jobs = (Array.isArray(d.jobs) ? d.jobs : []).map((j) => ({ ...blankJob(j.id || "job"), ...j, gallery: Array.isArray(j.gallery) ? j.gallery : [] }));
+  d.categories = Array.isArray(d.categories) ? d.categories : [];
+  d.tools = Array.isArray(d.tools) ? d.tools : [];
+  const byLabel = (name) => d.tools.find((t) => t.label.toLowerCase() === name.trim().toLowerCase());
+  d.jobs = (Array.isArray(d.jobs) ? d.jobs : []).map((j) => ({ ...blankJob(j.id || "job"), ...j, gallery: Array.isArray(j.gallery) ? j.gallery : [],
+    categories: Array.isArray(j.categories) ? j.categories : [],
+    // older drafts kept tools as free text: map the names that exist in the registry
+    tools: Array.isArray(j.tools) ? j.tools : String(j.tools || "").split(/[,·;]/).map(byLabel).filter(Boolean).map((t) => t.id) }));
   return d;
 }
 async function boot() {

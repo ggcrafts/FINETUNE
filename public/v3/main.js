@@ -1,6 +1,8 @@
 // FineTune v3 — Observatory prototype: focus-ring gate + 3D glass gallery.
 // Raw WebGL2, no dependencies. Scroll drives a camera through a galaxy
-// corridor; each project is a glass pane that docks in front of the lens.
+// corridor; each category is a glass pane that docks in front of the lens, and opens into a
+// lateral carousel of its works.
+import { createLineWaves } from "./lines.js";
 
 const PROJECTS = [
   { slug: "hbo-bff", title: "HBO Max — BFF Nossa Voz", disc: "VFX · 3D · Compositing", ctx: "VFX, 3D and compositing for an HBO Max campaign piece.", pt: "VFX, 3D e composição para uma peça de campanha da HBO Max.", tint: [0.62, 0.48, 1.0] },
@@ -61,6 +63,33 @@ if (Array.isArray(C.jobs) && C.jobs.length) {
     tint: hex3(j.tint, TINTS[i % TINTS.length]), cover: j.cover || "", job: j }));
 }
 PROJECTS.forEach((p) => { if (p.cover === undefined) p.cover = `covers/${p.slug}.webp`; if (!p.job) p.job = {}; });
+// tool registry (icons in ./tools/; tools without an icon show their monogram, as in v2)
+const TOOLS = new Map((Array.isArray(C.tools) ? C.tools : []).map((t) => [t.id, t]));
+PROJECTS.forEach((p) => { p.tools = (Array.isArray(p.job.tools) ? p.job.tools : []).filter((id) => TOOLS.has(id)); });
+// categories: the corridor shows categories; each one opens into a lateral carousel of its jobs.
+// Empty categories are hidden; jobs without a category land in "Selected work".
+const CATS = [];
+(Array.isArray(C.categories) ? C.categories : []).forEach((c) => {
+  const jobs = PROJECTS.map((p, k) => ((p.job.categories || []).includes(c.id) ? k : -1)).filter((k) => k >= 0);
+  if (!jobs.length) return;
+  CATS.push({ id: c.id, name: tx(c.name, "en"), nameP: tx(c.name, "pt"), text: tx(c.text, "en"), textP: tx(c.text, "pt"),
+    cover: c.cover || PROJECTS[jobs[0]].cover, tint: hex3(c.tint, PROJECTS[jobs[0]].tint), jobs });
+});
+const ORPHANS = PROJECTS.map((_, k) => k).filter((k) => !CATS.some((c) => c.jobs.includes(k)));
+if (ORPHANS.length) CATS.push({ id: "selected-work", name: "Selected work", nameP: "Trabalhos selecionados", text: "", textP: "", cover: PROJECTS[ORPHANS[0]].cover, tint: PROJECTS[ORPHANS[0]].tint, jobs: ORPHANS });
+function toolChips(ids, labels) {
+  const frag = document.createDocumentFragment();
+  ids.forEach((id) => {
+    const t = TOOLS.get(id); if (!t) return;
+    const el = document.createElement("span"), ic = document.createElement("span");
+    el.className = "tool" + (labels ? " tool--l" : ""); el.title = t.label; ic.className = "tool__ic";
+    if (t.icon) { ic.style.setProperty("--icon", `url("./${t.icon}")`); el.classList.add("has-icon"); } else ic.textContent = t.mono || t.label.slice(0, 2);
+    el.append(ic);
+    if (labels) { const l = document.createElement("span"); l.className = "tool__l"; l.textContent = t.label; el.append(l); } else el.setAttribute("aria-label", t.label);
+    frag.append(el);
+  });
+  return frag;
+}
 PRACTICES.forEach((p, i) => { p.img = `practice/practice-0${i + 1}.webp`; });
 (C.practices || []).slice(0, PRACTICES.length).forEach((c, i) => {
   const p = PRACTICES[i];
@@ -92,7 +121,7 @@ function applyContent() {
   show(1, a.linkedin, (a.linkedin || "").replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "") + " ↗");
   show(2, a.behance, (a.behance || "").replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "") + " ↗");
 }
-const N = PROJECTS.length;
+const N = CATS.length;
 const PLATE_TINT = [0.60, 0.80, 1.0];
 const D = 11;                       // world spacing between panes
 const PW = 2.72, PH = 2.13;         // pane size (cover aspect 404:316)
@@ -117,7 +146,8 @@ const I18N = {
     n2: "Processo & linha do tempo", n2d: "Uma única trilha de luz atravessando 12 anos de trabalho",
     n3: "Sobre & contato", n3d: "Retrato, assinatura em escala gigante, “Observe. Create. Refine.”",
     talk: "Vamos conversar", phMedia: "Placeholder — vídeo / breakdown entra aqui",
-    cChallenge: "Desafio", cIdea: "Ideia", cExec: "Execução", cOutcome: "Resultado", cRole: "Função", cTools: "Ferramentas", cMore: "Ver projeto" },
+    cChallenge: "Desafio", cIdea: "Ideia", cExec: "Execução", cOutcome: "Resultado", cRole: "Função", cTools: "Ferramentas", cMore: "Ver projeto",
+    catBack: "Todas as categorias", catHint: "Role ou arraste para explorar", catWord: "Categoria", works: "trabalhos", work: "trabalho", explore: "Explorar", openCase: "Abrir case" },
 };
 const $ = (s) => document.querySelector(s);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -130,6 +160,7 @@ const S = {
   p: 0, pT: 0, time: 0, motion: !matchMedia("(prefers-reduced-motion: reduce)").matches,
   hole: null, abV: 0, psIdx: -1, psV: 0, stF: 0, stS: 0, post: 0, tlV: 0, tlP: 0,
   prIdx: -1, prFrom: 0, prTo: 0, prT: 1, prQ: 0, prV: 0, prIn: 0,
+  cat: -1, catShown: -1, catT: 0, slide: 0, slideT: 0, capKey: "",
   mx: 0, my: 0, mxT: 0, myT: 0, hover: 0, hoverT: 0, lang: "en", active: -2, past: false, caseOpen: false,
 };
 
@@ -475,8 +506,9 @@ function initGL() {
     return t;
   };
   const tex = PROJECTS.map((pr) => loadTex(pr.cover ? "./" + pr.cover : null));
+  const ctex = CATS.map((c) => loadTex(c.cover ? "./" + c.cover : null));
   const ptex = PRACTICES.map((p) => loadTex(p.img ? "./" + p.img : null));
-  R = { bh, ps, psVao, PARTS, bg, pane, tr, st, bgVao, paneVao, trVao, stVao, TRAILS, SEG, STARS, ghosts, tex, ptex };
+  R = { ctex, bh, ps, psVao, PARTS, bg, pane, tr, st, bgVao, paneVao, trVao, stVao, TRAILS, SEG, STARS, ghosts, tex, ptex };
 }
 
 let W = 1, H = 1, DPR = 1, dockD = 4.4;
@@ -518,13 +550,14 @@ function readScroll() {
 }
 const easeStop = (p) => { const s = Math.floor(p), f = p - s; return s + mix(f, f * f * f * (f * (6 * f - 15) + 10), 0.8); };
 function tintAt(pe) {
-  const list = [PLATE_TINT, ...PROJECTS.map((p) => p.tint)];
+  const list = [PLATE_TINT, ...CATS.map((c) => c.tint)];
+  const jt = S.catShown >= 0 ? PROJECTS[CATS[S.catShown].jobs[clamp(Math.round(S.slide), 0, CATS[S.catShown].jobs.length - 1)]].tint : PLATE_TINT;
   const i = clamp(Math.floor(pe), 0, N), j = Math.min(N, i + 1), f = sstep(0.15, 0.85, pe - i);
   const pt = PRACTICES[Math.max(0, S.prIdx)].tint;
   const a = Math.floor(S.stS), b = Math.min(4, a + 1), g = S.stS - a;
   const proc = [0, 1, 2].map((k) => mix(PROCESS[a].tint[k], PROCESS[b].tint[k], g));
   const warm = [1.0, 0.78, 0.52], cool = [0.6, 0.8, 1.0], tl = [0, 1, 2].map((k) => mix(cool[k], warm[k], S.tlP));
-  return [0, 1, 2].map((k) => mix(mix(mix(mix(list[i][k], list[j][k], f), pt[k], S.prV), proc[k], S.psV), tl[k], S.tlV));
+  return [0, 1, 2].map((k) => mix(mix(mix(mix(mix(list[i][k], list[j][k], f), jt[k], S.catT), pt[k], S.prV), proc[k], S.psV), tl[k], S.tlV));
 }
 
 /* per-frame pane pose */
@@ -544,7 +577,21 @@ function panePose(i, camZ) {
   return { z, d, x, y, ry, alpha, dim, blur, sc };
 }
 
-const hit = $("#hit"), cap = $("#cap"), plate = $("#plate");
+// a job inside an open category: a lateral row of glass panes at the docked plane, the
+// current one centred; neighbours recede, turn and blur (they fly out of the category pane)
+function jobPose(k, cz) {
+  const e = sstep(0, 1, S.catT), dd = k - S.slide, ad = Math.abs(dd), SP = PW * 1.14;
+  return { x: dd * SP * mix(0.2, 1, e) + Math.sign(dd) * Math.max(0, ad - 1) * 0.25, y: 0.1, z: cz - (1 - e) * 2.4 - Math.min(ad, 2.5) * 0.85,
+    ry: -clamp(dd, -1.4, 1.4) * 0.42, sc: mix(0.72, 1, e) * (1 - Math.min(ad, 1) * 0.1), alpha: e * sstep(3.2, 1.7, ad),
+    dim: mix(1, 0.4, Math.min(ad, 1)), blur: Math.min(ad, 2.2) * 1.5 + (1 - e) * 2.2 };
+}
+function rectOf(VP, pose) {
+  const Mm = M.mul(VP, M.mul(M.trans(pose.x, pose.y, pose.z), M.mul(M.rotY(pose.ry), M.scale(PW * pose.sc, PH * pose.sc))));
+  const a = M.xf(Mm, -.5, .5), b = M.xf(Mm, .5, -.5);
+  return { l: (a[0] * .5 + .5) * innerWidth, t: (1 - (a[1] * .5 + .5)) * innerHeight, r: (b[0] * .5 + .5) * innerWidth, b: (1 - (b[1] * .5 + .5)) * innerHeight };
+}
+const hit = $("#hit"), cap = $("#cap"), plate = $("#plate"), flankL = $("#flankL"), flankR = $("#flankR");
+const waves = createLineWaves({ live: () => S.entered && S.motion && !S.hole });
 function frame(now) {
   requestAnimationFrame(frame);
   if (document.hidden) return;
@@ -554,6 +601,9 @@ function frame(now) {
   S.p = S.motion ? mix(S.p, S.pT, clamp(k * 0.75, 0, 1)) : S.pT;
   S.focusT = S.entered ? 1 : S.gateNear * 0.28;
   S.focus = mix(S.focus, S.focusT, clamp(k * (S.entered ? 0.32 : 0.6), 0, 1));
+  S.catT = S.motion ? mix(S.catT, S.cat >= 0 ? 1 : 0, clamp(k * 0.45, 0, 1)) : (S.cat >= 0 ? 1 : 0);
+  if (S.cat < 0 && S.catT < 0.004) { S.catT = 0; S.catShown = -1; }
+  S.slide = S.motion ? mix(S.slide, S.slideT, clamp(k * 0.6, 0, 1)) : S.slideT;
   S.mx = mix(S.mx, S.mxT, k * 0.5); S.my = mix(S.my, S.myT, k * 0.5); S.hover = mix(S.hover, S.hoverT, k);
 
   const pe = easeStop(S.p), fo = S.focus, enter = sstep(0, 1, fo), shard = S.entered ? sstep(0.3, 0.95, fo) : 0;
@@ -572,19 +622,25 @@ function frame(now) {
   const settle = 1 - Math.min(1, Math.abs(S.p - Math.round(S.p)) * 2.6);  // 1 when resting on a stop
   plate.style.setProperty("--o", (S.entered && !S.past ? sstep(0.55, 0, S.p) * sstep(0.6, 1, fo) : 0).toFixed(3));
   if (active !== S.active) { S.active = active; onActive(active); }
-  const showCap = active >= 0 && settle > 0.45;
-  cap.classList.toggle("on", showCap); hit.classList.toggle("on", active >= 0 && settle > 0.7);
-  $("#pager").style.opacity = S.past ? 0 : "";
-  if (active >= 0) {
-    const pose = panePose(active, camZ);
-    if (pose) {
-      const Mm = M.mul(VP, M.mul(M.trans(pose.x, pose.y, pose.z), M.mul(M.rotY(pose.ry), M.scale(PW * pose.sc, PH * pose.sc))));
-      const a = M.xf(Mm, -.5, .5), b = M.xf(Mm, .5, -.5);
-      const l = (a[0] * .5 + .5) * innerWidth, t = (1 - (a[1] * .5 + .5)) * innerHeight, r = (b[0] * .5 + .5) * innerWidth, bt = (1 - (b[1] * .5 + .5)) * innerHeight;
-      hit.style.transform = `translate(${l}px,${t}px)`; hit.style.width = r - l + "px"; hit.style.height = bt - t + "px";
-      cap.style.transform = `translate(${Math.max(16, l)}px,${Math.min(innerHeight - 150, bt + 20)}px)`;
-    }
+  const inCat = S.cat >= 0, cur = inCat ? clamp(Math.round(S.slideT), 0, CATS[S.cat].jobs.length - 1) : -1;
+  const key = `${active}|${S.cat}|${cur}|${S.lang}`; if (key !== S.capKey) { S.capKey = key; renderCap(active, cur); }
+  const slideSettle = inCat ? 1 - Math.min(1, Math.abs(S.slide - S.slideT) * 3) : 0;
+  const showCap = inCat ? S.catT > 0.6 && slideSettle > 0.5 : active >= 0 && settle > 0.45 && S.catT < 0.2;
+  cap.classList.toggle("on", showCap); hit.classList.toggle("on", inCat ? S.catT > 0.7 && slideSettle > 0.6 : active >= 0 && settle > 0.7 && S.catT < 0.2);
+  $("#pager").style.opacity = S.past || S.catT > 0.1 ? 0 : "";
+  let rc = null;
+  if (inCat || S.catShown >= 0) { if (S.catShown >= 0) rc = rectOf(VP, jobPose(clamp(Math.round(S.slide), 0, CATS[S.catShown].jobs.length - 1), -(S.catShown + 1) * D)); }
+  else if (active >= 0) { const pose = panePose(active, camZ); if (pose) rc = rectOf(VP, pose); }
+  if (rc) {
+    hit.style.transform = `translate(${rc.l}px,${rc.t}px)`; hit.style.width = rc.r - rc.l + "px"; hit.style.height = rc.b - rc.t + "px";
+    cap.style.transform = `translate(${Math.max(16, rc.l)}px,${Math.min(innerHeight - 150, rc.b + 20)}px)`;
+    // the signature lines frame whatever is docked in front of the lens
+    const fh = rc.b - rc.t + 140, ft = rc.t - 70, gap = Math.max(18, (rc.r - rc.l) * 0.035);
+    flankL.style.transform = `translate(${rc.l - gap}px,${ft}px)`; flankR.style.transform = `translate(${rc.r + gap}px,${ft}px)`; flankL.style.height = flankR.style.height = fh + "px";
   }
+  const flankOn = rc && (inCat ? S.catT > 0.7 : settle > 0.75 && active >= 0) && !S.caseOpen;
+  flankL.classList.toggle("on", !!flankOn); flankR.classList.toggle("on", !!flankOn);
+  waves.tick(dt);
   updateRail();
   const plateOn = S.entered && !S.past && S.p < 0.6;
   if (plateOn && !S.caseOpen) { tickForm(dt); if (S.motion) tickAccent(dt); }
@@ -613,7 +669,11 @@ function frame(now) {
   for (let i = 0; i < R.TRAILS; i++) gl.drawArrays(gl.TRIANGLE_STRIP, i * R.SEG * 2, R.SEG * 2);
   // panes + ghosts, far → near
   const list = [];
-  for (let i = 0; i < N; i++) { const p = panePose(i, camZ); if (p) p.alpha *= (1 - sstep(0.1, 0.8, S.prIn)) * shard; if (p && p.alpha > 0.01 && p.d < 60) list.push({ ...p, i, ghost: 0 }); }
+  for (let i = 0; i < N; i++) { const p = panePose(i, camZ); if (p) p.alpha *= (1 - sstep(0.1, 0.8, S.prIn)) * shard * (1 - S.catT); if (p && p.alpha > 0.01 && p.d < 60) list.push({ ...p, i, ghost: 0 }); }
+  if (S.catShown >= 0 && S.catT > 0.01) {
+    const cz = -(S.catShown + 1) * D;
+    CATS[S.catShown].jobs.forEach((ji, kk) => { const p = jobPose(kk, cz); if (p.alpha > 0.01) list.push({ ...p, d: camZ - p.z, i: ji, kk, job: 1, ghost: 0 }); });
+  }
   for (const g of R.ghosts) { const d = (((camZ - g.z) % 108) + 108) % 108; if (d > 0.6 && d < 46) list.push({ ...g, z: camZ - d, d, ghost: 1 }); }
   list.sort((a, b) => b.d - a.d);
   gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
@@ -630,13 +690,13 @@ function frame(now) {
       gl.uniform1f(R.pane.u.uHover, 0); gl.uniform1f(R.pane.u.uDim, 1);
     } else {
       w = PW * o.sc; h = PH * o.sc;
-      const isA = o.i === active ? S.hover : 0;
-      m = M.mul(M.trans(o.x, o.y, o.z), M.mul(M.rotY(o.ry + (o.i === active ? S.mx * .05 : 0)), M.mul(M.rotX(o.i === active ? -S.my * .035 : 0), M.scale(w, h))));
+      const front = o.job ? o.kk === Math.round(S.slide) : o.i === active, isA = front ? S.hover : 0;
+      m = M.mul(M.trans(o.x, o.y, o.z), M.mul(M.rotY(o.ry + (front ? S.mx * .05 : 0)), M.mul(M.rotX(front ? -S.my * .035 : 0), M.scale(w, h))));
       gl.uniform1f(R.pane.u.uGhost, 0); gl.uniform1f(R.pane.u.uAlpha, o.alpha); gl.uniform1f(R.pane.u.uBlur, o.blur + defocus);
       gl.uniform1f(R.pane.u.uDim, o.dim * mix(.5, 1, enter)); gl.uniform1f(R.pane.u.uHover, isA);
-      gl.bindTexture(gl.TEXTURE_2D, R.tex[o.i]);
+      gl.bindTexture(gl.TEXTURE_2D, o.job ? R.tex[o.i] : R.ctex[o.i]);
     }
-    gl.uniform2f(R.pane.u.uSize, w, h); gl.uniform1f(R.pane.u.uSeed, o.ghost ? o.seed : o.i * .137);
+    gl.uniform2f(R.pane.u.uSize, w, h); gl.uniform1f(R.pane.u.uSeed, o.ghost ? o.seed : o.i * .137 + (o.job ? .5 : 0));
     gl.uniformMatrix4fv(R.pane.u.uMVP, false, M.mul(VP, m));
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
@@ -694,7 +754,7 @@ function buildRows() {
     const chips = li.querySelector(".chips");
     (p.rel.length ? p.rel : [-1]).forEach((i) => { const b = document.createElement("button"); b.type = "button";
       if (i < 0) { b.textContent = pt ? "Case placeholder" : "Case placeholder"; b.disabled = true; b.style.opacity = ".5"; }
-      else { b.textContent = PROJECTS[i].title.split(" — ").pop(); b.onclick = () => goTo(i + 1); }
+      else { b.textContent = PROJECTS[i].title.split(" — ").pop(); b.onclick = () => showJob(i); }
       chips.appendChild(b); });
     rows.appendChild(li);
   });
@@ -780,20 +840,81 @@ const pad = (n) => String(n).padStart(2, "0");
 function onActive(i) {
   $("#count").textContent = pad(Math.max(0, i + 1));
   document.querySelectorAll("#pager li").forEach((li, k) => li.classList.toggle("on", k === i + 1));
-  if (i < 0) return;
-  const pr = PROJECTS[i];
-  $("#capIdx").textContent = pad(i + 1); $("#capDisc").textContent = pr.disc; $("#capTitle").textContent = pr.title;
-  $("#capCtx").textContent = S.lang === "pt" ? pr.pt : pr.ctx;
-  document.documentElement.style.setProperty("--tint", `rgb(${pr.tint.map((v) => Math.round(v * 255)).join(",")})`);
-  hit.style.setProperty("--cover", pr.cover ? `url(./${pr.cover})` : "none");
 }
+const L = () => (S.lang === "pt" ? "pt" : "en"), i18 = (k, en) => (S.lang === "pt" ? I18N.pt[k] : en);
+// caption under whatever is docked: a category (corridor) or a job (inside a category)
+function renderCap(active, cur) {
+  const tools = $("#capTools"), cta = $("#capCta"), tag = hit.querySelector(".hit__tag");
+  if (S.cat >= 0) {
+    const c = CATS[S.cat], ji = c.jobs[cur], pr = PROJECTS[ji];
+    $("#capIdx").textContent = `${pad(cur + 1)} / ${pad(c.jobs.length)}`; $("#capDisc").textContent = pr.disc; $("#capTitle").textContent = pr.title;
+    $("#capCtx").textContent = L() === "pt" ? pr.pt : pr.ctx; tools.replaceChildren(toolChips(pr.tools, false)); cta.textContent = "";
+    tag.textContent = i18("openCase", "Open case");
+    $("#catCount").textContent = `${pad(cur + 1)} / ${pad(c.jobs.length)}`;
+    document.querySelectorAll("#catDots button").forEach((d, k) => d.classList.toggle("on", k === cur));
+    hit.style.setProperty("--cover", pr.cover ? `url(./${pr.cover})` : "none"); hit.setAttribute("aria-label", pr.title);
+    setTint(pr.tint);
+  } else if (active >= 0) {
+    const c = CATS[active], n = c.jobs.length;
+    $("#capIdx").textContent = `${pad(active + 1)} / ${pad(N)}`; $("#capDisc").textContent = i18("catWord", "Category");
+    $("#capTitle").textContent = L() === "pt" ? c.nameP : c.name; $("#capCtx").textContent = L() === "pt" ? c.textP : c.text;
+    tools.replaceChildren(); cta.textContent = `${n} ${n === 1 ? i18("work", "work") : i18("works", "works")} · ${i18("explore", "Explore")} →`;
+    tag.textContent = i18("explore", "Explore");
+    hit.style.setProperty("--cover", c.cover ? `url(./${c.cover})` : "none"); hit.setAttribute("aria-label", (L() === "pt" ? c.nameP : c.name) + " — " + i18("explore", "Explore"));
+    setTint(c.tint);
+  }
+}
+const setTint = (t) => document.documentElement.style.setProperty("--tint", `rgb(${t.map((v) => Math.round(v * 255)).join(",")})`);
+
+/* ───────────── category carousel ───────────── */
+function openCat(k, at = 0) {
+  if (!CATS[k]) return;
+  const c = CATS[k]; S.cat = k; S.catShown = k; S.slideT = clamp(at, 0, c.jobs.length - 1); if (S.catT < 0.05) S.slide = S.slideT;
+  document.body.classList.add("is-cat");
+  $("#catName").textContent = L() === "pt" ? c.nameP : c.name;
+  $("#catDots").replaceChildren(...c.jobs.map((ji, i) => { const b = document.createElement("button"); b.type = "button"; b.setAttribute("aria-label", PROJECTS[ji].title); b.onclick = () => slideTo(i); return b; }));
+  S.capKey = "";
+  setTimeout(() => { waves.trace(flankL, { strength: 1 }); waves.trace(flankR, { strength: 1, up: true }); }, 420);
+}
+function closeCat() { if (S.cat < 0) return; S.cat = -1; document.body.classList.remove("is-cat"); S.capKey = ""; }
+function slideTo(i) {
+  if (S.cat < 0) return; const n = CATS[S.cat].jobs.length, t = clamp(i, 0, n - 1); if (t === Math.round(S.slideT)) return;
+  S.slideT = t; setTimeout(() => waves.trace(t > S.slide ? flankR : flankL, { strength: 0.7, up: t < S.slide }), 160);
+}
+/** jump straight to a job: its category, opened at its slide */
+function showJob(ji) {
+  const k = CATS.findIndex((c) => c.jobs.includes(ji)); if (k < 0) return;
+  if (!S.entered) enter();
+  scrollTo({ top: (k + 1) * unit() + 1, behavior: "auto" }); readScroll(); S.p = S.pT; openCat(k, CATS[k].jobs.indexOf(ji)); S.slide = S.slideT;
+}
+// wheel / trackpad: slides sideways; past the last work it carries on to the next category
+let snapT = 0, over = 0, overAt = 0;
+addEventListener("wheel", (e) => {
+  if (S.cat < 0 || S.caseOpen) return;
+  e.preventDefault();
+  const unitPx = e.deltaMode === 1 ? 40 : e.deltaMode === 2 ? innerHeight : 1;
+  const d = (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * unitPx, lim = CATS[S.cat].jobs.length - 1;
+  if (performance.now() - overAt > 700) over = 0;
+  let t = S.slideT + d / 520;
+  if (t > lim + 0.3) { over += t - (lim + 0.3); t = lim + 0.3; overAt = performance.now(); } else if (t < -0.3) { over -= -0.3 - t; t = -0.3; overAt = performance.now(); } else over = 0;
+  S.slideT = t;
+  if (over > 0.7) { const next = S.cat + 2; over = 0; closeCat(); goTo(Math.min(N + 1, next)); return; }
+  if (over < -0.7) { over = 0; closeCat(); return; }
+  clearTimeout(snapT); snapT = setTimeout(() => { const r = clamp(Math.round(S.slideT), 0, lim); S.slideT = S.slide; slideTo(r); S.slideT = r; }, 140);
+}, { passive: false });
+// drag / swipe
+let drag = null;
+addEventListener("pointerdown", (e) => { if (S.cat < 0 || S.caseOpen || e.button !== 0 || e.target.closest("button:not(#hit),a,.catui")) return; drag = { x: e.clientX, s: S.slideT, moved: false }; });
+addEventListener("pointermove", (e) => { if (!drag) return; const dx = e.clientX - drag.x; if (Math.abs(dx) > 6) drag.moved = true; if (drag.moved) S.slideT = clamp(drag.s - dx / (innerWidth * 0.32), -0.3, CATS[S.cat].jobs.length - 0.7); });
+addEventListener("pointerup", () => { if (!drag) return; const d = drag; drag = null; if (!d.moved) return; hit.dataset.dragged = "1"; setTimeout(() => delete hit.dataset.dragged, 50);
+  const r = clamp(Math.round(S.slideT + Math.sign(S.slideT - d.s) * 0.25), 0, CATS[S.cat].jobs.length - 1); S.slideT = S.slide; slideTo(r); S.slideT = r; });
 function goTo(stop) { scrollTo({ top: stop * unit() + 1, behavior: S.motion ? "smooth" : "auto" }); }
 
 // pager
 const pager = $("#pager");
-["Intro", ...PROJECTS.map((p) => p.title.split(" — ").pop())].forEach((label, k) => {
+["Intro", ...CATS.map((c) => c.name)].forEach((label, k) => {
   const li = document.createElement("li"), b = document.createElement("button");
-  b.type = "button"; b.textContent = label; b.setAttribute("aria-label", label); b.onclick = () => goTo(k); li.appendChild(b); pager.appendChild(li);
+  b.type = "button"; b.textContent = label; b.setAttribute("aria-label", label); b.onclick = () => { closeCat(); goTo(k); }; li.appendChild(b); pager.appendChild(li);
 });
 $("#total").textContent = "/ " + pad(N);
 $("#gallery").style.setProperty("--stops", N + 1);
@@ -850,23 +971,34 @@ function openCase(i) { const pr = PROJECTS[i]; if (!pr) return;
     if (it.kind === "img") { const im = new Image(); im.src = it.src; im.alt = ""; im.loading = "lazy"; b.append(im); } else { const sp = document.createElement("span"); sp.className = "play"; sp.textContent = "Video"; b.append(sp); }
     b.onclick = () => showStage(k); return b; }) : []));
   $("#caseDisc").textContent = pr.disc; $("#caseTitle").textContent = pr.title;
-  $("#caseMeta").textContent = [j.client, j.year].filter(Boolean).join(" · ");
+  const ck = CATS.find((c) => c.jobs.includes(i)); $("#caseMeta").textContent = [ck && (L === "pt" ? ck.nameP : ck.name), j.client, j.year].filter(Boolean).join(" · ");
   $("#caseCtx").textContent = L === "pt" ? pr.pt : pr.ctx;
   let any = false;
   document.querySelectorAll("#caseDl > div").forEach((row) => { const t = tx(j[row.dataset.k], L); row.hidden = !t; row.lastElementChild.textContent = t; row.lastElementChild.className = ""; if (t) any = true; });
   if (!any) document.querySelectorAll("#caseDl > div").forEach((row) => { row.hidden = false; row.lastElementChild.className = "ph"; });
-  ["role", "tools"].forEach((k) => { const el = document.querySelector(`#caseCredits [data-k="${k}"]`); el.hidden = !j[k]; el.lastElementChild.textContent = j[k] || ""; });
+  const role = document.querySelector('#caseCredits [data-k="role"]'); role.hidden = !j.role; role.lastElementChild.textContent = j.role || "";
+  const tl = document.querySelector('#caseCredits [data-k="tools"]'); tl.hidden = !pr.tools.length; tl.lastElementChild.replaceChildren(toolChips(pr.tools, true));
   const link = $("#caseLink"), url = j.link && j.link.url;
   link.hidden = !url; if (url) { link.href = url; link.firstElementChild.textContent = tx(j.link.label, L) || (L === "pt" ? I18N.pt.cMore : "View project"); }
-  caseEl.hidden = false; caseIn.scrollTop = 0; showStage(0); document.body.classList.add("is-case"); S.caseOpen = true; if (window.self === window.top) $("#caseX").focus(); }
+  caseEl.hidden = false; caseIn.scrollTop = 0; showStage(0); setTimeout(() => { waves.trace(caseIn, { edge: "l", strength: 0.8 }); waves.trace(caseIn, { edge: "r", strength: 0.8, up: true }); }, 380); document.body.classList.add("is-case"); S.caseOpen = true; if (window.self === window.top) $("#caseX").focus(); }
 function closeCase() { if (caseEl.hidden) return; caseEl.hidden = true; caseMedia.replaceChildren(); document.body.classList.remove("is-case"); S.caseOpen = false; hit.focus({ preventScroll: true }); }
-hit.addEventListener("click", () => openCase(S.active));
+hit.addEventListener("click", () => { if (hit.dataset.dragged) return; if (S.cat >= 0) openCase(CATS[S.cat].jobs[clamp(Math.round(S.slideT), 0, CATS[S.cat].jobs.length - 1)]); else if (S.active >= 0) openCat(S.active); });
+$("#catBack").addEventListener("click", closeCat);
+$("#catPrev").addEventListener("click", () => slideTo(Math.round(S.slideT) - 1));
+$("#catNext").addEventListener("click", () => slideTo(Math.round(S.slideT) + 1));
+document.querySelectorAll(".nav a, .talk").forEach((a) => a.addEventListener("click", closeCat));
 $("#caseX").addEventListener("click", closeCase);
 caseEl.addEventListener("click", (e) => { if (e.target === caseEl) closeCase(); });
 
 addEventListener("keydown", (e) => {
-  if (e.key === "Escape") return closeCase();
+  if (e.key === "Escape") { if (S.caseOpen) return closeCase(); return closeCat(); }
   if (S.caseOpen) return;
+  if (S.cat >= 0) {
+    if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === "PageDown") { e.preventDefault(); slideTo(Math.round(S.slideT) + 1); }
+    if (e.key === "ArrowLeft" || e.key === "ArrowUp" || e.key === "PageUp") { e.preventDefault(); slideTo(Math.round(S.slideT) - 1); }
+    if (e.key === "Enter" && document.activeElement === document.body) { e.preventDefault(); hit.click(); }
+    return;
+  }
   if (!S.entered) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); enter(); } return; }
   const cur = Math.round(S.pT);
   if (e.key === "ArrowDown" || e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); goTo(Math.min(N + 1.1, cur + 1)); }
@@ -880,7 +1012,7 @@ $("#lang").addEventListener("click", () => {
   S.lang = S.lang === "en" ? "pt" : "en"; document.documentElement.lang = S.lang === "pt" ? "pt-BR" : "en";
   document.querySelectorAll("#lang b").forEach((b) => b.classList.toggle("on", b.dataset.l === S.lang));
   document.querySelectorAll("[data-i18n]").forEach((el) => (el.textContent = (S.lang === "pt" && I18N.pt[el.dataset.i18n]) || EN[el.dataset.i18n]));
-  setMotionLabel(); buildRows(); buildProcess(); if (S.active >= 0) onActive(S.active); if (S.caseOpen) openCase(caseIdx);
+  setMotionLabel(); buildRows(); buildProcess(); if (S.active >= 0) onActive(S.active); if (S.caseOpen) openCase(caseIdx); S.capKey = ""; if (S.cat >= 0) $("#catName").textContent = L() === "pt" ? CATS[S.cat].nameP : CATS[S.cat].name;
 });
 const setMotionLabel = () => { $("#motionLbl").textContent = S.lang === "pt" ? (S.motion ? "Movimento on" : "Movimento off") : S.motion ? "Motion on" : "Motion off"; $("#motion").setAttribute("aria-pressed", S.motion); };
 $("#motion").addEventListener("click", () => { S.motion = !S.motion; setMotionLabel(); });
@@ -895,8 +1027,10 @@ if (document.fonts) document.fonts.ready.then(() => { layoutRail(); });
 // deep links (used by Portfolio Update's preview): ?skip ?lang=pt ?case=<id> ?at=practice|process|about
 if (QS.get("lang") === "pt") $("#lang").click();
 const qCase = QS.get("case"), qAt = QS.get("at");
-if (QS.has("skip") || qCase || qAt || location.hash === "#gallery") enter();
-if (qCase) { const k = PROJECTS.findIndex((p) => p.slug === qCase); if (k >= 0) { scrollTo(0, (k + 1) * unit() + 1); readScroll(); S.p = S.pT; openCase(k); } }
+if (QS.has("skip") || qCase || qAt || QS.has("cat") || location.hash === "#gallery") enter();
+const qCat = QS.get("cat");
+if (qCase) { const k = PROJECTS.findIndex((p) => p.slug === qCase); if (k >= 0) { showJob(k); openCase(k); } }
+else if (qCat) { const k = CATS.findIndex((c) => c.id === qCat); if (k >= 0) { scrollTo(0, (k + 1) * unit() + 1); readScroll(); S.p = S.pT; openCat(k); } }
 else if (qAt && document.getElementById(qAt)) { const el = document.getElementById(qAt); scrollTo(0, el.offsetTop + (qAt === "about" ? 0 : innerHeight * 0.25)); readScroll(); }
-window.__ft = { S, goTo, enter };
+window.__ft = { S, goTo, enter, openCat, closeCat, slideTo, showJob, waves };
 requestAnimationFrame(frame);

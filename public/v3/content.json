@@ -77,14 +77,17 @@
         "pt": ""
       },
       "role": "",
-      "tools": "",
+      "tools": [],
       "link": {
         "label": {
           "en": "View on Behance",
           "pt": "Ver no Behance"
         },
         "url": "https://www.behance.net/gallery/194284575/VFX-HBOMax-BFF-Nossa-Voz"
-      }
+      },
+      "categories": [
+        "3d-vfx"
+      ]
     },
     {
       "id": "bravecto",
@@ -117,14 +120,18 @@
         "pt": ""
       },
       "role": "",
-      "tools": "",
+      "tools": [],
       "link": {
         "label": {
           "en": "View on Behance",
           "pt": "Ver no Behance"
         },
         "url": "https://www.behance.net/gallery/195282279/Bravecto-Experience-Direcao-de-projeto"
-      }
+      },
+      "categories": [
+        "art-direction",
+        "3d-vfx"
+      ]
     },
     {
       "id": "yes",
@@ -157,14 +164,17 @@
         "pt": ""
       },
       "role": "",
-      "tools": "",
+      "tools": [],
       "link": {
         "label": {
           "en": "View on Behance",
           "pt": "Ver no Behance"
         },
         "url": "https://www.behance.net/gallery/194456335/Vinheta-YES-Idiomas-Diga-Sim-ao-Mundo-Diga-YES"
-      }
+      },
+      "categories": [
+        "motion-design"
+      ]
     },
     {
       "id": "hbo-use-sua-voz",
@@ -197,14 +207,17 @@
         "pt": ""
       },
       "role": "",
-      "tools": "",
+      "tools": [],
       "link": {
         "label": {
           "en": "View on Behance",
           "pt": "Ver no Behance"
         },
         "url": "https://www.behance.net/gallery/194283311/Abertura-HBOMax-Use-Sua-Voz"
-      }
+      },
+      "categories": [
+        "motion-design"
+      ]
     },
     {
       "id": "cleopatra",
@@ -237,14 +250,17 @@
         "pt": ""
       },
       "role": "",
-      "tools": "",
+      "tools": [],
       "link": {
         "label": {
           "en": "View on Behance",
           "pt": "Ver no Behance"
         },
         "url": "https://www.behance.net/gallery/144381729/Paralax-animation-for-Mobile-game-Cleopatra"
-      }
+      },
+      "categories": [
+        "motion-design"
+      ]
     },
     {
       "id": "melhor-verao",
@@ -277,14 +293,17 @@
         "pt": ""
       },
       "role": "",
-      "tools": "",
+      "tools": [],
       "link": {
         "label": {
           "en": "View on Behance",
           "pt": "Ver no Behance"
         },
         "url": "https://www.behance.net/gallery/143936867/VFX-Abertura-O-MELHOR-VERAO-DAS-NOSSAS-VIDAS"
-      }
+      },
+      "categories": [
+        "3d-vfx"
+      ]
     },
     {
       "id": "true-riches",
@@ -317,14 +336,17 @@
         "pt": ""
       },
       "role": "",
-      "tools": "",
+      "tools": [],
       "link": {
         "label": {
           "en": "View on Behance",
           "pt": "Ver no Behance"
         },
         "url": "https://www.behance.net/gallery/143962405/TRUE-RICHES-TWE-WAY-SERVICE-TEASER"
-      }
+      },
+      "categories": [
+        "motion-design"
+      ]
     },
     {
       "id": "conectivo",
@@ -357,14 +379,17 @@
         "pt": ""
       },
       "role": "",
-      "tools": "",
+      "tools": [],
       "link": {
         "label": {
           "en": "View on Behance",
           "pt": "Ver no Behance"
         },
         "url": "https://www.behance.net/gallery/144190393/Conectivo-Matriculas-abertas-(SAE-Digital)"
-      }
+      },
+      "categories": [
+        "motion-design"
+      ]
     }
   ],
   "practices": [
@@ -621,5 +646,241 @@
     "linkedin": "https://www.linkedin.com/in/lgczaika",
     "behance": "https://www.behance.net/lgczaika",
     "portrait": "portrait/luiz-czaika.webp"
-  }
+  },
+  "tools": [
+    {
+      "id": "after-effects",
+      "label": "After Effects",
+      "mono": "Ae",
+      "icon": ""
+    },
+    {
+      "id": "premiere",
+      "label": "Premiere Pro",
+      "mono": "Pr",
+      "icon": ""
+    },
+    {
+      "id": "photoshop",
+      "label": "Photoshop",
+      "mono": "Ps",
+      "icon": ""
+    },
+    {
+      "id": "illustrator",
+      "label": "Illustrator",
+      "mono": "Ai",
+      "icon": ""
+    },
+    {
+      "id": "cinema-4d",
+      "label": "Cinema 4D",
+      "mono": "C4D",
+      "icon": "tools/cinema-4d.svg"
+    },
+    {
+      "id": "blender",
+      "label": "Blender",
+      "mono": "Bl",
+      "icon": "tools/blender.svg"
+    },
+    {
+      "id": "houdini",
+      "label": "Houdini",
+      "mono": "Hou",
+      "icon": "tools/houdini.svg"
+    },
+    {
+      "id": "maya",
+      "label": "Maya",
+      "mono": "My",
+      "icon": "tools/maya.svg"
+    },
+    {
+      "id": "octane",
+      "label": "Octane Render",
+      "mono": "Oc",
+      "icon": "tools/octane.svg"
+    },
+    {
+      "id": "unreal-engine",
+      "label": "Unreal Engine",
+      "mono": "UE",
+      "icon": "tools/unreal-engine.svg"
+    },
+    {
+      "id": "unity",
+      "label": "Unity",
+      "mono": "U",
+      "icon": "tools/unity.svg"
+    },
+    {
+      "id": "nuke",
+      "label": "Nuke",
+      "mono": "Nk",
+      "icon": "tools/nuke.svg"
+    },
+    {
+      "id": "davinci-resolve",
+      "label": "DaVinci Resolve",
+      "mono": "Dv",
+      "icon": "tools/davinci-resolve.svg"
+    },
+    {
+      "id": "frameio",
+      "label": "Frame.io",
+      "mono": "Fio",
+      "icon": ""
+    },
+    {
+      "id": "figma",
+      "label": "Figma",
+      "mono": "Fg",
+      "icon": "tools/figma.svg"
+    },
+    {
+      "id": "midjourney",
+      "label": "Midjourney",
+      "mono": "Mj",
+      "icon": ""
+    },
+    {
+      "id": "nano-banana",
+      "label": "Nano Banana",
+      "mono": "NB",
+      "icon": "tools/nano-banana.svg"
+    },
+    {
+      "id": "higgsfield",
+      "label": "Higgsfield",
+      "mono": "Hf",
+      "icon": ""
+    },
+    {
+      "id": "kling",
+      "label": "Kling",
+      "mono": "Kl",
+      "icon": ""
+    },
+    {
+      "id": "runway",
+      "label": "Runway",
+      "mono": "Rw",
+      "icon": ""
+    },
+    {
+      "id": "seedance",
+      "label": "Seedance",
+      "mono": "Sd",
+      "icon": "tools/seedance.svg"
+    },
+    {
+      "id": "magnific",
+      "label": "Magnific",
+      "mono": "Mg",
+      "icon": "tools/magnific.svg"
+    },
+    {
+      "id": "comfyui",
+      "label": "ComfyUI",
+      "mono": "Cf",
+      "icon": ""
+    },
+    {
+      "id": "suno",
+      "label": "Suno",
+      "mono": "Su",
+      "icon": "tools/suno.svg"
+    },
+    {
+      "id": "elevenlabs",
+      "label": "ElevenLabs",
+      "mono": "11",
+      "icon": "tools/elevenlabs.svg"
+    },
+    {
+      "id": "claude",
+      "label": "Claude",
+      "mono": "Cl",
+      "icon": "tools/claude.svg"
+    },
+    {
+      "id": "codex",
+      "label": "Codex",
+      "mono": "Cx",
+      "icon": ""
+    },
+    {
+      "id": "python",
+      "label": "Python",
+      "mono": "Py",
+      "icon": "tools/python.svg"
+    },
+    {
+      "id": "javascript",
+      "label": "JavaScript",
+      "mono": "JS",
+      "icon": "tools/javascript.svg"
+    },
+    {
+      "id": "threejs",
+      "label": "Three.js",
+      "mono": "3js",
+      "icon": "tools/threejs.svg"
+    }
+  ],
+  "categories": [
+    {
+      "id": "motion-design",
+      "name": {
+        "en": "Motion Design",
+        "pt": "Motion Design"
+      },
+      "text": {
+        "en": "Openings, campaigns and brand films where rhythm carries the idea.",
+        "pt": "Aberturas, campanhas e filmes de marca em que o ritmo conduz a ideia."
+      },
+      "cover": "covers/yes.webp",
+      "tint": "#6bd6ff"
+    },
+    {
+      "id": "3d-vfx",
+      "name": {
+        "en": "3D & VFX",
+        "pt": "3D & VFX"
+      },
+      "text": {
+        "en": "Modeling, lighting, simulation and compositing for campaigns and content.",
+        "pt": "Modelagem, iluminação, simulação e composição para campanhas e conteúdo."
+      },
+      "cover": "covers/hbo-bff.webp",
+      "tint": "#9e7aff"
+    },
+    {
+      "id": "art-direction",
+      "name": {
+        "en": "Art Direction",
+        "pt": "Direção de Arte"
+      },
+      "text": {
+        "en": "Visual systems built around one clear idea, from key visual to experience.",
+        "pt": "Sistemas visuais em torno de uma ideia clara, do key visual à experiência."
+      },
+      "cover": "covers/bravecto.webp",
+      "tint": "#ffb35c"
+    },
+    {
+      "id": "ai-creative-tech",
+      "name": {
+        "en": "AI & Creative Tech",
+        "pt": "IA & Tecnologia Criativa"
+      },
+      "text": {
+        "en": "Generative tools, code and automation inside a directed pipeline.",
+        "pt": "Ferramentas generativas, código e automação dentro de um pipeline dirigido."
+      },
+      "cover": "practice/practice-03.webp",
+      "tint": "#7fe0ff"
+    }
+  ]
 }

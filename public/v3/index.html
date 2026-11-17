@@ -12,6 +12,7 @@
 </head>
 <body class="is-gate">
 <canvas id="gl" aria-hidden="true"></canvas>
+<span class="vrule vrule--l" data-wave="l" aria-hidden="true"></span><span class="vrule vrule--r" data-wave="l" aria-hidden="true"></span>
 <div class="grain" aria-hidden="true"></div>
 
 <header class="hdr">
@@ -51,15 +52,29 @@
     </div>
 
     <!-- docked project caption + hit area -->
-    <button class="hit" id="hit" type="button" aria-label="Open case"><span class="hit__tag" data-i18n="open">Open case</span>
+    <button class="hit" id="hit" type="button" aria-label="Open case"><span class="hit__tag">Explore</span>
       <i class="c c1"></i><i class="c c2"></i><i class="c c3"></i><i class="c c4"></i></button>
     <div class="cap" id="cap">
       <div class="cap__meta"><span id="capIdx">01</span><span class="cap__bar"></span><span id="capDisc">VFX · 3D · Compositing</span></div>
       <h2 id="capTitle">—</h2>
       <p id="capCtx"></p>
+      <div class="cap__tools tools" id="capTools"></div>
+      <p class="cap__cta" id="capCta"></p>
     </div>
 
-    <ol class="pager" id="pager" aria-label="Projects"></ol>
+    <ol class="pager" id="pager" aria-label="Categories"></ol>
+    <span class="flank" id="flankL" data-wave="l" aria-hidden="true"></span><span class="flank" id="flankR" data-wave="l" aria-hidden="true"></span>
+    <div class="catui" id="catui">
+      <button class="catui__back" id="catBack" type="button"><i aria-hidden="true">←</i><span data-i18n="catBack">All categories</span></button>
+      <p class="catui__name" id="catName"></p>
+      <div class="catui__nav">
+        <button class="catui__arr" id="catPrev" type="button" aria-label="Previous">‹</button>
+        <span class="catui__count" id="catCount">01 / 01</span>
+        <ol class="catui__dots" id="catDots"></ol>
+        <button class="catui__arr" id="catNext" type="button" aria-label="Next">›</button>
+      </div>
+      <p class="catui__hint" data-i18n="catHint">Scroll or drag to explore</p>
+    </div>
   </section>
 
   <section class="practice" id="practice" aria-labelledby="pracTitle">
@@ -70,6 +85,7 @@
         <ol class="rows" id="rows"></ol>
       </div>
       <div class="practice__right">
+        <span class="practice__rule" data-wave="l" aria-hidden="true"></span>
         <div class="lens" id="lens" aria-hidden="true"><i class="c c1"></i><i class="c c2"></i><i class="c c3"></i><i class="c c4"></i>
           <span class="lens__ph" data-i18n="lensPh">Placeholder — reel excerpt per discipline</span></div>
         <p class="lens__meta"><span id="lensIdx">01 / 04</span><span class="cap__bar"></span><span id="lensFocus"></span></p>
@@ -111,7 +127,7 @@
       <h2 id="aboutTitle"><span data-i18n="abT1">Let's give your next idea</span> <em data-i18n="abT2">a form.</em></h2>
     </header>
     <div class="idwrap" id="idwrap">
-      <article class="idcard" id="idcard">
+      <article class="idcard" id="idcard" data-wave="l r">
         <span class="idcard__sheen" aria-hidden="true"></span>
         <header class="idcard__top">
           <span class="idcard__brand"><svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="1.5" y="1.5" width="29" height="29" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7.5 22V10h7.2M7.5 16h5.6M17 10h8.5M21.2 10v12" fill="none" stroke="currentColor" stroke-width="2.4"/><rect class="logo__sq" x="26" y="26" width="6" height="6"/></svg><span>Fine<b>Tune</b></span></span>
@@ -153,7 +169,7 @@
 
 <!-- case study -->
 <div class="case" id="case" role="dialog" aria-modal="true" aria-labelledby="caseTitle" hidden>
-  <div class="case__in" id="caseIn">
+  <div class="case__in" id="caseIn" data-wave="l r">
     <button class="case__x" id="caseX" type="button" aria-label="Close">Close <kbd>Esc</kbd></button>
     <div class="case__media" id="caseMedia"></div>
     <div class="case__thumbs" id="caseThumbs"></div>

@@ -21,7 +21,7 @@ import fsp from "node:fs/promises";
 import path from "node:path";
 import { spawn } from "node:child_process";
 
-const MEDIA_ROOTS = ["media", "covers", "practice", "portrait", "reel"];
+const MEDIA_ROOTS = ["media", "covers", "practice", "portrait", "reel", "tools"];
 const MEDIA_EXT = /\.(png|jpe?g|webp|avif|gif|svg|mp4|webm|mov)$/i;
 const MAX_UPLOAD = 300 * 1024 * 1024;
 const KEEP_BACKUPS = 30;

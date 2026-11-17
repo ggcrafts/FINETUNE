@@ -134,7 +134,7 @@ body:not(.is-gate) .gate__ring{transform:scale(5.5) rotate(40deg)}
   transition:opacity .45s,filter .6s var(--ease)}
 .cap.on{opacity:1;filter:none}
 .cap__meta{display:flex;align-items:center;gap:12px;font:500 .625rem var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--mist)}
-.cap__meta span:first-child{color:var(--green)}
+.cap__meta span:first-child{color:var(--green);white-space:nowrap}
 .cap__bar{width:34px;height:1px;background:var(--tint);box-shadow:0 0 8px var(--tint)}
 .cap h2{font:600 clamp(1.5rem,2.6vw,2.4rem)/1.02 var(--f-head);letter-spacing:-.035em;margin:10px 0 6px}
 .cap p{font-size:.875rem;line-height:1.5;color:var(--mist);max-width:46ch}
@@ -149,6 +149,49 @@ body:not(.is-gate) .gate__ring{transform:scale(5.5) rotate(40deg)}
 .pager button:hover::after{width:26px;background:var(--pearl)}
 .pager .on button{color:var(--pearl)}
 .pager .on button::after{width:40px;background:var(--green);box-shadow:0 0 8px var(--green)}
+
+/* signature lines (turbulence drawn by lines.js on these hairlines) */
+.line-waves{position:fixed;inset:0;width:100%;height:100%;z-index:45;pointer-events:none}
+.vrule{position:fixed;z-index:4;top:76px;bottom:62px;width:1px;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(233,240,244,.075) 18%,rgba(233,240,244,.075) 82%,transparent);transition:opacity 1.2s}
+.vrule--l{left:calc(var(--pad) * .45)}.vrule--r{right:calc(var(--pad) * .45)}
+.is-gate .vrule,.is-case .vrule{opacity:0}
+.flank{position:fixed;left:0;top:0;z-index:6;width:1px;height:0;pointer-events:none;opacity:0;transition:opacity .8s;
+  background:linear-gradient(180deg,transparent,rgba(233,240,244,.16) 22%,rgba(233,240,244,.16) 78%,transparent)}
+.flank.on{opacity:1}
+.practice__right{position:relative}
+.practice__rule{position:absolute;left:calc(clamp(24px,5vw,90px) / -2);top:-8vh;bottom:-8vh;width:1px;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(233,240,244,.1) 20%,rgba(233,240,244,.1) 80%,transparent)}
+
+/* tool chips (icons from content.json → tools/; monogram when there is no icon, as in v2) */
+.tools{display:flex;flex-wrap:wrap;gap:6px}
+.tools:empty{display:none}
+.tool{display:inline-flex;align-items:center;gap:7px;height:26px;padding:0 7px;border:1px solid var(--line);border-radius:3px;background:rgba(5,9,14,.45);color:var(--pearl)}
+.tool__ic{display:grid;place-items:center;min-width:14px;height:14px;font:600 .5rem var(--f-mono);letter-spacing:.02em;color:var(--mist);line-height:1}
+.tool.has-icon .tool__ic{width:14px;background:currentColor;color:var(--pearl);-webkit-mask:var(--icon) center/contain no-repeat;mask:var(--icon) center/contain no-repeat}
+.tool__l{font:500 .625rem var(--f-mono);letter-spacing:.06em;color:#c4ced6}
+.tool--l{padding:0 9px 0 7px}
+.cap__tools{margin-top:12px}
+.cap__cta{margin-top:12px;font:500 .625rem var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--green)}
+.cap__cta:empty{display:none}
+.case__credits .tools{margin-top:2px}
+
+/* category carousel chrome */
+body.is-cat{overflow:hidden}
+.catui{position:fixed;inset:0;z-index:21;pointer-events:none;opacity:0;transition:opacity .5s}
+.is-cat .catui{opacity:1}
+.is-cat .catui>*{pointer-events:auto}
+.catui__back{position:absolute;left:var(--pad);top:76px;display:flex;align-items:center;gap:10px;font:500 .625rem var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--mist);transition:color .3s}
+.catui__back i{font-style:normal;color:var(--green);transition:transform .4s var(--ease)}
+.catui__back:hover{color:var(--pearl)}.catui__back:hover i{transform:translateX(-4px)}
+.catui__name{position:absolute;left:var(--pad);top:100px;font:600 clamp(1.4rem,2.4vw,2.2rem)/1 var(--f-head);letter-spacing:-.035em;pointer-events:none!important}
+.catui__nav{position:absolute;right:var(--pad);bottom:62px;display:flex;align-items:center;gap:14px;padding:6px 8px;border:1px solid var(--line);background:rgba(5,9,14,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.catui__arr{width:30px;height:30px;font:400 1.1rem var(--f-head);color:var(--pearl);transition:color .3s,background .3s}
+.catui__arr:hover{background:rgba(120,217,138,.12);color:var(--green)}
+.catui__count{font:500 .625rem var(--f-mono);letter-spacing:.16em;color:var(--mist);min-width:52px;text-align:center}
+.catui__dots{list-style:none;display:flex;gap:6px;padding:0}
+.catui__dots button{width:16px;height:2px;background:var(--dim);transition:width .4s var(--ease),background .3s,box-shadow .3s}
+.catui__dots button.on{width:30px;background:var(--green);box-shadow:0 0 8px var(--green)}
+.catui__hint{position:absolute;right:var(--pad);top:80px;font:500 .5625rem var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+.is-cat .plate,.is-cat .pager{opacity:0!important;pointer-events:none}
 
 /* fields of practice (pinned) */
 .practice{position:relative;z-index:6;height:460vh}
@@ -353,6 +396,7 @@ body.is-hole .hdr,body.is-hole .dock,body.is-hole .talk,body.is-hole .grain{opac
   .case{padding:0}.case__in{max-height:100vh;height:100%}.case__body{grid-template-columns:1fr}.case__media{max-height:none}
   .next__list li{grid-template-columns:34px 1fr}.next__list span{grid-column:2}
   .cap p{display:none}
+  .catui__hint,.catui__dots{display:none}.catui__name{top:96px}.catui__nav{bottom:58px;right:50%;transform:translateX(50%)}.is-cat .cap{opacity:0!important}.practice__rule{display:none}.vrule{display:none}
   .process__pin{grid-template-columns:1fr;grid-template-rows:auto 1fr auto;padding:70px var(--pad) 64px;background:linear-gradient(180deg,rgba(5,9,14,.75),rgba(5,9,14,.2) 45%,rgba(5,9,14,.75))}
   .process h2{margin:8px 0 12px}.instrument{min-height:30vh}
   .rail{height:74px}.node__t{font-size:.75rem}.node__k{display:none}
