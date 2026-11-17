@@ -10,6 +10,8 @@
 //   POST /__portfolio/upload?dir=&name= → raw file body → public/v3/<dir>/<name> (unique name)
 //   GET  /__portfolio/files             → every image / video under the v3 media folders
 //   POST /__portfolio/publish           → opens publish.bat in its own window (Windows)
+//   GET  /__portfolio/remote?url=       → fetches a page or image from an Adobe Portfolio site
+//                                         (*.myportfolio.com only) for the Importar page
 //
 // Requests must come from the editor page itself: cross-site requests are refused and
 // every write needs the `x-portfolio-update: 1` header.
@@ -25,6 +27,8 @@ const MEDIA_ROOTS = ["media", "covers", "practice", "portrait", "reel", "tools"]
 const MEDIA_EXT = /\.(png|jpe?g|webp|avif|gif|svg|mp4|webm|mov)$/i;
 const MAX_UPLOAD = 300 * 1024 * 1024;
 const KEEP_BACKUPS = 30;
+const REMOTE_OK = /(^|\.)myportfolio\.com$/i;   // Adobe Portfolio pages + cdn.myportfolio.com images
+const MAX_REMOTE = 80 * 1024 * 1024;
 
 function send(res: ServerResponse, code: number, body: unknown): void {
   res.statusCode = code;
@@ -130,6 +134,21 @@ export function portfolioUpdate(): Plugin {
           await fsp.writeFile(tmp, JSON.stringify(data, null, 2) + "\n", "utf8");
           await fsp.rename(tmp, contentFile);
           return send(res, 200, { ok: true, savedAt: new Date().toISOString() });
+        }
+
+        if (route === "GET /remote") {
+          let target: URL;
+          try { target = new URL(url.searchParams.get("url") || ""); } catch { return send(res, 400, { error: "invalid url" }); }
+          if (target.protocol !== "https:" || !REMOTE_OK.test(target.hostname)) return send(res, 400, { error: "only https://*.myportfolio.com" });
+          const r = await fetch(target, { redirect: "follow", headers: { "user-agent": "Mozilla/5.0 (FineTune Portfolio Update)" } });
+          if (!REMOTE_OK.test(new URL(r.url).hostname)) return send(res, 400, { error: "redirected off-site" });
+          const buf = Buffer.from(await r.arrayBuffer());
+          if (buf.length > MAX_REMOTE) return send(res, 413, { error: "file too large" });
+          res.statusCode = r.status;
+          res.setHeader("content-type", r.headers.get("content-type") || "application/octet-stream");
+          res.setHeader("cache-control", "no-store");
+          res.end(buf);
+          return;
         }
 
         if (route === "POST /upload") {

@@ -186,3 +186,12 @@ textarea.in{min-height:64px;overflow:hidden}
 .tgrid__pv{display:grid;place-items:center;width:30px;height:30px;border:1px solid var(--line2);border-radius:4px;background:rgba(3,6,10,.6)}
 .tgrid__pv .ticon{width:18px;height:18px}
 .sec__h .mini{padding:3px 7px}
+
+/* Importar */
+.thumb-link{display:grid;place-items:center;aspect-ratio:16/10;font:500 .625rem var(--mono);letter-spacing:.08em;color:var(--mist);background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(233,240,244,.03) 6px 12px)}
+.imp__bar{display:flex;align-items:center;gap:8px;margin-bottom:10px;font:400 .6875rem var(--mono);color:var(--mist)}.imp__bar>span{margin-right:auto}
+.imp__list{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.imp__it{display:grid;grid-template-columns:auto 64px 1fr minmax(0,230px);gap:10px;align-items:center;padding:6px 8px;border:1px solid var(--line);border-radius:3px}
+.imp__it img{width:64px;aspect-ratio:1.28;object-fit:cover;border-radius:2px;background:var(--slate)}
+.imp__t{min-width:0;display:grid}.imp__t b{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.imp__t small{font:400 .625rem var(--mono);color:var(--mist)}
+.imp__it select{width:100%;min-width:0}.imp__it.done{opacity:.55}

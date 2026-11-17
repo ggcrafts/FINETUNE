@@ -67,7 +67,7 @@ const curJob = () => jobs().find((j) => j.id === E.sel.id);
 function blankJob(id) {
   return { id, title: "", client: "", year: String(new Date().getFullYear()), disciplines: "", tint: "#8fd8ff", context: { en: "", pt: "" },
     categories: [], tools: [], cover: "", video: "", gallery: [], challenge: { en: "", pt: "" }, idea: { en: "", pt: "" }, execution: { en: "", pt: "" }, outcome: { en: "", pt: "" },
-    role: "", tools: "", link: { label: { en: "View project", pt: "Ver projeto" }, url: "" } };
+    role: "", link: { label: { en: "View project", pt: "Ver projeto" }, url: "" } };
 }
 function blankContent() {
   const t = () => ({ en: "", pt: "" });
@@ -151,13 +151,13 @@ async function prepare(file, { maxW = 2000, ratio = 0 } = {}) {
   const blob = await new Promise((r) => c.toBlob(r, "image/webp", 0.86));
   return { blob, name: file.name.replace(/\.[^.]+$/, "") + ".webp" };
 }
-async function importFiles(files, { dir, maxW = 2000, ratio = 0, videos = true } = {}) {
+async function importFiles(files, { dir, maxW = 2000, ratio = 0, videos = true, quiet = false } = {}) {
   const list = [...files]
     .filter((f) => /\.(png|jpe?g|webp|avif|gif|svg|bmp)$/i.test(f.name) || /^image\//.test(f.type) || (videos && isVideo(f.name)))
     .sort((a, b) => (a.webkitRelativePath || a.name).localeCompare(b.webkitRelativePath || b.name, undefined, { numeric: true }));
   if (!list.length) { toast("Nenhuma imagem" + (videos ? " ou vídeo" : "") + " encontrada.", "warn"); return []; }
   if (!E.server) { toast("Sem servidor local: abra o editor pelo portfolio-update.bat.", "err"); return []; }
-  const out = [], t = toast(`Importando 0/${list.length}…`, "busy", 0);
+  const out = [], t = quiet ? { set() {}, done() {} } : toast(`Importando 0/${list.length}…`, "busy", 0);
   for (const [i, f] of list.entries()) {
     t.set(`Importando ${i + 1}/${list.length} — ${f.name}`);
     try {
@@ -203,6 +203,7 @@ function dropzone(el, onFiles) {
 }
 function thumb(p, { autoplay = true } = {}) {
   if (!p) return null;
+  if (/^https?:/.test(p) && !/\.(png|jpe?g|webp|avif|gif)(\?|$)/i.test(p)) return h("div", { class: "thumb-link" }, "▶ " + (/adobe\.io$/.test(new URL(p).hostname) ? "Adobe vídeo" : new URL(p).hostname.replace(/^www\./, "")));
   return isVideo(p) ? h("video", { src: url(p) + "#t=0.4", muted: true, loop: true, playsinline: true, preload: "metadata", autoplay: autoplay || null }) : h("img", { src: url(p), alt: "", loading: "lazy", decoding: "async" });
 }
 
@@ -338,6 +339,7 @@ const PAGES = [
   { type: "process", i: "04", t: "Processo & Carreira", sub: "5 fases + anos de trajetória" },
   { type: "about", i: "05", t: "Sobre & Contato", sub: "Cartão, foto e links" },
   { type: "tools", i: "06", t: "Ferramentas", sub: "Ícones disponíveis para os jobs" },
+  { type: "import", i: "07", t: "Importar", sub: "Trazer jobs do Adobe Portfolio" },
 ];
 function select(sel) { E.sel = sel; renderNav(); renderMain(); reloadPreview(); $("#form").scrollTop = 0; }
 function renderNav() {
@@ -347,7 +349,7 @@ function renderNav() {
       h("span", { class: "navit__grip", "aria-hidden": "true" }, "⋮⋮"),
       h("span", { class: "navit__th", style: { backgroundImage: j.cover && !isVideo(j.cover) ? `url("${url(j.cover)}")` : "none" } }),
       h("span", { class: "navit__t" }, h("b", {}, j.title || "Sem título"), h("small", {}, `${pad(i + 1)} · ${(j.categories || []).map(catName).join(" + ") || "sem categoria"}`)),
-      h("span", { class: "navit__f" }, !(j.categories || []).length && h("span", { class: "flag", title: "Sem categoria: aparece em “Selected work”" }, "cat"), !j.cover && h("span", { class: "flag", title: "Sem capa" }, "capa"), miss > 0 && h("span", { class: "flag", title: `${miss} texto(s) sem versão PT` }, "PT " + miss)));
+      h("span", { class: "navit__f" }, j.hidden && h("span", { class: "flag", title: "Oculto: não aparece no site" }, "oculto"), !j.hidden && !(j.categories || []).length && h("span", { class: "flag", title: "Sem categoria: aparece em “Selected work”" }, "cat"), !j.cover && h("span", { class: "flag", title: "Sem capa" }, "capa"), miss > 0 && h("span", { class: "flag", title: `${miss} texto(s) sem versão PT` }, "PT " + miss)));
     b.addEventListener("dragstart", (e) => { from = i; b.classList.add("dragging"); e.dataTransfer.setData("text/x-job", j.id); e.dataTransfer.effectAllowed = "move"; });
     b.addEventListener("dragend", () => { from = -1; b.classList.remove("dragging"); });
     b.addEventListener("dragover", (e) => { if (from < 0) return; e.preventDefault(); b.classList.add("drag-over"); });
@@ -399,7 +401,8 @@ function jobForm(j) {
             cb.addEventListener("change", () => { j.categories = (j.categories || []).filter((x) => x !== c.id); if (cb.checked) j.categories.push(c.id); changed(); });
             return h("label", { class: "chk" }, cb, tv(c.name) || c.id);
           }), h("button", { class: "mini", type: "button", onclick: () => select({ type: "categories" }) }, "Gerenciar categorias")),
-          h("small", { class: "f__h" }, "O job aparece como slide dentro de cada categoria marcada. Sem categoria, vai para “Selected work”.")))),
+          h("small", { class: "f__h" }, "O job aparece como slide dentro de cada categoria marcada. Sem categoria, vai para “Selected work”.")),
+        h("label", { class: "chk full" }, (() => { const cb = h("input", { type: "checkbox", checked: !j.hidden }); cb.addEventListener("change", () => { if (cb.checked) delete j.hidden; else j.hidden = true; changed(); }); return cb; })(), "Visível no site"))),
     sec("02", "Capa", "a lâmina de vidro da galeria 3D",
       media(j, "cover", { dir: () => `media/${j.id}`, maxW: 1600, ratio: COVER_RATIO, aspect: "404/316", empty: "Recortada automaticamente na proporção da lâmina (1,28 : 1)." })),
     sec("03", "Vídeo", "o primeiro item do case", video(j)),
@@ -567,7 +570,7 @@ function renderMain() {
     title = j.title || "Sem título"; crumb = "Jobs"; form.replaceChildren(...jobForm(j));
   } else {
     const p = PAGES.find((x) => x.type === sel.type); title = p.t; crumb = "Site";
-    form.replaceChildren(...({ categories: categoriesForm, tools: toolsForm, hero: heroForm, practices: practicesForm, process: processForm, about: aboutForm })[sel.type]());
+    form.replaceChildren(...({ categories: categoriesForm, tools: toolsForm, hero: heroForm, practices: practicesForm, process: processForm, about: aboutForm, import: importForm })[sel.type]());
   }
   $("#barTitle").textContent = title; $("#crumb").textContent = crumb + " · textos em " + E.lang.toUpperCase();
 }
@@ -647,3 +650,115 @@ async function boot() {
   try { if (localStorage.getItem(DIRTY_KEY) !== "1") localStorage.setItem(DRAFT_KEY, JSON.stringify(E.data)); } catch { /* ignore */ }
 }
 boot();
+
+/* ───────────── Importar: jobs from an Adobe Portfolio site (myportfolio.com) ─────────────
+   The dev server fetches the pages (/__portfolio/remote); parsing happens here with DOMParser.
+   Images go through the same WebP pipeline as a manual import; embeds become the job video
+   (first) and gallery links (rest). New jobs arrive hidden so the live site never fills up
+   with half-finished entries; matched jobs only get the fields that are still empty. */
+const IM = { site: "https://finetunemotion.myportfolio.com", list: null, busy: false };
+const remote = (u) => `${API}/remote?url=${encodeURIComponent(u)}`;
+async function remoteDoc(u) { const r = await fetch(remote(u)); if (!r.ok) throw new Error(`${r.status} em ${u}`); return new DOMParser().parseFromString(await r.text(), "text/html"); }
+function bestSrc(img, base) {
+  const set = img.getAttribute("data-srcset") || img.getAttribute("srcset");
+  let u = img.getAttribute("data-src") || img.getAttribute("src") || "";
+  if (set) { const c = set.split(",").map((x) => x.trim().split(/\s+/)).filter((x) => x[0]).map(([a, w]) => [a, parseInt(w) || 0]).sort((a, b) => b[1] - a[1]); const pick = c.find((x) => x[1] <= 2400) || c[0]; if (pick) u = pick[0]; }
+  try { return u && !u.startsWith("data:") ? new URL(u, base).href : ""; } catch { return ""; }
+}
+const norm = (s) => (s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const STOP = new Set(["abertura", "vfx", "video", "videos", "animacao", "animation", "the", "das", "dos", "nossas", "nosas", "para", "and", "lyric", "direcao", "projeto", "vinheta", "com"]);
+const toks = (s) => new Set(norm(s).split(/[^a-z0-9]+/).filter((t) => t.length >= 3 && !STOP.has(t)));
+function guessTargets(list) {
+  const pairs = [];
+  jobs().forEach((j) => { const a = toks(j.id + " " + j.title); list.forEach((p, k) => { const b = toks(p.path + " " + p.title); let n = 0; a.forEach((t) => b.has(t) && n++); if (n) pairs.push([n, j.id, k]); }); });
+  pairs.sort((x, y) => y[0] - x[0]);
+  const usedJ = new Set(), usedP = new Set();
+  pairs.forEach(([, id, k]) => { if (usedJ.has(id) || usedP.has(k)) return; usedJ.add(id); usedP.add(k); list[k].target = id; });
+}
+async function scanPortfolio(status) {
+  const site = IM.site.replace(/\/+$/, ""), home = await remoteDoc(site + "/projects");
+  const covers = new Map();
+  home.querySelectorAll("a.project-cover").forEach((a) => { const p = new URL(a.getAttribute("href"), site).pathname; const im = a.querySelector("img"); if (im) covers.set(p, bestSrc(im, site)); });
+  const paths = covers.size ? [...covers.keys()] : [...new Set([...home.querySelectorAll("a[href]")].map((a) => new URL(a.getAttribute("href"), site)).filter((u) => u.origin === new URL(site).origin && !/^\/(projects|contact|about)?\/?$/.test(u.pathname)).map((u) => u.pathname))];
+  const list = [];
+  for (const [i, p] of paths.entries()) {
+    status(`Lendo ${i + 1}/${paths.length}…`);
+    try {
+      const d = await remoteDoc(site + p), m = d.querySelector(".page-content") || d.body;
+      const text = [...m.querySelectorAll(".project-module-text, .rich-text")].map((x) => x.textContent.replace(/[ \t]+/g, " ").replace(/\n{3,}/g, "\n\n").trim()).filter(Boolean).join("\n\n");
+      list.push({ path: p, url: site + p, on: true, target: "",
+        title: (d.querySelector("h1.title, .project-title, h1")?.textContent || p.slice(1)).replace(/\s+/g, " ").trim(),
+        desc: (d.querySelector(".page-header .description, p.description")?.textContent || "").trim(), text,
+        cover: covers.get(p) || d.querySelector('meta[property="og:image"]')?.content || "",
+        imgs: [...new Set([...m.querySelectorAll(".project-module-image img, .grid__item img, .js-lightbox img")].map((im) => bestSrc(im, site)).filter(Boolean))],
+        embeds: [...new Set([...m.querySelectorAll("iframe")].map((f) => f.getAttribute("data-src") || f.getAttribute("src")).filter((u) => /^https?:/.test(u || "") && !/linkedin\.com/.test(u)))],
+        links: [...new Set([...m.querySelectorAll(".project-module a[href]")].map((a) => a.href).filter((u) => /^https?:/.test(u) && !u.startsWith(site)))] });
+    } catch (e) { toast(`${p}: ${e.message}`, "err", 8000); }
+  }
+  guessTargets(list);
+  list.forEach((p) => { const j = jobs().find((x) => x.imported === p.url); if (j) { p.target = j.id; p.done = true; p.on = false; } });
+  return list;
+}
+async function fetchFile(u, k) {
+  const r = await fetch(remote(u)); if (!r.ok) throw new Error(`${r.status}`);
+  const b = await r.blob(), last = decodeURIComponent(new URL(u).pathname.split("/").pop() || "img");
+  return new File([b], `${pad(k + 1)}-${last}`.replace(/[^\w.-]+/g, "_"), { type: b.type });
+}
+const firstLine = (s) => { s = (s || "").replace(/\s+/g, " ").trim(); if (s.length <= 200) return s; const cut = s.slice(0, 200); const dot = cut.lastIndexOf(". "); return (dot > 60 ? cut.slice(0, dot + 1) : cut.replace(/\s\S*$/, "") + "…"); };
+async function importOne(p, status) {
+  let j = p.target ? jobs().find((x) => x.id === p.target) : null;
+  const fresh = !j;
+  if (fresh) { j = blankJob(uniqueId(p.path.replace(/^\//, "").slice(0, 40))); j.year = ""; j.title = p.title; j.hidden = true; jobs().push(j); }
+  const body = [p.desc, p.text].filter(Boolean).join("\n\n");
+  if (!tv(j.context, "pt") && body && fresh) T(j, "context").pt = firstLine(p.desc || p.text);
+  if (body && !T(j, "execution").pt) T(j, "execution").pt = body;
+  if (!j.cover && p.cover) { try { const [c] = await importFiles([await fetchFile(p.cover, -1)], { dir: `media/${j.id}`, maxW: 1600, ratio: COVER_RATIO, quiet: true }); if (c) j.cover = c; } catch (e) { toast(`${p.title} — capa: ${e.message}`, "warn"); } }
+  const files = [];
+  for (const [k, u] of p.imgs.entries()) { status(`${p.title} — imagem ${k + 1}/${p.imgs.length}`); try { files.push(await fetchFile(u, k)); } catch (e) { toast(`${p.title} — imagem ${k + 1}: ${e.message}`, "warn"); } }
+  if (files.length) { const got = await importFiles(files, { dir: `media/${j.id}`, maxW: 2400, quiet: true }); if (!Array.isArray(j.gallery)) j.gallery = []; j.gallery.push(...got.filter((g) => !j.gallery.includes(g))); }
+  const emb = [...p.embeds];
+  if (!j.video && emb.length) j.video = emb.shift();
+  emb.forEach((u) => { if (u !== j.video && !j.gallery.includes(u)) j.gallery.push(u); });
+  const be = p.links.find((u) => /behance\.net/.test(u));
+  if (!j.link?.url && be) { if (!j.link) j.link = { label: { en: "View on Behance", pt: "Ver no Behance" }, url: "" }; j.link.url = be; }
+  j.imported = p.url; p.done = true; p.on = false; p.target = j.id;
+}
+function importForm() {
+  const box = h("div", { class: "imp" });
+  const draw = () => {
+    if (!IM.list) { box.replaceChildren(h("p", { class: "f__h" }, "Lê a página /projects do seu Adobe Portfolio e cada projeto: título, textos, imagens, vídeos incorporados e links.")); return; }
+    const sel = IM.list.filter((p) => p.on).length;
+    box.replaceChildren(
+      h("div", { class: "imp__bar" }, h("span", {}, `${IM.list.length} projetos · ${sel} marcados`),
+        h("button", { class: "mini", type: "button", onclick: () => { IM.list.forEach((p) => !p.done && (p.on = true)); draw(); } }, "Marcar todos"),
+        h("button", { class: "mini", type: "button", onclick: () => { IM.list.forEach((p) => (p.on = false)); draw(); } }, "Desmarcar"),
+        h("button", { class: "btn", type: "button", disabled: !sel || IM.busy || null, onclick: run }, `Importar ${sel}`)),
+      h("ul", { class: "imp__list" }, IM.list.map((p) => {
+        const cb = h("input", { type: "checkbox", checked: p.on, disabled: IM.busy || null }); cb.addEventListener("change", () => { p.on = cb.checked; draw(); });
+        const tg = h("select", { disabled: IM.busy || null }, h("option", { value: "" }, "→ novo job (oculto)"), ...jobs().map((j) => h("option", { value: j.id, selected: p.target === j.id || null }, "→ completar: " + (j.title || j.id))));
+        tg.addEventListener("change", () => { p.target = tg.value; });
+        const n = [p.imgs.length && `${p.imgs.length} img`, p.embeds.length && `${p.embeds.length} vídeo`, (p.desc || p.text) && "texto", p.links.length && `${p.links.length} link`].filter(Boolean).join(" · ");
+        return h("li", { class: "imp__it" + (p.done ? " done" : "") }, cb, h("img", { src: p.cover || "", alt: "", loading: "lazy" }),
+          h("div", { class: "imp__t" }, h("b", {}, p.title), h("small", {}, (p.done ? "✓ importado · " : "") + (n || "sem mídia"))), tg);
+      })));
+  };
+  const scan = async () => {
+    if (!E.server) { toast("Sem servidor local: abra o editor pelo portfolio-update.bat.", "err"); return; }
+    IM.busy = true; const t = toast("Lendo o portfolio…", "busy", 0);
+    try { IM.list = await scanPortfolio((m) => t.set(m)); t.done(`${IM.list.length} projetos encontrados`, "ok"); }
+    catch (e) { t.done("Não leu: " + e.message, "err"); }
+    IM.busy = false; draw();
+  };
+  const run = async () => {
+    IM.busy = true; draw(); const todo = IM.list.filter((p) => p.on), t = toast("Importando…", "busy", 0);
+    for (const [i, p] of todo.entries()) { try { await importOne(p, (m) => t.set(`${i + 1}/${todo.length} · ${m}`)); } catch (e) { toast(`${p.title}: ${e.message}`, "err", 8000); } }
+    IM.busy = false; changed(); renderNav(); draw();
+    t.done(`${todo.filter((p) => p.done).length} projeto(s) importado(s). Novos jobs entram ocultos: revise e marque “Visível no site”.`, "ok");
+    await save();
+  };
+  const site = h("input", { type: "url", value: IM.site }); site.addEventListener("input", () => (IM.site = site.value.trim()));
+  draw();
+  return [sec("01", "Adobe Portfolio", "de onde vêm os projetos",
+      h("div", { class: "row", style: { flexWrap: "nowrap" } }, site, h("button", { class: "btn", type: "button", onclick: scan }, IM.list ? "Ler de novo" : "Ler projetos"))),
+    sec("02", "Projetos", "marque o que importar e para qual job vai", box)];
+}

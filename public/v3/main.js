@@ -59,7 +59,7 @@ const C = CONTENT || {};
 const TINTS = PROJECTS.map((p) => p.tint);
 if (Array.isArray(C.jobs) && C.jobs.length) {
   PROJECTS.length = 0;
-  C.jobs.forEach((j, i) => PROJECTS.push({ slug: j.id, title: j.title || "Untitled", disc: j.disciplines || "", ctx: tx(j.context, "en"), pt: tx(j.context, "pt"),
+  C.jobs.filter((j) => !j.hidden || (QS.has("draft") && QS.get("case") === j.id)).forEach((j, i) => PROJECTS.push({ slug: j.id, title: j.title || "Untitled", disc: j.disciplines || "", ctx: tx(j.context, "en"), pt: tx(j.context, "pt"),
     tint: hex3(j.tint, TINTS[i % TINTS.length]), cover: j.cover || "", job: j }));
 }
 PROJECTS.forEach((p) => { if (p.cover === undefined) p.cover = `covers/${p.slug}.webp`; if (!p.job) p.job = {}; });
@@ -965,7 +965,7 @@ function openCase(i) { const pr = PROJECTS[i]; if (!pr) return;
   const j = pr.job || {}, L = S.lang === "pt" ? "pt" : "en"; caseIdx = i; caseItems = [];
   const v = embedOf(j.video); if (v) caseItems.push({ ...v, alt: pr.title + " — video" });
   if (pr.cover) caseItems.push({ kind: "img", src: "./" + pr.cover, alt: pr.title + " — cover" });
-  (j.gallery || []).forEach((g, k) => caseItems.push(/\.(mp4|webm|mov)$/i.test(g) ? { kind: "video", src: "./" + g, alt: `${pr.title} — ${k + 1}` } : { kind: "img", src: "./" + g, alt: `${pr.title} — ${k + 1}` }));
+  (j.gallery || []).forEach((g, k) => { const e = /^https?:/.test(g) && embedOf(g); if (e) caseItems.push({ ...e, alt: `${pr.title} — ${k + 1}` }); else caseItems.push(/\.(mp4|webm|mov)$/i.test(g) ? { kind: "video", src: "./" + g, alt: `${pr.title} — ${k + 1}` } : { kind: "img", src: "./" + g, alt: `${pr.title} — ${k + 1}` }); });
   caseThumbs.replaceChildren(...(caseItems.length > 1 ? caseItems.map((it, k) => {
     const b = document.createElement("button"); b.type = "button"; b.setAttribute("aria-label", it.alt);
     if (it.kind === "img") { const im = new Image(); im.src = it.src; im.alt = ""; im.loading = "lazy"; b.append(im); } else { const sp = document.createElement("span"); sp.className = "play"; sp.textContent = "Video"; b.append(sp); }
