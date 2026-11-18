@@ -33,7 +33,7 @@ export function createLineWaves({ live }) {
 
   const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
   let dpr = 1;
-  const resize = () => { dpr = Math.min(devicePixelRatio || 1, 1.5); canvas.width = Math.round(innerWidth * dpr); canvas.height = Math.round(innerHeight * dpr); };
+  const resize = () => { dpr = Math.min(devicePixelRatio || 1, 1.5); canvas.width = Math.round((canvas.clientWidth || innerWidth) * dpr); canvas.height = Math.round((canvas.clientHeight || innerHeight) * dpr); };   // CSS size, not innerWidth: a scrollbar would squeeze the drawing and shift lines left
   resize(); addEventListener("resize", resize, { passive: true });
 
   const impulses = [], sparks = [], queue = [];

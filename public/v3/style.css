@@ -14,6 +14,7 @@
 :root{--acc:#4dd6ff}
 *{box-sizing:border-box;margin:0}
 html{font-size:16px;background:var(--black);color:var(--pearl);font-family:var(--f-body);-webkit-font-smoothing:antialiased}
+html{scrollbar-width:none}html::-webkit-scrollbar{display:none}   /* hidden scrollbar: WebGL, hit areas and signature lines share one viewport width */
 body{min-height:100vh;overflow-x:hidden}
 body.is-gate,body.is-case{overflow:hidden}
 a{color:inherit;text-decoration:none}

@@ -404,7 +404,7 @@ function jobForm(j) {
           h("small", { class: "f__h" }, "O job aparece como slide dentro de cada categoria marcada. Sem categoria, vai para “Selected work”.")),
         h("label", { class: "chk full" }, (() => { const cb = h("input", { type: "checkbox", checked: !j.hidden }); cb.addEventListener("change", () => { if (cb.checked) delete j.hidden; else j.hidden = true; changed(); }); return cb; })(), "Visível no site"))),
     sec("02", "Capa", "a lâmina de vidro da galeria 3D",
-      media(j, "cover", { dir: () => `media/${j.id}`, maxW: 1600, ratio: COVER_RATIO, aspect: "404/316", empty: "Recortada automaticamente na proporção da lâmina (1,28 : 1)." })),
+      media(j, "cover", { dir: () => `media/${j.id}`, maxW: 1600, ratio: COVER_RATIO, videos: true, aspect: "404/316", empty: "Imagem é recortada na proporção da lâmina (1,28 : 1). Vídeo: WebM 1280×1000, 4–8 s em loop, sem áudio, até ~4 MB." })),
     sec("03", "Vídeo", "o primeiro item do case", video(j)),
     sec("04", "Galeria", "imagens e vídeos do case, na ordem abaixo", gallery(j)),
     sec("05", "Case", "Desafio → Ideia → Execução → Resultado",
@@ -458,7 +458,7 @@ function categoriesForm() {
               field("Nome", tr(c, "name", { ph: "Motion Design" })),
               field("Frase", tr(c, "text", { multi: true, rows: 2 })),
               h("div", { class: "grid2" }, field("ID", idIn, "Usado no link ?cat=<id>."), field("Cor da luz", color(c, "tint")))),
-            field("Capa da categoria", media(c, "cover", { dir: () => "media/categories", maxW: 1600, ratio: COVER_RATIO, aspect: "404/316", empty: "Vazia: usa a capa do primeiro job." }))),
+            field("Capa da categoria", media(c, "cover", { dir: () => "media/categories", maxW: 1600, ratio: COVER_RATIO, videos: true, aspect: "404/316", empty: "Vazia: usa a capa do primeiro job. Aceita WebM animado (1280×1000, loop curto, sem áudio)." }))),
           h("div", { class: "f" }, h("span", { class: "f__l" }, "Jobs nesta categoria"),
             h("div", { class: "chips" }, jobs().map((j) => {
               const cb = h("input", { type: "checkbox", checked: (j.categories || []).includes(c.id) });

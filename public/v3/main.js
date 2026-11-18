@@ -466,6 +466,16 @@ const M = {
   xf(m, x, y) { const w = m[3] * x + m[7] * y + m[15]; return [(m[0] * x + m[4] * y + m[12]) / w, (m[1] * x + m[5] * y + m[13]) / w]; },
 };
 
+// video covers: play while drawn, pause ~1 s after they leave the screen
+const VIDS = []; let frameNo = 0;
+function bindCover(t) {
+  gl.bindTexture(gl.TEXTURE_2D, t);
+  const v = t._vid; if (!v) return;
+  t._seen = frameNo;
+  if (v.paused && S.motion) v.play().catch(() => {});
+  if (v.readyState >= 2 && v.currentTime !== t._f) { t._f = v.currentTime; gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, v); }
+}
+function idleVideos() { frameNo++; for (const t of VIDS) if (t._vid && !t._vid.paused && frameNo - (t._seen || 0) > 60) t._vid.pause(); }
 let R = null; // GL resources
 function initGL() {
   const bh = program(BG_VS, BH_FS), ps = program(PS_VS, PS_FS), bg = program(BG_VS, BG_FS), pane = program(PANE_VS, PANE_FS), tr = program(TR_VS, TR_FS), st = program(ST_VS, ST_FS);
@@ -494,15 +504,23 @@ function initGL() {
   for (let i = 0; i < 46; i++) { const side = i % 2 ? 1 : -1;
     ghosts.push({ z: -3 - i * 2.35 - rand() * 1.2, x: side * (4.6 + rand() * 3.4), y: (rand() - .5) * 5.2, ry: -side * (.75 + rand() * .5), rz: (rand() - .5) * .35, s: .55 + rand() * .9, seed: rand() }); }
 
+  // cover textures: images, or muted looping videos (webm/mp4) whose frames are uploaded only
+  // while their pane is drawn. t._a holds the source aspect so panes can cover-fit it.
   const loadTex = (src) => {
     const t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([14, 22, 34, 255]));
-    const img = new Image();
-    img.onload = () => { gl.bindTexture(gl.TEXTURE_2D, t); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img); gl.generateMipmap(gl.TEXTURE_2D);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    if (!src) return t;
+    const params = (mip) => { gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, mip ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE); };
-    if (src) img.src = src;
+    if (/\.(webm|mp4|mov)$/i.test(src)) {
+      const v = document.createElement("video"); v.muted = true; v.loop = true; v.playsInline = true; v.preload = "auto"; v.crossOrigin = "anonymous";
+      v.addEventListener("loadeddata", () => { t._a = v.videoWidth / v.videoHeight; t._vid = v; t._f = -1; gl.bindTexture(gl.TEXTURE_2D, t); params(false); });
+      v.src = src; VIDS.push(t); return t;
+    }
+    const img = new Image();
+    img.onload = () => { t._a = img.naturalWidth / img.naturalHeight; gl.bindTexture(gl.TEXTURE_2D, t); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img); gl.generateMipmap(gl.TEXTURE_2D); params(true); };
+    img.src = src;
     return t;
   };
   const tex = PROJECTS.map((pr) => loadTex(pr.cover ? "./" + pr.cover : null));
@@ -677,6 +695,7 @@ function frame(now) {
   for (const g of R.ghosts) { const d = (((camZ - g.z) % 108) + 108) % 108; if (d > 0.6 && d < 46) list.push({ ...g, z: camZ - d, d, ghost: 1 }); }
   list.sort((a, b) => b.d - a.d);
   gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+  idleVideos();
   gl.useProgram(R.pane.p); gl.bindVertexArray(R.paneVao);
   gl.uniform1f(R.pane.u.uTime, S.time); gl.uniform3fv(R.pane.u.uTint, tint); gl.uniform1i(R.pane.u.uTex, 0); gl.activeTexture(gl.TEXTURE0);
   const defocus = (1 - enter) * 4.2;
@@ -687,14 +706,15 @@ function frame(now) {
       w = PW * o.s; h = PH * o.s * 1.25;
       m = M.mul(M.trans(o.x, o.y + Math.sin(S.time * .2 + o.seed * 30) * .12, o.z), M.mul(M.rotY(o.ry + Math.sin(S.time * .13 + o.seed * 9) * .06), M.mul(M.rotZ(o.rz), M.scale(w, h))));
       gl.uniform1f(R.pane.u.uGhost, 1); gl.uniform1f(R.pane.u.uAlpha, sstep(46, 30, o.d) * sstep(.6, 3.5, o.d) * shard * mix(1, .32, Math.max(S.psV, S.tlV)) * mix(1, .6, S.prV)); gl.uniform1f(R.pane.u.uBlur, Math.abs(o.d - dockD) * .12 + defocus);
-      gl.uniform1f(R.pane.u.uHover, 0); gl.uniform1f(R.pane.u.uDim, 1);
+      gl.uniform1f(R.pane.u.uHover, 0); gl.uniform1f(R.pane.u.uDim, 1); gl.uniform2f(R.pane.u.uTexScale, 1, 1);
     } else {
       w = PW * o.sc; h = PH * o.sc;
       const front = o.job ? o.kk === Math.round(S.slide) : o.i === active, isA = front ? S.hover : 0;
       m = M.mul(M.trans(o.x, o.y, o.z), M.mul(M.rotY(o.ry + (front ? S.mx * .05 : 0)), M.mul(M.rotX(front ? -S.my * .035 : 0), M.scale(w, h))));
       gl.uniform1f(R.pane.u.uGhost, 0); gl.uniform1f(R.pane.u.uAlpha, o.alpha); gl.uniform1f(R.pane.u.uBlur, o.blur + defocus);
       gl.uniform1f(R.pane.u.uDim, o.dim * mix(.5, 1, enter)); gl.uniform1f(R.pane.u.uHover, isA);
-      gl.bindTexture(gl.TEXTURE_2D, o.job ? R.tex[o.i] : R.ctex[o.i]);
+      const tx0 = o.job ? R.tex[o.i] : R.ctex[o.i], la = w / h, ta = tx0._a || la;
+      bindCover(tx0); gl.uniform2f(R.pane.u.uTexScale, la > ta ? 1 : la / ta, la > ta ? ta / la : 1);   // cover-fit, never stretch
     }
     gl.uniform2f(R.pane.u.uSize, w, h); gl.uniform1f(R.pane.u.uSeed, o.ghost ? o.seed : o.i * .137 + (o.job ? .5 : 0));
     gl.uniformMatrix4fv(R.pane.u.uMVP, false, M.mul(VP, m));
@@ -964,7 +984,7 @@ function showStage(k) {
 function openCase(i) { const pr = PROJECTS[i]; if (!pr) return;
   const j = pr.job || {}, L = S.lang === "pt" ? "pt" : "en"; caseIdx = i; caseItems = [];
   const v = embedOf(j.video); if (v) caseItems.push({ ...v, alt: pr.title + " — video" });
-  if (pr.cover) caseItems.push({ kind: "img", src: "./" + pr.cover, alt: pr.title + " — cover" });
+  if (pr.cover) caseItems.push({ kind: /\.(webm|mp4|mov)$/i.test(pr.cover) ? "video" : "img", src: "./" + pr.cover, alt: pr.title + " — cover" });
   (j.gallery || []).forEach((g, k) => { const e = /^https?:/.test(g) && embedOf(g); if (e) caseItems.push({ ...e, alt: `${pr.title} — ${k + 1}` }); else caseItems.push(/\.(mp4|webm|mov)$/i.test(g) ? { kind: "video", src: "./" + g, alt: `${pr.title} — ${k + 1}` } : { kind: "img", src: "./" + g, alt: `${pr.title} — ${k + 1}` }); });
   caseThumbs.replaceChildren(...(caseItems.length > 1 ? caseItems.map((it, k) => {
     const b = document.createElement("button"); b.type = "button"; b.setAttribute("aria-label", it.alt);
@@ -1019,6 +1039,24 @@ $("#motion").addEventListener("click", () => { S.motion = !S.motion; setMotionLa
 setMotionLabel();
 
 addEventListener("scroll", readScroll, { passive: true });
+// corridor snap: when scrolling rests between two stops, glide (≈0.7 s, ease-out) to the nearest
+// one so a pane is always docked and clickable. Any new wheel / touch / key input cancels it.
+let snapIdle = 0, snapRaf = 0, touching = false, snapping = false;
+const cancelSnap = () => { cancelAnimationFrame(snapRaf); snapRaf = 0; snapping = false; };
+function corridorSnap() {
+  if (!S.entered || S.cat >= 0 || S.caseOpen || touching) return;
+  const u = unit(), y = scrollY; if (y > u * (N + 0.45)) return;            // past the corridor: normal page
+  const goal = Math.round(y / u) * u + 1, d = goal - y; if (Math.abs(d) < 3) return;
+  if (!S.motion) { scrollTo(0, goal); return; }
+  const t0 = performance.now(), dur = clamp(380 + Math.abs(d) * 0.9, 420, 760); snapping = true;
+  const step = (now) => { const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3); scrollTo(0, y + d * e); if (k < 1) snapRaf = requestAnimationFrame(step); else snapping = false; };
+  snapRaf = requestAnimationFrame(step);
+}
+addEventListener("scroll", () => { if (snapping) return; clearTimeout(snapIdle); snapIdle = setTimeout(corridorSnap, 170); }, { passive: true });
+addEventListener("wheel", () => { if (snapping) cancelSnap(); }, { passive: true });
+addEventListener("touchstart", () => { touching = true; cancelSnap(); clearTimeout(snapIdle); }, { passive: true });
+addEventListener("touchend", () => { touching = false; clearTimeout(snapIdle); snapIdle = setTimeout(corridorSnap, 220); }, { passive: true });
+addEventListener("keydown", () => { if (snapping) cancelSnap(); });
 addEventListener("resize", () => { resize(); layoutRail(); readScroll(); });
 resize(); buildRows();
 if (gl) { try { initGL(); } catch (err) { console.error("[FineTune] WebGL init failed:", err); document.documentElement.classList.add("no-gl"); R = null; } }
