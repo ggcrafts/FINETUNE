@@ -513,3 +513,34 @@ body.is-hole .hdr,body.is-hole .dock,body.is-hole .talk,body.is-hole .grain{opac
 .lite body:not(.is-gate) .stations{opacity:0;pointer-events:none}
 .lite .gate__sub,.lite .gate__power{display:none}
 @media (max-height:720px){.lite .stations{top:calc(50% + min(72vw,40vh)*.62 + 58px)}.lite .stations button{padding:7px 10px}}
+
+/* Process is hidden until the ID-card dial button opens it */
+body:not(.show-process) .process{display:none}
+.about h2 em{color:var(--green)}
+/* the name row of the ID card: name + a small knob-like button that opens Process */
+.idcard__name{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.dialbtn{display:flex;align-items:center;gap:12px;padding:6px 14px 6px 6px;border:1px solid rgba(233,240,244,.14);border-radius:999px;background:rgba(5,9,14,.5);text-align:left;cursor:pointer;transition:border-color .3s,box-shadow .3s,transform .3s var(--ease);flex:none}
+.dialbtn:hover,.dialbtn:focus-visible{border-color:rgba(120,217,138,.6);box-shadow:0 0 22px -6px var(--green);transform:translateY(-1px)}
+.dialbtn__knob{position:relative;width:46px;height:46px;border-radius:50%;flex:none;
+  background:radial-gradient(circle,#0a0d12 0 47%,transparent 48%),conic-gradient(from 20deg,#2a323c,#8f9aa6 12%,#252c35 26%,#5b6570 40%,#1d232b 55%,#a3adb8 68%,#2a323c 82%,#6d7783 92%,#2a323c);
+  box-shadow:0 0 0 1px rgba(233,240,244,.25),0 6px 14px rgba(0,0,0,.5);transition:transform .7s var(--ease)}
+.dialbtn__knob::before{content:"";position:absolute;inset:27%;border-radius:50%;background:conic-gradient(from -30deg,#dfe7ee,#5fd4ff 18%,#e9f0f4 34%,#ff8fb0 50%,#dfe7ee 66%,#8fd8ff 82%,#dfe7ee);box-shadow:0 0 0 1px rgba(255,255,255,.5),inset 0 0 4px rgba(0,0,0,.35)}
+.dialbtn__knob::after{content:"";position:absolute;inset:17%;border-radius:50%;background:repeating-conic-gradient(var(--green) 0 4deg,transparent 4deg 30deg);
+  -webkit-mask:radial-gradient(circle,transparent 0 76%,#000 77% 92%,transparent 93%);mask:radial-gradient(circle,transparent 0 76%,#000 77% 92%,transparent 93%);opacity:.9;animation:pulse 2.4s ease-in-out infinite}
+.dialbtn__knob i{position:absolute;left:50%;top:3px;width:2px;height:8px;margin-left:-1px;background:var(--green);box-shadow:0 0 6px var(--green);border-radius:1px}
+.dialbtn:hover .dialbtn__knob{transform:rotate(120deg)}
+.dialbtn__txt{display:grid;gap:2px}
+.dialbtn__txt b{font:500 .6875rem var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--pearl)}
+.dialbtn__txt small{font:400 .5625rem var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mist)}
+/* phones: the ID card as one clean column — photo in a fixed frame, nothing overlapping */
+@media (max-width:600px){
+  .idcard{grid-template-columns:1fr;gap:16px}
+  .idcard__photo{width:100%;aspect-ratio:4/3;max-height:none;height:auto;overflow:hidden;margin:0}
+  .idcard__photo img{width:100%;height:100%;object-fit:cover;object-position:50% 18%}
+  .idcard__body{gap:14px;align-content:start}
+  .idcard__name{flex-direction:column;align-items:flex-start;gap:14px}
+  .idcard__cta{display:grid;gap:14px}
+  .about h2{font-size:2.3rem}
+  .about__sig{margin-top:18px}
+  .foot{display:grid;gap:6px;padding-bottom:84px}
+}

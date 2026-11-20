@@ -132,7 +132,7 @@ const FOV = (38 * Math.PI) / 180;
 const I18N = {
   pt: { tagline: "Motion Design & Tecnologia Criativa", navWork: "Trabalhos", navPractice: "Prática", navAbout: "Sobre", navContact: "Contato",
     pracEyebrow: "Áreas de atuação", pracT1: "Quatro disciplinas.", pracT2: "Um sistema.", lensPh: "Placeholder — trecho de reel por disciplina",
-    navProcess: "Processo", navAbout: "Sobre", procEyebrow: "Processo · Trajetória", procT1: "Da possibilidade", procT2: "à precisão.",
+    navProcess: "Processo", procBtn: "Processo", procBtnSub: "12 anos, afinados ↗", navAbout: "Sobre", procEyebrow: "Processo · Trajetória", procT1: "Da possibilidade", procT2: "à precisão.",
     rdOrder: "Ordem", rdParts: "Partículas", tlEyebrow: "Trajetória", tlT1: "12+ anos.", tlT2: "Uma linha contínua.", tlYears: "anos de prática",
     nextEyebrow: "Próxima etapa, aguardando aprovação",
     hLead: "Onde ideias ganham",
@@ -737,7 +737,7 @@ function frame(now) {
   flankL.classList.toggle("on", !!flankOn); flankR.classList.toggle("on", !!flankOn);
   waves.tick(dt);
   updateRail();
-  const plateOn = S.abV > 0.2;                            // the "form" word now lives in About
+  const plateOn = false;                                 // the mutable "form" word is retired                            // the "form" word now lives in About
   if (plateOn && !S.caseOpen) { tickForm(dt); if (S.motion) tickAccent(dt); }
   if (!S.entered && S.motion) { gateIdle += dt; if (gateIdle > 2.4) { gateAuto += dt; if (gateAuto > 2.6 || gateIdx < 0) { gateAuto = 0; setGate((gateIdx + 1) % GATE.length, true); } } }
   if (!gl || !R) return;
@@ -1109,6 +1109,13 @@ function closeCase() { if (caseEl.hidden) return; if (histTag() === "case") hist
 function closeCaseNow() { if (caseEl.hidden) return; caseEl.hidden = true; caseMedia.replaceChildren(); document.body.classList.remove("is-case"); S.caseOpen = false; hit.focus({ preventScroll: true }); }
 hit.addEventListener("click", () => { if (hit.dataset.dragged) return; if (S.cat >= 0) openCase(CATS[S.cat].jobs[clamp(Math.round(S.slideT), 0, CATS[S.cat].jobs.length - 1)]); else if (S.active >= 0) openCat(S.active); });
 $("#catBack").addEventListener("click", closeCat);
+// Process · Trajectory is off the main scroll: the dial button on the ID card reveals it (it
+// then sits between Practice and About for the rest of the visit) and glides to its start.
+$("#procBtn").addEventListener("click", () => {
+  document.body.classList.add("show-process"); layoutRail(); readScroll();
+  note(SCALE[2], { dur: 0.5 }); note(SCALE[4], { dur: 0.5, when: 0.08 });
+  scrollTo({ top: procEl.offsetTop + innerHeight * 0.3, behavior: "auto" }); readScroll();
+});
 $("#catPrev").addEventListener("click", () => slideTo(Math.round(S.slideT) - 1));
 $("#catNext").addEventListener("click", () => slideTo(Math.round(S.slideT) + 1));
 document.querySelectorAll(".nav a, .talk").forEach((a) => a.addEventListener("click", closeCatNow));
