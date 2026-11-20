@@ -107,6 +107,11 @@ const GATE = (Array.isArray(C.gate) && C.gate.length === 8 ? C.gate.map((g) => (
   { n: "Motion", src: "./reel/clip-01.webm" }, { n: "3D", src: "./reel/clip-02.webm" }, { n: "VFX", src: "./reel/clip-03.webm" },
   { n: "Art Direction", src: "./covers/bravecto.webp" }, { n: "AI", src: "./practice/practice-03.webp", ph: true }, { n: "Creative Tech", src: "./reel/clip-04.webm" },
   { n: "Compositing", src: "./reel/clip-07.webm" }, { n: "Automation", src: "./practice/practice-04.webp", ph: true }]);
+// LED colour per gate discipline (knob arc, index notch, glow behind the knob, eyebrow dot);
+// content.json gate[i].tint overrides. Order matches the ring, clockwise from 12 o'clock.
+const LED = ["#78D98A", "#5fd4ff", "#ff6b8e", "#ffb35c", "#a98bff", "#4de0c4", "#ff8a5c", "#d6ef6b"];
+GATE.forEach((g, i) => { const t = Array.isArray(C.gate) && C.gate[i] && C.gate[i].tint; g.led = /^#[0-9a-f]{6}$/i.test(t || "") ? t : LED[i % LED.length]; });
+const rgb01 = (h) => [1, 3, 5].map((k) => parseInt(h.slice(k, k + 2), 16) / 255);
 // hero + about copy (applied to the DOM just before the EN strings are captured)
 function applyContent() {
   const setI = (key, v) => { if (v == null) return; document.querySelectorAll(`[data-i18n="${key}"]`).forEach((el) => (el.textContent = tx(v, "en"))); I18N.pt[key] = tx(v, "pt"); };
@@ -205,7 +210,8 @@ function setGate(i) {
   if (i < 0) return;
   let target = (i + 0.5) * 45; while (target - gateAng > 180) target -= 360; while (target - gateAng < -180) target += 360;   // shortest way round
   gateAng = target; gatePrev.style.setProperty("--ang", gateAng + "deg");
-  if (knob) knob.set({ angle: -((i + 0.5) * 45) * Math.PI / 180 });
+  if (knob) { const [lr, lg, lb] = rgb01(GATE[i].led); knob.set({ angle: -((i + 0.5) * 45) * Math.PI / 180, lr, lg, lb }); }
+  $("#gate").style.setProperty("--led", GATE[i].led);
 }
 
 /* ───────────── "form": the self-calibrating word (ported from v2 formType.ts) ───────────── */

@@ -18,7 +18,8 @@ in vec2 aP; out vec2 vUv; void main(){ vUv = aP; gl_Position = vec4(aP, 0., 1.);
 const FS = `#version 300 es
 precision highp float;
 in vec2 vUv; out vec4 fragColor;
-uniform sampler2D uMask;
+uniform sampler2D uMask, uRing;
+uniform vec3 uLed;
 uniform float uTime, uAng, uPress, uHover, uGlow, uSweep;
 uniform vec2 uTilt, uLight;
 
@@ -94,7 +95,9 @@ vec3 conic(float th, float e){
   c += vec3(1., .76, .46) * .35 * pow(abs(cos(th + 2.0 - s * .6)), e * 1.4);
   return c;
 }
-const vec3 GREEN = vec3(.47, .85, .54);
+const vec3 GREEN = vec3(.47, .85, .54);   // brand green: the painted square on the cap
+// ring engraving ("Press to enter"): polar strip centred at 12 o'clock between radii R0 and R1
+const float R0 = .755, R1 = .86, SPAN = 1.95;
 float arcMask(float th, float sweep){            // clockwise from 12 o'clock, soft ends
   float a = mod(PI * .5 - th, 2. * PI);
   return smoothstep(0., .05, a) * (1. - smoothstep(sweep - .05, sweep, a));
@@ -124,8 +127,8 @@ void main(){
     vec3 ac = mix(vec3(1., .42, .5), vec3(1., .72, .4), smoothstep(-2.8, -1.5, th));
     float line = exp(-pow((r - 1.035) / .006, 2.)), glow = exp(-pow((r - 1.035) / .05, 2.)) * .45;
     vec3 col = ac * am * (line * 2.2 + glow * 1.3) * (.8 + uHover * .4);
-    float halo = uHover * .16 * smoothstep(1.3, 1.02, r) * smoothstep(.98, 1.05, r);
-    col += GREEN * halo;
+    float halo = (.2 + uHover * .18 + uGlow * .06) * smoothstep(1.32, 1.0, r) * smoothstep(.97, 1.03, r);   // glow behind the knob, LED colour
+    col += uLed * halo;
     float a = clamp(sh + am * (line + glow) + halo, 0., 1.);
     fragColor = vec4(col, a);
     return;
@@ -154,22 +157,34 @@ void main(){
     vec3 groove = face * .1 + vec3(.9, .95, 1.) * max(wall, 0.) * .9 + face * max(-wall, 0.) * .05;
     col = mix(mix(edgeEnv * 1.15, face, flat_), groove, engr);
     col += GREEN * m.g * flat_ * (1.7 + uGlow * 1.4 + uHover * .6);                  // painted green square
-    col += GREEN * arc * .35 * (1. - flat_) * (.6 + uGlow);                          // chamfer picks up the channel light
+    col += uLed * arc * .35 * (1. - flat_) * (.6 + uGlow);                          // chamfer picks up the channel light
     col *= 1. + uHover * .12;
   } else if (id > .5 && id < 1.5){
     // ── outer ring: dark brushed metal, softer wedges ──
     vec3 face = vec3(.002, .0025, .004) + conic(th, 3.) * .016 + conic(th, 24.) * .045;
     face *= mix(.85, 1.08, hash(vec2(floor(r * 700.), 3.1)));
     col = face;
+    // engraved lettering around the top of the ring: polar lookup into the strip texture
+    float ra = atan(sin(PI * .5 - th), cos(PI * .5 - th));            // clockwise from 12 o'clock
+    vec2 ruv = vec2(ra / SPAN + .5, (R1 - r) / (R1 - R0));
+    if (ruv.x > 0. && ruv.x < 1. && ruv.y > 0. && ruv.y < 1.){
+      vec4 g = texture(uRing, ruv);
+      float e = .0018;
+      float gx = texture(uRing, ruv + vec2(e, 0.)).b - texture(uRing, ruv - vec2(e, 0.)).b;
+      float gy = texture(uRing, ruv - vec2(0., e * 6.)).b - texture(uRing, ruv + vec2(0., e * 6.)).b;
+      float wall = clamp(gy * .9 - gx * .6, -1., 1.);                    // upper walls catch the key light
+      vec3 floor_ = vec3(.05, .055, .065) + conic(th, 4.) * .12 + conic(th, 30.) * .1;          // cut through to bare metal
+      col = mix(col, floor_ + vec3(.85, .9, .95) * max(wall, 0.) * .8 - vec3(.02) * max(-wall, 0.), g.r);
+    }
     // index notch at the knob angle (green) — the dial turns with the hovered discipline
     float a = th - uAng, ia = abs(atan(sin(a - PI * .5), cos(a - PI * .5)));
     float index = (1. - smoothstep(.0, .012, ia * r)) * smoothstep(.74, .76, r) * smoothstep(.88, .86, r);
-    col = mix(col, GREEN * (1.5 + uGlow), index);
+    col = mix(col, uLed * (1.5 + uGlow), index);
   } else if (id > 2.5){
     // ── channel: dark floor with the green calibration arc (clockwise from 12 to the dial) ──
     float line = exp(-pow((r - rm) / .0075, 2.)), glow = exp(-pow((r - rm) / .035, 2.));
-    col = vec3(.006, .008, .01) + GREEN * arc * (line * 2.2 + glow * .45) * (.75 + uGlow * .5);
-    col += GREEN * arc * .18 * (1. - abs(n.z));                                     // walls lit by the arc
+    col = vec3(.006, .008, .01) + uLed * arc * (line * 2.2 + glow * .45) * (.75 + uGlow * .5);
+    col += uLed * arc * .18 * (1. - abs(n.z));                                     // walls lit by the arc
   } else {
     // ── outer bevel and side ──
     col = mix(env(reflect(-vW, nW), .22) * fres(vec3(.42, .43, .46), max(dot(nW, vW), 0.)) * .9, edgeEnv * .8, smoothstep(.0, .2, p.z - H + .12));
@@ -179,6 +194,24 @@ void main(){
   col = pow(col, vec3(1. / 2.2));
   fragColor = vec4(col, 1.);
 }`;
+
+function buildRing(label) {
+  const W = 2048, H = 160, cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+  const g = cv.getContext("2d"); g.fillStyle = "#000"; g.fillRect(0, 0, W, H); g.fillStyle = "#fff";
+  const txt = (label || "").toUpperCase(), sp = 0.42;
+  let fs = 74; const font = (f) => `500 ${f}px "IBM Plex Mono", ui-monospace, monospace`;
+  const width = (f) => { g.font = font(f); return [...txt].reduce((w, ch) => w + g.measureText(ch).width + f * sp, -f * sp); };
+  while (width(fs) > W * 0.86 && fs > 20) fs *= 0.95;
+  // the strip is stretched along the arc: compress glyphs horizontally so they keep their shape at the ring radius
+  g.font = font(fs); let x = W / 2 - width(fs) / 2;
+  for (const ch of txt) { g.fillText(ch, x, H * 0.74); x += g.measureText(ch).width + fs * sp; }
+  const b = document.createElement("canvas"); b.width = W; b.height = H; const bc = b.getContext("2d");
+  bc.filter = "blur(3px)"; bc.drawImage(cv, 0, 0);
+  const A = g.getImageData(0, 0, W, H), B = bc.getImageData(0, 0, W, H).data, O = A.data;
+  for (let i = 0; i < O.length; i += 4) { O[i + 2] = B[i]; O[i + 1] = 0; O[i + 3] = 255; }
+  g.putImageData(A, 0, 0);
+  return cv;
+}
 
 function buildMask(size = 1024, label = "") {
   const cv = document.createElement("canvas"); cv.width = cv.height = size;
@@ -232,18 +265,22 @@ export function createKnob(canvas, { motion = true, label = "" } = {}) {
   const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; };
   const pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(pr);
   if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(pr));
-  const U = {}; ["uMask", "uTime", "uAng", "uPress", "uHover", "uGlow", "uTilt", "uLight", "uSweep"].forEach((k) => (U[k] = gl.getUniformLocation(pr, k)));
+  const U = {}; ["uMask", "uRing", "uLed", "uTime", "uAng", "uPress", "uHover", "uGlow", "uTilt", "uLight", "uSweep"].forEach((k) => (U[k] = gl.getUniformLocation(pr, k)));
   const vao = gl.createVertexArray(); gl.bindVertexArray(vao);
   const vb = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, vb); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
   const loc = gl.getAttribLocation(pr, "aP"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
   const tex = gl.createTexture();
-  const upload = () => { gl.bindTexture(gl.TEXTURE_2D, tex); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, buildMask(1024, label)); gl.generateMipmap(gl.TEXTURE_2D);
+  const upload = () => { gl.bindTexture(gl.TEXTURE_2D, tex); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, buildMask(1024)); gl.generateMipmap(gl.TEXTURE_2D);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR); dirty = true; };
+  const rtex = gl.createTexture();
+  const uploadRing = () => { gl.bindTexture(gl.TEXTURE_2D, rtex); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, buildRing(label)); gl.generateMipmap(gl.TEXTURE_2D);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE); dirty = true; };
   let dirty = true;
-  upload();
-  if (document.fonts) Promise.all([document.fonts.load('700 100px "Space Grotesk"'), document.fonts.load('500 40px "IBM Plex Mono"')]).then(upload).catch(() => {});
+  upload(); uploadRing();
+  if (document.fonts) Promise.all([document.fonts.load('700 100px "Space Grotesk"'), document.fonts.load('500 40px "IBM Plex Mono"')]).then(() => { upload(); uploadRing(); }).catch(() => {});
 
-  const K = { angle: 0, tiltX: 0, tiltY: 0, hover: 0, press: 0, glow: 0, lx: 0, ly: 0 };
+  const K = { angle: 0, tiltX: 0, tiltY: 0, hover: 0, press: 0, glow: 0, lx: 0, ly: 0, lr: .47, lg: .85, lb: .54 };   // lr/lg/lb: LED colour
   const T = { ...K, tiltY: 0.06 };
   Object.assign(K, { tiltY: 0.06 });
   let alive = true, time = 0;
@@ -254,7 +291,7 @@ export function createKnob(canvas, { motion = true, label = "" } = {}) {
   const ease = (k, rate, dt) => { const d = T[k] - K[k]; if (Math.abs(d) < 1e-4) { K[k] = T[k]; return false; } K[k] += d * (1 - Math.exp(-rate * dt)); return true; };
   return {
     set(o) { Object.assign(T, o); dirty = true; },
-    setLabel(l) { if (l !== label) { label = l; upload(); } },
+    setLabel(l) { if (l !== label) { label = l; uploadRing(); } },
     snap(o) { Object.assign(T, o); Object.assign(K, o); dirty = true; },
     frame(dt) {
       if (!alive) return;
@@ -263,12 +300,14 @@ export function createKnob(canvas, { motion = true, label = "" } = {}) {
       // angle: shortest way round
       let da = T.angle - K.angle; da = Math.atan2(Math.sin(da), Math.cos(da));
       if (Math.abs(da) > 1e-4) { K.angle += da * (1 - Math.exp(-7 * dt)); moving = true; }
-      for (const [k, r] of [["tiltX", 5], ["tiltY", 5], ["hover", 8], ["press", 18], ["glow", 4], ["lx", 3], ["ly", 3]]) moving = ease(k, motion ? r : 60, dt) || moving;
+      for (const [k, r] of [["tiltX", 5], ["tiltY", 5], ["hover", 8], ["press", 18], ["glow", 4], ["lx", 3], ["ly", 3], ["lr", 5], ["lg", 5], ["lb", 5]]) moving = ease(k, motion ? r : 60, dt) || moving;
       if (!moving && !dirty) return;
       dirty = false;
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.useProgram(pr); gl.bindVertexArray(vao);
       gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex); gl.uniform1i(U.uMask, 0);
+      gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, rtex); gl.uniform1i(U.uRing, 1); gl.activeTexture(gl.TEXTURE0);
+      gl.uniform3f(U.uLed, K.lr, K.lg, K.lb);
       gl.uniform1f(U.uTime, time); gl.uniform1f(U.uAng, K.angle); gl.uniform1f(U.uPress, K.press); gl.uniform1f(U.uHover, K.hover); gl.uniform1f(U.uGlow, K.glow);
       gl.uniform2f(U.uTilt, K.tiltX, K.tiltY); gl.uniform1f(U.uSweep, Math.max(.35, ((-K.angle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI))); gl.uniform2f(U.uLight, K.lx, K.ly);
       gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);

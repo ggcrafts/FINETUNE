@@ -48,7 +48,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .gate__eyebrow{align-self:center;transform:translateY(calc(var(--gw)*-.5 - clamp(44px,7vh,84px)));display:flex;align-items:center;gap:.7em;font:500 clamp(1rem,2.1vmin,1.5rem)/1.1 var(--f-head);letter-spacing:-.02em;color:var(--pearl);white-space:nowrap;transition:opacity .6s}
 .gate__eyebrow em{font-style:normal;font-weight:400;color:var(--mist)}
 .gate__eyebrow em::before{content:"—";margin-right:.7em;color:var(--dim)}
-.gate__dot{width:.42em;height:.42em;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
+.gate__dot{width:.42em;height:.42em;border-radius:50%;background:var(--led,var(--green));box-shadow:0 0 10px var(--led,var(--green));transition:background .6s,box-shadow .6s}
 .gate__ring .needle,.gate__ring .ap{display:none}
 body:not(.is-gate) .gate__eyebrow{opacity:0}
 .gate .logo--gate .logo__word{font-size:clamp(1.5rem,4.4vmin,3rem)}
