@@ -210,7 +210,7 @@ function setGate(i) {
   if (i < 0) return;
   let target = (i + 0.5) * 45; while (target - gateAng > 180) target -= 360; while (target - gateAng < -180) target += 360;   // shortest way round
   gateAng = target; gatePrev.style.setProperty("--ang", gateAng + "deg");
-  if (knob) { const [lr, lg, lb] = rgb01(GATE[i].led); knob.set({ angle: -((i + 0.5) * 45) * Math.PI / 180, lr, lg, lb }); }
+  if (knob) { const [lr, lg, lb] = rgb01(GATE[i].led); knob.set(gateIdle > 2 ? { angle: -((i + 0.5) * 45) * Math.PI / 180, lr, lg, lb } : { lr, lg, lb }); }
   $("#gate").style.setProperty("--led", GATE[i].led);
 }
 
@@ -970,6 +970,7 @@ addEventListener("pointermove", (e) => {
     needle.style.transform = `rotate(${deg}deg)`;
     gateIdle = 0; gateAuto = 0; setGate(r > 0.34 ? Math.floor(deg / 45) % 8 : -1);
     if (knob) { const kr = $("#knob").clientWidth * .32, inside = Math.hypot(dx, dy) < kr * 1.08;
+      if (r > 0.34) knob.set({ angle: -deg * Math.PI / 180 });                     // the dial follows the pointer continuously
       knob.set({ tiltX: clamp(dx / innerWidth, -.5, .5) * .28, tiltY: .06 + clamp(dy / innerHeight, -.5, .5) * .22, lx: dx / innerWidth * 2, ly: dy / innerHeight * 2, hover: inside ? 1 : 0, glow: inside ? 1 : 0 }); }
     document.querySelectorAll(".ap").forEach((c, i) => (c.style.transform = `rotate(${i * 47 + S.gateNear * (60 + i * 25)}deg) scale(${1 - S.gateNear * 0.16})`));
   }

@@ -20,7 +20,7 @@ precision highp float;
 in vec2 vUv; out vec4 fragColor;
 uniform sampler2D uMask, uRing;
 uniform vec3 uLed;
-uniform float uTime, uAng, uPress, uHover, uGlow, uSweep;
+uniform float uTime, uAng, uLag, uPress, uHover, uGlow;
 uniform vec2 uTilt, uLight;
 
 const float PI = 3.14159265;
@@ -98,9 +98,17 @@ vec3 conic(float th, float e){
 const vec3 GREEN = vec3(.47, .85, .54);   // brand green: the painted square on the cap
 // ring engraving ("Press to enter"): polar strip centred at 12 o'clock between radii R0 and R1
 const float R0 = .755, R1 = .86, SPAN = 1.95;
-float arcMask(float th, float sweep){            // clockwise from 12 o'clock, soft ends
-  float a = mod(PI * .5 - th, 2. * PI);
-  return smoothstep(0., .05, a) * (1. - smoothstep(sweep - .05, sweep, a));
+// crystal colour: a slow spectral cycle (cyan → violet → rose → amber → green)
+vec3 gemColor(float t){
+  vec3 c = .5 + .5 * cos(6.2831 * (t * .045 + vec3(0., .34, .67)));
+  return pow(c, vec3(1.6)) * 1.25 + .05;
+}
+// tuning LEDs: lit around the dial index, fading out along the trail the dial leaves behind
+const float NL = 48.;
+float ledLit(float ac){                                  // ac: LED angle, clockwise from 12
+  float pa = mod(-uAng, 2. * PI), pl = mod(-uLag, 2. * PI);
+  float d1 = abs(atan(sin(ac - pa), cos(ac - pa))), d2 = abs(atan(sin(ac - pl), cos(ac - pl)));
+  return max(exp(-d1 * d1 / (.16 * .16)), .55 * exp(-d2 * d2 / (.3 * .3)));
 }
 void main(){
   vec2 uv = vUv;
@@ -127,7 +135,7 @@ void main(){
     vec3 ac = mix(vec3(1., .42, .5), vec3(1., .72, .4), smoothstep(-2.8, -1.5, th));
     float line = exp(-pow((r - 1.035) / .006, 2.)), glow = exp(-pow((r - 1.035) / .05, 2.)) * .45;
     vec3 col = ac * am * (line * 2.2 + glow * 1.3) * (.8 + uHover * .4);
-    float halo = (.2 + uHover * .18 + uGlow * .06) * smoothstep(1.32, 1.0, r) * smoothstep(.97, 1.03, r);   // glow behind the knob, LED colour
+    float halo = uHover * .05 * smoothstep(1.2, 1.0, r) * smoothstep(.97, 1.02, r);   // the moving glow behind the knob is CSS (.gate__knob::before/::after)
     col += uLed * halo;
     float a = clamp(sh + am * (line + glow) + halo, 0., 1.);
     fragColor = vec4(col, a);
@@ -139,7 +147,7 @@ void main(){
   float flat_ = smoothstep(.975, .997, n.z);
   float lathe = hash(vec2(floor(r * 900.), 1.7));
   float rm = (RB + RC) * .5;                                  // channel centre line
-  float arc = arcMask(th, uSweep);
+  float acw = mod(PI * .5 - th, 2. * PI), near = ledLit(acw);
   vec3 edgeEnv = env(reflect(-vW, nW), .08) * fres(vec3(.9, .91, .93), max(dot(nW, vW), 0.));
 
   if (id > 1.5 && id < 2.5){
@@ -156,8 +164,22 @@ void main(){
     float wall = clamp(-bl * .9 + bu * .9, -1., 1.) * flat_;
     vec3 groove = face * .1 + vec3(.9, .95, 1.) * max(wall, 0.) * .9 + face * max(-wall, 0.) * .05;
     col = mix(mix(edgeEnv * 1.15, face, flat_), groove, engr);
-    col += GREEN * m.g * flat_ * (1.7 + uGlow * 1.4 + uHover * .6);                  // painted green square
-    col += uLed * arc * .35 * (1. - flat_) * (.6 + uGlow);                          // chamfer picks up the channel light
+    // ── the keyframe: a small faceted crystal set into the cap, glowing and slowly cycling colour ──
+    vec2 q = (p.xy - vec2(.1214, -.1214)) / .052; float md = abs(q.x) + abs(q.y);
+    if (flat_ > .5 && md < 1.25){
+      col = mix(col, col * .2, smoothstep(.98, 1.03, md) * (1. - smoothstep(1.15, 1.22, md)));   // bezel / setting
+      if (md < 1.){
+        float table = 1. - smoothstep(.40, .46, md), facet = (q.x > 0. ? 1. : 0.) + (q.y > 0. ? 2. : 0.);
+        vec3 fn = normalize(mix(vec3(sign(q.x) * .6, sign(q.y) * .6, 1.), vec3(0., 0., 1.), table)), fnW = R * fn;
+        vec3 inner = gemColor(uTime + facet * .9 + md * 1.4);
+        vec3 g = inner * (1.7 - md * .9) + env(reflect(-vW, fnW), .02) * fres(vec3(.05), max(dot(fnW, vW), 0.)) * 2.5;
+        g += vec3(1.) * pow(1. - md, 5.) * 1.4;                                           // hot core
+        g += inner * (smoothstep(.07, .0, min(abs(q.x), abs(q.y))) * (1. - table) * .5 + smoothstep(.035, .0, abs(md - .43)) * .45);  // facet edges
+        col = g * (1. + uGlow * .3 + uHover * .25);
+      }
+    }
+    col += gemColor(uTime) * .4 * exp(-max(md - 1.22, 0.) * 6.) * step(1.22, md) * flat_;   // light spilling onto the metal
+    col += uLed * near * .3 * (1. - flat_) * (.6 + uGlow);                          // chamfer picks up the LED light
     col *= 1. + uHover * .12;
   } else if (id > .5 && id < 1.5){
     // ── outer ring: dark brushed metal, softer wedges ──
@@ -181,10 +203,13 @@ void main(){
     float index = (1. - smoothstep(.0, .012, ia * r)) * smoothstep(.74, .76, r) * smoothstep(.88, .86, r);
     col = mix(col, uLed * (1.5 + uGlow), index);
   } else if (id > 2.5){
-    // ── channel: dark floor with the green calibration arc (clockwise from 12 to the dial) ──
-    float line = exp(-pow((r - rm) / .0075, 2.)), glow = exp(-pow((r - rm) / .035, 2.));
-    col = vec3(.006, .008, .01) + uLed * arc * (line * 2.2 + glow * .45) * (.75 + uGlow * .5);
-    col += uLed * arc * .18 * (1. - abs(n.z));                                     // walls lit by the arc
+    // ── channel: a ring of tuning LEDs ──
+    float cell = 2. * PI / NL, idx = floor(acw / cell + .5), ac = idx * cell;
+    vec2 c = rm * vec2(sin(ac), cos(ac));
+    float dd = length(p.xy - c), lit = ledLit(ac);
+    float dot_ = 1. - smoothstep(.0085, .0125, dd), bloom = exp(-dd * dd / (.028 * .028));
+    col = vec3(.006, .008, .01) + dot_ * mix(vec3(.05, .06, .07), uLed * 2.6, lit) + uLed * lit * bloom * .22;
+    col += uLed * near * .12 * (1. - abs(n.z));                                     // walls lit by the LEDs
   } else {
     // ── outer bevel and side ──
     col = mix(env(reflect(-vW, nW), .22) * fres(vec3(.42, .43, .46), max(dot(nW, vW), 0.)) * .9, edgeEnv * .8, smoothstep(.0, .2, p.z - H + .12));
@@ -213,43 +238,57 @@ function buildRing(label) {
   return cv;
 }
 
-function buildMask(size = 1024, label = "") {
-  const cv = document.createElement("canvas"); cv.width = cv.height = size;
-  const g = cv.getContext("2d");
-  const draw = (ctx, withSquare) => {
-    ctx.clearRect(0, 0, size, size); ctx.fillStyle = "#000"; ctx.fillRect(0, 0, size, size);
-    ctx.strokeStyle = ctx.fillStyle = "#fff"; ctx.lineCap = "butt"; ctx.lineJoin = "miter";
-    // thin engraved ring near the edge of the button
-    ctx.lineWidth = size * 0.006; ctx.beginPath(); ctx.arc(size / 2, size / 2, size * 0.455, 0, Math.PI * 2); ctx.stroke();
-    // FT mark (viewBox 32), centred above the word
-    const s = size * 0.0108, ox = size / 2 - 16 * s, oy = size * 0.405 - 16 * s;
-    ctx.save(); ctx.translate(ox, oy); ctx.scale(s, s);
-    ctx.lineWidth = 1.6; ctx.strokeRect(1.5, 1.5, 29, 29);
-    ctx.lineWidth = 2.4; ctx.beginPath(); ctx.moveTo(7.5, 22); ctx.lineTo(7.5, 10); ctx.lineTo(14.7, 10); ctx.moveTo(7.5, 16); ctx.lineTo(13.1, 16); ctx.moveTo(17, 10); ctx.lineTo(25.5, 10); ctx.moveTo(21.2, 10); ctx.lineTo(21.2, 22); ctx.stroke();
-    if (withSquare) ctx.fillRect(26, 26, 6, 6);
+// Radial FineTune logo for the cap (mask spans the cap diameter; cap radius = 0.5 of the canvas):
+// FT mark in the centre, FINE/TUNE around the top, the tagline around the bottom, calibration
+// ticks on the sides and a fine outer ring — the wordmark becomes a dial.
+function arcText(ctx, txt, cx, cy, r, centre, { bottom = false, track = 0 } = {}) {
+  const ws = [...txt].map((ch) => ctx.measureText(ch).width), total = ws.reduce((a, b) => a + b, 0) + track * (ws.length - 1);
+  let a = bottom ? centre + total / r / 2 : centre - total / r / 2;      // clockwise-from-12 radians
+  ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+  [...txt].forEach((ch, i) => {
+    const step = (ws[i] + (i < ws.length - 1 ? track : 0)) / r, mid = bottom ? a - ws[i] / r / 2 : a + ws[i] / r / 2;
+    ctx.save(); ctx.translate(cx, cy);
+    if (bottom) { ctx.rotate(mid - Math.PI); ctx.textBaseline = "top"; ctx.fillText(ch, 0, r); }
+    else { ctx.rotate(mid); ctx.fillText(ch, 0, -r); }
     ctx.restore();
-    // wordmark: Fine (500) + Tune (700), as in the site logo
-    const fs = size * 0.115; ctx.textBaseline = "alphabetic";
-    ctx.font = `500 ${fs}px "Space Grotesk", "Inter Tight", Arial, sans-serif`; const w1 = ctx.measureText("Fine").width;
-    ctx.font = `700 ${fs}px "Space Grotesk", "Inter Tight", Arial, sans-serif`; const w2 = ctx.measureText("Tune").width;
-    const track = -fs * 0.05, x0 = size / 2 - (w1 + w2 + track) / 2, y = size * 0.70;
-    ctx.font = `500 ${fs}px "Space Grotesk", "Inter Tight", Arial, sans-serif`; ctx.fillText("Fine", x0, y);
-    ctx.font = `700 ${fs}px "Space Grotesk", "Inter Tight", Arial, sans-serif`; ctx.fillText("Tune", x0 + w1 + track, y);
+    a += bottom ? -step : step;
+  });
+}
+function buildMask(size = 1024) {
+  const cv = document.createElement("canvas"); cv.width = cv.height = size;
+  const g = cv.getContext("2d"), C = size / 2, head = '"Space Grotesk", "Inter Tight", Arial, sans-serif', mono = '"IBM Plex Mono", ui-monospace, monospace';
+  const ms = size * 0.0108, mx = C - 16 * ms, my = C - 16 * ms;           // FT mark: viewBox 32, centred
+  const draw = (ctx) => {
+    ctx.fillStyle = "#000"; ctx.fillRect(0, 0, size, size);
+    ctx.strokeStyle = ctx.fillStyle = "#fff"; ctx.lineCap = "butt"; ctx.lineJoin = "miter";
+    // outer fine ring
+    ctx.lineWidth = size * 0.005; ctx.beginPath(); ctx.arc(C, C, size * 0.468, 0, Math.PI * 2); ctx.stroke();
+    // FT mark
+    ctx.save(); ctx.translate(mx, my); ctx.scale(ms, ms);
+    ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(16, 16, 14.2, 65 * Math.PI / 180, 385 * Math.PI / 180); ctx.stroke();   // circle, open where the keyframe sits
+    ctx.lineWidth = 2.1; ctx.beginPath(); ctx.moveTo(8.8, 20.8); ctx.lineTo(8.8, 11.2); ctx.lineTo(14.56, 11.2); ctx.moveTo(8.8, 16); ctx.lineTo(13.28, 16); ctx.moveTo(16.4, 11.2); ctx.lineTo(23.2, 11.2); ctx.moveTo(19.76, 11.2); ctx.lineTo(19.76, 20.8); ctx.stroke();
+    ctx.restore();
+    // FINE (500) TUNE (700) around the top
+    const fs = size * 0.088, rT = size * 0.345;
+    ctx.font = `500 ${fs}px ${head}`; const wF = ctx.measureText("FINE").width;
+    ctx.font = `700 ${fs}px ${head}`; const wT = ctx.measureText("TUNE").width;
+    const gap = fs * 0.32, tot = (wF + wT + gap) / rT;
+    ctx.font = `500 ${fs}px ${head}`; arcText(ctx, "FINE", C, C, rT, -tot / 2 + wF / rT / 2, { track: fs * 0.04 });
+    ctx.font = `700 ${fs}px ${head}`; arcText(ctx, "TUNE", C, C, rT, tot / 2 - wT / rT / 2, { track: fs * 0.04 });
+    // tagline around the bottom (mono, tracked)
+    const ts = size * 0.03; ctx.font = `500 ${ts}px ${mono}`;
+    arcText(ctx, "MOTION DESIGN · CREATIVE TECH", C, C, size * 0.372, Math.PI, { bottom: true, track: ts * 0.26 });
+    // calibration ticks on both sides, between the two arcs
+    for (let i = 0; i < 2; i++) for (let t = -5; t <= 5; t++) {
+      const a = (i ? -Math.PI / 2 : Math.PI / 2) + t * 0.06, maj = t % 5 === 0, r0 = size * (maj ? 0.385 : 0.405), r1 = size * 0.44;
+      ctx.lineWidth = size * (maj ? 0.006 : 0.004);
+      ctx.beginPath(); ctx.moveTo(C + Math.sin(a) * r0, C - Math.cos(a) * r0); ctx.lineTo(C + Math.sin(a) * r1, C - Math.cos(a) * r1); ctx.stroke();
+    }
   };
-  // R: lettering, G: green square only, B: blurred lettering (groove normals)
-  const a = document.createElement("canvas"); a.width = a.height = size; const ac = a.getContext("2d"); draw(ac, true);
+  // R: engraving, G: green square only, B: blurred engraving (groove normals)
+  const a = document.createElement("canvas"); a.width = a.height = size; const ac = a.getContext("2d"); draw(ac);
   const sq = document.createElement("canvas"); sq.width = sq.height = size; const sc = sq.getContext("2d");
-  sc.fillStyle = "#000"; sc.fillRect(0, 0, size, size); sc.fillStyle = "#fff";
-  { const s = size * 0.0108; sc.fillRect(size / 2 - 16 * s + 26 * s, size * 0.405 - 16 * s + 26 * s, 6 * s, 6 * s); }
-  if (label) {   // "Press to enter", engraved and filled with green paint under the wordmark
-    let fs = size * 0.05; const txt = label.toUpperCase(), sp = 0.28;
-    const width = (f) => { sc.font = `500 ${f}px "IBM Plex Mono", ui-monospace, monospace`; return [...txt].reduce((w, ch) => w + sc.measureText(ch).width + f * sp, -f * sp); };
-    while (width(fs) > size * 0.66 && fs > 8) fs *= 0.95;
-    let x = size / 2 - width(fs) / 2; const y = size * 0.815;
-    sc.textBaseline = "alphabetic";
-    ac.font = sc.font; ac.fillStyle = "#fff";
-    for (const ch of txt) { sc.fillText(ch, x, y); ac.fillText(ch, x, y); x += sc.measureText(ch).width + fs * sp; }
-  }
+  sc.fillStyle = "#000"; sc.fillRect(0, 0, size, size);   // G unused: the keyframe is rendered as a crystal in the shader
   const bl = document.createElement("canvas"); bl.width = bl.height = size; const bc = bl.getContext("2d");
   bc.filter = `blur(${size * 0.0035}px)`; bc.drawImage(a, 0, 0);
   const A = ac.getImageData(0, 0, size, size).data, S = sc.getImageData(0, 0, size, size).data, B = bc.getImageData(0, 0, size, size).data;
@@ -265,7 +304,7 @@ export function createKnob(canvas, { motion = true, label = "" } = {}) {
   const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; };
   const pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(pr);
   if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(pr));
-  const U = {}; ["uMask", "uRing", "uLed", "uTime", "uAng", "uPress", "uHover", "uGlow", "uTilt", "uLight", "uSweep"].forEach((k) => (U[k] = gl.getUniformLocation(pr, k)));
+  const U = {}; ["uMask", "uRing", "uLed", "uTime", "uAng", "uLag", "uPress", "uHover", "uGlow", "uTilt", "uLight"].forEach((k) => (U[k] = gl.getUniformLocation(pr, k)));
   const vao = gl.createVertexArray(); gl.bindVertexArray(vao);
   const vb = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, vb); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
   const loc = gl.getAttribLocation(pr, "aP"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
@@ -280,10 +319,10 @@ export function createKnob(canvas, { motion = true, label = "" } = {}) {
   upload(); uploadRing();
   if (document.fonts) Promise.all([document.fonts.load('700 100px "Space Grotesk"'), document.fonts.load('500 40px "IBM Plex Mono"')]).then(() => { upload(); uploadRing(); }).catch(() => {});
 
-  const K = { angle: 0, tiltX: 0, tiltY: 0, hover: 0, press: 0, glow: 0, lx: 0, ly: 0, lr: .47, lg: .85, lb: .54 };   // lr/lg/lb: LED colour
+  const K = { angle: 0, lag: 0, tiltX: 0, tiltY: 0, hover: 0, press: 0, glow: 0, lx: 0, ly: 0, lr: .47, lg: .85, lb: .54 };   // lr/lg/lb: LED colour
   const T = { ...K, tiltY: 0.06 };
   Object.assign(K, { tiltY: 0.06 });
-  let alive = true, time = 0;
+  let alive = true, time = 0, idle = 0;
   const resize = () => {
     const d = Math.min(devicePixelRatio || 1, 1.5), w = Math.min(1200, Math.round(canvas.clientWidth * d));
     if (canvas.width !== w) { canvas.width = canvas.height = w; dirty = true; }
@@ -300,8 +339,11 @@ export function createKnob(canvas, { motion = true, label = "" } = {}) {
       // angle: shortest way round
       let da = T.angle - K.angle; da = Math.atan2(Math.sin(da), Math.cos(da));
       if (Math.abs(da) > 1e-4) { K.angle += da * (1 - Math.exp(-7 * dt)); moving = true; }
+      let dl = K.angle - K.lag; dl = Math.atan2(Math.sin(dl), Math.cos(dl));                 // trail: a slower copy of the angle
+      if (Math.abs(dl) > 1e-3) { K.lag += dl * (1 - Math.exp(-(motion ? 1.6 : 60) * dt)); moving = true; }
       for (const [k, r] of [["tiltX", 5], ["tiltY", 5], ["hover", 8], ["press", 18], ["glow", 4], ["lx", 3], ["ly", 3], ["lr", 5], ["lg", 5], ["lb", 5]]) moving = ease(k, motion ? r : 60, dt) || moving;
-      if (!moving && !dirty) return;
+      if (!moving && !dirty) { idle += dt; if (!motion || idle < 0.05) return; }
+      idle = 0;
       dirty = false;
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.useProgram(pr); gl.bindVertexArray(vao);
@@ -309,7 +351,7 @@ export function createKnob(canvas, { motion = true, label = "" } = {}) {
       gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, rtex); gl.uniform1i(U.uRing, 1); gl.activeTexture(gl.TEXTURE0);
       gl.uniform3f(U.uLed, K.lr, K.lg, K.lb);
       gl.uniform1f(U.uTime, time); gl.uniform1f(U.uAng, K.angle); gl.uniform1f(U.uPress, K.press); gl.uniform1f(U.uHover, K.hover); gl.uniform1f(U.uGlow, K.glow);
-      gl.uniform2f(U.uTilt, K.tiltX, K.tiltY); gl.uniform1f(U.uSweep, Math.max(.35, ((-K.angle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI))); gl.uniform2f(U.uLight, K.lx, K.ly);
+      gl.uniform2f(U.uTilt, K.tiltX, K.tiltY); gl.uniform1f(U.uLag, K.lag); gl.uniform2f(U.uLight, K.lx, K.ly);
       gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     },
