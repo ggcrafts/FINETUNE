@@ -739,7 +739,7 @@ function frame(now) {
   updateRail();
   const plateOn = false;                                 // the mutable "form" word is retired                            // the "form" word now lives in About
   if (plateOn && !S.caseOpen) { tickForm(dt); if (S.motion) tickAccent(dt); }
-  if (!S.entered && S.motion) { gateIdle += dt; if (gateIdle > 2.4) { gateAuto += dt; if (gateAuto > 2.6 || gateIdx < 0) { gateAuto = 0; setGate((gateIdx + 1) % GATE.length, true); } } }
+  if (!S.entered && S.motion) { gateIdle += dt; if (gateIdle > 2.4) { gateAuto += dt; if (gateAuto > (LITE ? 2.2 : 2.6) || gateIdx < 0) { gateAuto = 0; setGate((gateIdx + 1) % GATE.length, true); if (LITE && knob) { const ang = -((gateIdx + 0.5) * SEC) * Math.PI / 180; knob.set({ angle: ang - 0.16 }); setTimeout(() => knob.set({ angle: ang }), 190); pulseGem(); }   /* phones: a small overshoot, then the snap */ } } }
   if (!gl || !R) return;
 
   /* ── draw ── */
