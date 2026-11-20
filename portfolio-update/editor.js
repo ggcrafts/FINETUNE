@@ -138,7 +138,7 @@ async function publish() {
 /* ───────────── media import ───────────── */
 async function prepare(file, { maxW = 2000, ratio = 0 } = {}) {
   if (isVideo(file.name) || /^video\//.test(file.type)) {
-    if (file.size > 45e6) toast(`${file.name}: ${(file.size / 1e6).toFixed(0)} MB — vídeo pesado para o site; prefira um link do YouTube/Vimeo.`, "warn", 9000);
+    if (file.size > 6e6) toast(`${file.name}: ${(file.size / 1e6).toFixed(0)} MB — será comprimido para a web ao importar (pode levar alguns segundos).`, "busy", 6000);
     return { blob: file, name: file.name };
   }
   if (/gif|svg/i.test(file.type) || /\.(gif|svg)$/i.test(file.name)) return { blob: file, name: file.name };

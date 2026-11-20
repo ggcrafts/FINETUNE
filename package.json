@@ -2,7 +2,7 @@
   "name": "finetune-portfolio",
   "private": true,
   "version": "0.1.0",
-  "description": "FineTune \u2014 portfolio of Luiz Gustavo Czaika.",
+  "description": "FineTune — portfolio of Luiz Gustavo Czaika.",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -23,6 +23,7 @@
   "devDependencies": {
     "typescript": "^5.6.3",
     "vite": "^6.0.0",
-    "simple-icons": ">=13.0.0"
+    "simple-icons": ">=13.0.0",
+    "ffmpeg-static": "^5.2.0"
   }
 }

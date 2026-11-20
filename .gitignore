@@ -6,3 +6,16 @@ dist
 review/
 /reel/
 portfolio-update/.backups/
+
+# heavy originals kept on the PC only (the site uses the compressed *-web.mp4 / .mp4 versions)
+public/v3/media/**/*.gif
+public/v3/media/gate/cena-base-motion-cana.mp4
+public/v3/media/gate/cena-base-motion-cana-2.mp4
+public/v3/media/gate/claro-vt-abertura-performance-animatic-v1.mp4
+public/v3/media/gate/gabriel-guedes-a-bencao-animatic.mp4
+public/v3/media/gate/video-9x16-150817.mp4
+public/v3/media/ggcrafts-ecomerce/bf26-reels-ggbox-sfx.mp4
+public/v3/media/ggcrafts-ecomerce/bf26-reels-ggbox-sfx-1.mp4
+public/v3/media/ggcrafts-ecomerce/video-9x16-093912.mp4
+public/v3/media/ggcrafts-ecomerce/video-9x16-093912-1.mp4
+public/v3/media/ggcrafts-ecomerce/video-9x16-093912-2.mp4

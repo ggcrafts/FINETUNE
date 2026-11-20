@@ -15,6 +15,7 @@ if errorlevel 1 (
   exit /b 1
 )
 if not exist "node_modules\vite" call npm install --no-audit --no-fund
+if not exist "node_modules\ffmpeg-static" call npm install --no-audit --no-fund
 echo   Abrindo http://localhost:5173/portfolio-update/   (feche esta janela para encerrar)
 echo.
 call npx vite --open /portfolio-update/

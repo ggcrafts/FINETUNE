@@ -1,6 +1,6 @@
 {
   "format": "finetune-portfolio/1",
-  "updated": "2026-11-20T20:12:00.000Z",
+  "updated": "2026-11-20T21:23:07.046Z",
   "hero": {
     "eyebrow": {
       "en": "Senior Motion Designer · Art Director · Creative Technologist",
@@ -26,15 +26,15 @@
     },
     {
       "name": "Art Direction",
-      "media": "covers/bravecto.webp"
+      "media": "media/gate/teste-2.mp4"
     },
     {
       "name": "AI",
-      "media": "media/nano-enemy/01-276fb346-fa01-4b3f-a01c-a91eae1e6bcf-rw-1920.webp"
+      "media": "media/gate/combalista-making-of-1min-16x9-1.mp4"
     },
     {
       "name": "Creative Tech",
-      "media": "reel/clip-04.webm"
+      "media": "media/gate/cena-base-motion-cana-2-web.mp4"
     },
     {
       "name": "Compositing",
@@ -42,7 +42,7 @@
     },
     {
       "name": "Automation",
-      "media": "media/ggcrafts-ecomerce/video-9x16-093912-2-2.mp4"
+      "media": "media/gate/video-9x16-150817-web.mp4"
     }
   ],
   "jobs": [
@@ -96,6 +96,66 @@
         "url": ""
       },
       "imported": "https://finetunemotion.myportfolio.com/reel-2017-2018"
+    },
+    {
+      "id": "bravecto",
+      "title": "Bravecto Experience",
+      "client": "",
+      "year": "",
+      "disciplines": "Art Direction · 3D · Immersive",
+      "tint": "#ffb35c",
+      "context": {
+        "en": "Art direction and 3D for an immersive brand experience.",
+        "pt": "Direção de arte e 3D para uma experiência de marca imersiva."
+      },
+      "categories": [
+        "art-direction",
+        "3d-vfx"
+      ],
+      "tools": [
+        "after-effects",
+        "blender",
+        "photoshop",
+        "illustrator",
+        "elevenlabs",
+        "threejs"
+      ],
+      "cover": "media/bravecto/layer-3-3.webp",
+      "video": "https://www.youtube.com/embed/ccLV2Llamr4",
+      "gallery": [
+        "media/bravecto/layer-3.webp",
+        "media/bravecto/layer-1.webp",
+        "media/bravecto/02-3784ad5d-f1e6-4156-9cc1-2c30fc5512c0-rw-1200.webp",
+        "media/bravecto/01-c6e0ffa6-bdf5-4bde-914e-0ef67cd264ce-rw-1920.webp",
+        "media/bravecto/03-87068639-c6ae-4b47-8163-15dbd2a290a3-rw-1920.webp",
+        "media/bravecto/04-fd332715-f933-44ba-8033-051c572e159a-rw-1920.webp",
+        "covers/bravecto.webp"
+      ],
+      "challenge": {
+        "en": "Make an animal-health brand feel tangible and memorable in an immersive format.",
+        "pt": "Tornar uma marca de saúde animal tangível e memorável num formato imersivo."
+      },
+      "idea": {
+        "en": "Build a 3D world around the product so the audience experiences its benefits instead of reading about them.",
+        "pt": "Construir um mundo 3D em volta do produto para o público vivenciar seus benefícios, em vez de ler sobre eles."
+      },
+      "execution": {
+        "en": "Art direction of the 3D world, modeling, lighting and animation with a small team of storyboard, 3D and audio partners.",
+        "pt": "SB: Leandro Ricardo\n3D: Luiz Gustavo, Flavio Novi\nAudio: Jukebox\nArt director: Luiz Gustavo."
+      },
+      "outcome": {
+        "en": "An immersive brand piece that tells the product story through space and motion.",
+        "pt": "Uma peça imersiva que conta a história do produto através de espaço e movimento."
+      },
+      "role": "Art direction · 3D",
+      "link": {
+        "label": {
+          "en": "View on Behance",
+          "pt": "Ver no Behance"
+        },
+        "url": "https://www.behance.net/gallery/195282279/Bravecto-Experience-Direcao-de-projeto"
+      },
+      "imported": "https://finetunemotion.myportfolio.com/bravecto-experience-direcao-de-projeto"
     },
     {
       "id": "implanta-it-solution-explainer-video",
@@ -152,7 +212,7 @@
       "client": "Moove House",
       "year": "2023",
       "disciplines": "VFX · 3D · Motion Design · Opening Titles",
-      "tint": "#9e7aff",
+      "tint": "#ee00ff",
       "context": {
         "en": "VFX, 3D and opening titles for three HBO Max productions: BFF Nossa Voz, Use Sua Voz and O Melhor Verão das Nossas Vidas.",
         "pt": "VFX, 3D e aberturas para três produções da HBO Max: BFF Nossa Voz, Use Sua Voz e O Melhor Verão das Nossas Vidas."
@@ -169,6 +229,7 @@
       "cover": "covers/hbo-bff.webp",
       "video": "https://www-ccv.adobe.io/v1/player/ccv/4GjKm9-Gwwr/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
       "gallery": [
+        "https://www-ccv.adobe.io/v1/player/ccv/4bg-B5A7m8k/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
         "media/hbo-bff/01-c4082069-65dc-4e40-82ab-1e020fe105dd-rw-1920.webp",
         "media/hbo-bff/02-247ad689-03fe-4444-8236-c4430804e718-rw-1920.webp",
         "media/hbo-bff/03-603b9edd-f23e-4446-9868-3fc930492646-rw-1920.webp",
@@ -182,8 +243,7 @@
         "https://www-ccv.adobe.io/v1/player/ccv/2MbxXweAUso/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
         "https://www-ccv.adobe.io/v1/player/ccv/-W6vgFW9eYh/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
         "https://www-ccv.adobe.io/v1/player/ccv/WM7v-6YY6FQ/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
-        "media/o-melhor-verao-das-nosas-vidas-abertura/00-3ab1df56-58ac-4fa0-80f3-450cb36be9b5-rwc-71x0x1048x658x10.webp",
-        "https://www-ccv.adobe.io/v1/player/ccv/4bg-B5A7m8k/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View"
+        "media/o-melhor-verao-das-nosas-vidas-abertura/00-3ab1df56-58ac-4fa0-80f3-450cb36be9b5-rwc-71x0x1048x658x10.webp"
       ],
       "challenge": {
         "en": "Three different briefs for the same broadcaster: integrate 3D and effects into live action for a youth campaign, open a talk format with attitude, and give a summer production a warm, nostalgic opening.",
@@ -216,56 +276,6 @@
         "https://finetunemotion.myportfolio.com/vfx-abertura-o-melhor-verao-das-nossas-vidas",
         "https://finetunemotion.myportfolio.com/o-melhor-verao-das-nosas-vidas-abertura"
       ]
-    },
-    {
-      "id": "bravecto",
-      "title": "Bravecto Experience",
-      "client": "",
-      "year": "",
-      "disciplines": "Art Direction · 3D · Immersive",
-      "tint": "#ffb35c",
-      "context": {
-        "en": "Art direction and 3D for an immersive brand experience.",
-        "pt": "Direção de arte e 3D para uma experiência de marca imersiva."
-      },
-      "categories": [
-        "art-direction",
-        "3d-vfx"
-      ],
-      "tools": [],
-      "cover": "covers/bravecto.webp",
-      "video": "https://www.youtube.com/embed/ccLV2Llamr4",
-      "gallery": [
-        "media/bravecto/01-c6e0ffa6-bdf5-4bde-914e-0ef67cd264ce-rw-1920.webp",
-        "media/bravecto/02-3784ad5d-f1e6-4156-9cc1-2c30fc5512c0-rw-1200.webp",
-        "media/bravecto/03-87068639-c6ae-4b47-8163-15dbd2a290a3-rw-1920.webp",
-        "media/bravecto/04-fd332715-f933-44ba-8033-051c572e159a-rw-1920.webp"
-      ],
-      "challenge": {
-        "en": "Make an animal-health brand feel tangible and memorable in an immersive format.",
-        "pt": "Tornar uma marca de saúde animal tangível e memorável num formato imersivo."
-      },
-      "idea": {
-        "en": "Build a 3D world around the product so the audience experiences its benefits instead of reading about them.",
-        "pt": "Construir um mundo 3D em volta do produto para o público vivenciar seus benefícios, em vez de ler sobre eles."
-      },
-      "execution": {
-        "en": "Art direction of the 3D world, modeling, lighting and animation with a small team of storyboard, 3D and audio partners.",
-        "pt": "SB: Leandro Ricardo\n3D: Luiz Gustavo, Flavio Novi\nAudio: Jukebox\nArt director: Luiz Gustavo."
-      },
-      "outcome": {
-        "en": "An immersive brand piece that tells the product story through space and motion.",
-        "pt": "Uma peça imersiva que conta a história do produto através de espaço e movimento."
-      },
-      "role": "Art direction · 3D",
-      "link": {
-        "label": {
-          "en": "View on Behance",
-          "pt": "Ver no Behance"
-        },
-        "url": "https://www.behance.net/gallery/195282279/Bravecto-Experience-Direcao-de-projeto"
-      },
-      "imported": "https://finetunemotion.myportfolio.com/bravecto-experience-direcao-de-projeto"
     },
     {
       "id": "yes",
@@ -573,8 +583,8 @@
       "gallery": [
         "media/videoclipe-o-amor-de-deus/06-c9187d1b-8f52-41a4-820f-863ae29b2a7b-rw-1920.webp",
         "media/videoclipe-o-amor-de-deus/01-e032211d-4471-43db-951b-47e90ce82a19-rw-1920.webp",
-        "media/videoclipe-o-amor-de-deus/02-b1bf126a-e3cc-4747-ad4f-87a93ae9f4bb-rw-1920.gif",
-        "media/videoclipe-o-amor-de-deus/03-07e0b67c-aa25-462a-82f3-588160aca0dc-rw-1920.gif",
+        "media/videoclipe-o-amor-de-deus/02-b1bf126a-e3cc-4747-ad4f-87a93ae9f4bb-rw-1920.mp4",
+        "media/videoclipe-o-amor-de-deus/03-07e0b67c-aa25-462a-82f3-588160aca0dc-rw-1920.mp4",
         "media/videoclipe-o-amor-de-deus/04-8ec0bca7-ec73-4dfe-bcef-896fa2d07dda-rw-1920.webp",
         "media/videoclipe-o-amor-de-deus/05-06d543bd-8e50-4943-a4ea-7a2171f03423-rw-1920.webp"
       ],
@@ -923,7 +933,7 @@
       "cover": "media/ggcrafts-ecomerce/00-a5b51d6d-1b45-4681-a7fe-0480195d8091-carw-16x10x1920.webp",
       "video": "https://www-ccv.adobe.io/v1/player/ccv/4PknnREXQbq/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
       "gallery": [
-        "media/ggcrafts-ecomerce/bf26-reels-ggbox-sfx-1.mp4",
+        "media/ggcrafts-ecomerce/bf26-reels-ggbox-sfx-1-web.mp4",
         "media/ggcrafts-ecomerce/01-b118b4e5-b2a5-4dcc-a26d-a72b6dbbdfaa-rw-1920.webp",
         "media/ggcrafts-ecomerce/02-96bd0f1f-0003-4cbb-aeee-164afd04d019-rw-1200.webp",
         "media/ggcrafts-ecomerce/bf26-c01-stories.webp",
@@ -1261,7 +1271,13 @@
         "pt": "Uma biblioteca de estudos que alimenta o visual e as técnicas dos projetos de cliente."
       },
       "role": "3D",
-      "hidden": true,
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": ""
+      },
       "imported": "https://finetunemotion.myportfolio.com/deep",
       "mergedFrom": [
         "https://finetunemotion.myportfolio.com/deep",
@@ -1273,14 +1289,7 @@
         "https://finetunemotion.myportfolio.com/shotem-up",
         "https://finetunemotion.myportfolio.com/nano-enemy",
         "https://finetunemotion.myportfolio.com/pgc-materials"
-      ],
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      }
+      ]
     },
     {
       "id": "comfrio-3d-architecture",
@@ -1298,7 +1307,8 @@
       ],
       "tools": [
         "after-effects",
-        "unity"
+        "unity",
+        "blender"
       ],
       "cover": "media/comfrio-3d-architecture/00-465e772c228a64e4f66ee5b68dcf217ea4f0426ba1e4a0699b8d3d15c.webp",
       "video": "",
@@ -1786,7 +1796,7 @@
         "en": "Openings, campaigns and brand films where rhythm carries the idea.",
         "pt": "Aberturas, campanhas e filmes de marca em que o ritmo conduz a ideia."
       },
-      "cover": "media/videoclipe-o-amor-de-deus/02-b1bf126a-e3cc-4747-ad4f-87a93ae9f4bb-rw-1920.gif",
+      "cover": "media/videoclipe-o-amor-de-deus/02-b1bf126a-e3cc-4747-ad4f-87a93ae9f4bb-rw-1920.mp4",
       "tint": "#6bd6ff"
     },
     {

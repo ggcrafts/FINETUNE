@@ -122,7 +122,27 @@ exit /b 0
 :commit
 git config user.name >nul 2>nul || git config user.name "!GHUSER!"
 git config user.email >nul 2>nul || git config user.email "!GHUSER!@users.noreply.github.com"
+rem undo local commits that never reached GitHub (e.g. a push that failed on big files);
+rem the files stay on disk and are committed again below, minus the ignored ones
+git rev-parse --verify -q origin/main >nul 2>nul && git reset -q --soft origin/main
+git rm -r -q --cached public >nul 2>nul
 git add -A
+rem size guard: GitHub refuses files over 100 MB and big media slows the site down
+set BIG=0
+for /f "delims=" %%f in ('git diff --cached --name-only --diff-filter=AM') do (
+  for %%s in ("%%f") do if %%~zs GTR 47185920 (
+    if "!BIG!"=="0" echo. & echo   These files are over 45 MB and were NOT uploaded:
+    echo     %%f  ^(%%~zs bytes^)
+    set BIG=1
+  )
+)
+if "!BIG!"=="1" (
+  echo.
+  echo   Compress them ^(re-import them in Portfolio Update, which compresses video automatically^)
+  echo   or use a YouTube/Vimeo link instead, then run publish.bat again.
+  git reset -q
+  pause & exit 1
+)
 git commit -m "FineTune portfolio update" >nul 2>nul
 git branch -M main
 exit /b 0

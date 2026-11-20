@@ -22,6 +22,30 @@ import fs from "node:fs";
 import fsp from "node:fs/promises";
 import path from "node:path";
 import { spawn } from "node:child_process";
+import { createRequire } from "node:module";
+
+// ffmpeg-static (dev dependency) ships an ffmpeg binary; without it imports still work, uncompressed
+const requireCjs = createRequire(import.meta.url);
+function ffmpegPath(): string | null { try { return requireCjs("ffmpeg-static") as string; } catch { return null; } }
+const COMPRESS_OVER = 6 * 1024 * 1024;           // videos above 6 MB (and any GIF above 1 MB) are re-encoded
+function runFfmpeg(args: string[]): Promise<void> {
+  const bin = ffmpegPath(); if (!bin) return Promise.reject(new Error("ffmpeg-static not installed"));
+  return new Promise((ok, fail) => { const p = spawn(bin, ["-v", "error", "-y", ...args], { windowsHide: true });
+    let err = ""; p.stderr.on("data", (d) => (err += d)); p.on("error", fail); p.on("close", (c) => (c === 0 ? ok() : fail(new Error(err.slice(-400) || `ffmpeg exit ${c}`)))); });
+}
+/** Re-encode a video or GIF for the web: H.264, longest side ≤ 1920, CRF 26, AAC 128k, fast start.
+ *  Returns the new file name, or the original one when compression is not needed or not possible. */
+async function webVideo(absDir: string, file: string): Promise<string> {
+  const src = path.join(absDir, file), ext = path.extname(file).toLowerCase(), size = (await fsp.stat(src)).size;
+  if (ext === ".gif" ? size < 1024 * 1024 : (ext !== ".mp4" && ext !== ".mov" && ext !== ".webm") || size < COMPRESS_OVER) return file;
+  const base = path.basename(file, path.extname(file));
+  let out = `${base}-web.mp4`; for (let n = 2; fs.existsSync(path.join(absDir, out)); n++) out = `${base}-web-${n}.mp4`;
+  const vf = "scale='if(gte(iw,ih),min(1920,iw),-2)':'if(gte(iw,ih),-2,min(1920,ih))',scale=trunc(iw/2)*2:trunc(ih/2)*2";
+  await runFfmpeg(["-i", src, "-vf", vf, "-c:v", "libx264", "-preset", "veryfast", "-crf", "26", "-pix_fmt", "yuv420p",
+    ...(ext === ".gif" ? ["-an"] : ["-c:a", "aac", "-b:a", "128k"]), "-movflags", "+faststart", path.join(absDir, out)]);
+  await fsp.unlink(src);                         // the original was only ever written by this import
+  return out;
+}
 
 const MEDIA_ROOTS = ["media", "covers", "practice", "portrait", "reel", "tools"];
 const MEDIA_EXT = /\.(png|jpe?g|webp|avif|gif|svg|mp4|webm|mov)$/i;
@@ -164,7 +188,11 @@ export function portfolioUpdate(): Plugin {
           let final = name;
           for (let n = 2; fs.existsSync(path.join(abs, final)); n++) final = `${base}-${n}${ext}`;
           await fsp.writeFile(path.join(abs, final), body);
-          return send(res, 200, { ok: true, path: `${dir}/${final}`, size: body.length });
+          let note = "";
+          try { const web = await webVideo(abs, final); if (web !== final) { note = "compressed"; final = web; } }
+          catch (e) { note = "not compressed: " + (e as Error).message; }
+          const size = (await fsp.stat(path.join(abs, final))).size;
+          return send(res, 200, { ok: true, path: `${dir}/${final}`, size, note });
         }
 
         if (route === "GET /files") {
