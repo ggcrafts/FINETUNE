@@ -228,10 +228,10 @@ function audio() {
   if (AC) return AC;
   const Ctor = window.AudioContext || window.webkitAudioContext; if (!Ctor) return null;
   AC = new Ctor();
-  const len = Math.floor(AC.sampleRate * 3.2), buf = AC.createBuffer(2, len, AC.sampleRate);
-  for (let ch = 0; ch < 2; ch++) { const d = buf.getChannelData(ch); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.6); }
+  const len = Math.floor(AC.sampleRate * 4.6), buf = AC.createBuffer(2, len, AC.sampleRate);
+  for (let ch = 0; ch < 2; ch++) { const d = buf.getChannelData(ch); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.2); }
   verb = AC.createConvolver(); verb.buffer = buf;
-  const wet = AC.createGain(); wet.gain.value = 0.85; verb.connect(wet).connect(AC.destination);
+  const wet = AC.createGain(); wet.gain.value = 1.05; verb.connect(wet).connect(AC.destination);
   return AC;
 }
 // Power on: browsers keep audio locked until a real click / tap / key press (moving the mouse does
@@ -242,20 +242,24 @@ function powerOn() {
   if (LITE && !S.power) { S.power = true; const a = audio(); if (a && a.state !== "running") a.resume().catch(() => {}); return; }   // phones: no switch-on step, the first tap just enters
   if (S.power) { if (AC && AC.state === "suspended") AC.resume(); return; }
   S.power = true; poweredAt = performance.now(); document.body.classList.remove("is-off");
-  const a = audio(), up = () => [0, 2, 4].forEach((s, k) => note(SCALE[s], { when: k * 0.09, dur: 0.45 }));
+  const a = audio(), up = () => [0, 2, 4].forEach((s, k) => note(SCALE[s], { when: k * 0.09 }));
   if (a && a.state !== "running") a.resume().then(up).catch(() => {}); else up();
   pulseGem();
 }
 ["pointerup", "keydown"].forEach((ev) => addEventListener(ev, powerOn, true));
-function note(semi, { gain = 0.056, dur = 0.16, when = 0 } = {}) {
+// 8-bit voice: a 25 % pulse wave (the classic console lead), built once
+let PULSE = null;
+const pulseWave = () => { if (PULSE) return PULSE; const n = 48, re = new Float32Array(n), im = new Float32Array(n), d = 0.25;
+  for (let k = 1; k < n; k++) im[k] = (2 / (k * Math.PI)) * Math.sin(k * Math.PI * d); return (PULSE = AC.createPeriodicWave(re, im)); };
+function note(semi, { gain = 0.056, dur = 0.07, when = 0 } = {}) {
   if (!when) pulseGem();                                // the flash happens even while sound is still locked
   if (!AC || AC.state !== "running" || !S.motion) return;
   const t = AC.currentTime + when, f = 392 * Math.pow(2, semi / 12), g = AC.createGain(), lp = AC.createBiquadFilter();
   // hard attack: a 2 ms rise to an accent 1.8× the body, then the decay
-  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(gain * 2.2, t + 0.0015); g.gain.exponentialRampToValueAtTime(gain, t + 0.018);   // "tic": a 1.5 ms spike, the reverb carries the tail g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(gain * 2.2, t + 0.001); g.gain.exponentialRampToValueAtTime(gain * 0.5, t + 0.02);   // pluck: 1 ms in, gone in ~70 ms — the reverb carries the tail g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
   // the filter opens on the attack and closes with the note, so the square stays bright but not harsh
-  lp.type = "lowpass"; lp.Q.value = 2.5; lp.frequency.setValueAtTime(Math.min(9000, f * 9), t); lp.frequency.exponentialRampToValueAtTime(f * 2.2, t + dur);
-  [["square", 1, 0.8], ["square", 2.003, 0.12]].forEach(([type, mul, lv]) => { const o = AC.createOscillator(), og = AC.createGain(); o.type = type; o.frequency.value = f * mul; og.gain.value = lv; o.connect(og).connect(lp); o.start(t); o.stop(t + dur + 0.05); });
+  lp.type = "lowpass"; lp.Q.value = 0.7; lp.frequency.value = 7000;   // chip sound stays raw; only the harshest top is trimmed
+  { const o = AC.createOscillator(); o.setPeriodicWave(pulseWave()); o.frequency.value = f; o.connect(lp); o.start(t); o.stop(t + dur + 0.03); }
   lp.connect(g); g.connect(AC.destination); g.connect(verb);
 }
 // the crystal of the mark flashes with every tone: on the knob and on the small marks in the page
@@ -273,7 +277,7 @@ function click(when = 0) {
   if (!clickBuf) { const n = Math.floor(AC.sampleRate * 0.012); clickBuf = AC.createBuffer(1, n, AC.sampleRate); const d = clickBuf.getChannelData(0); for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (n * 0.12)); }
   const t = AC.currentTime + when, s = AC.createBufferSource(), bp = AC.createBiquadFilter(), g = AC.createGain();
   s.buffer = clickBuf; s.playbackRate.value = 0.85 + Math.random() * 0.3;
-  bp.type = "bandpass"; bp.frequency.value = 3400; bp.Q.value = 1.4; g.gain.value = 0.11;
+  bp.type = "bandpass"; bp.frequency.value = 3400; bp.Q.value = 1.4; g.gain.value = 0.0825;
   s.connect(bp).connect(g); g.connect(AC.destination); const w = AC.createGain(); w.gain.value = 0.25; g.connect(w).connect(verb); s.start(t);
 }
 function dialTick(deg) {
@@ -1062,7 +1066,7 @@ const stationAt = (e) => { const deg = (((Math.atan2(e.clientY - innerHeight / 2
 function enter() {                                     // press: tune in to the station under the index
   if (S.cat >= 0 || performance.now() - poweredAt < 500) return;   // the press that switched the dial on does not also enter
   if (knob) knob.set({ press: 1, glow: 1 });
-  const s = stationNote(Math.max(0, gateIdx)); note(s - 12, { gain: 0.08, dur: 0.7 }); note(s + 7, { gain: 0.05, dur: 0.6, when: 0.07 });
+  const s = stationNote(Math.max(0, gateIdx)); note(s - 12, { gain: 0.06, dur: 0.1 }); note(s + 7, { gain: 0.04, dur: 0.08, when: 0.07 });
   openCat(Math.max(0, gateIdx));
 }
 // a press anywhere on the dial enters the station it is tuned to
@@ -1073,7 +1077,7 @@ document.addEventListener("click", (e) => {
   if (S.cat < 0 || S.caseOpen || S.catT < 0.6 || hit.dataset.dragged || e.target.closest("button,a,.catui,.cap,.hdr,.dock,.case")) return;
   const r = hit.getBoundingClientRect();
   if (e.clientY > r.top && e.clientY < r.bottom && r.width) { slideTo(Math.round(S.slideT) + (e.clientX > r.right ? 1 : -1)); return; }
-  note(stationNote(S.cat) - 12, { gain: 0.05, dur: 0.4 }); closeCat();
+  note(stationNote(S.cat) - 12, { gain: 0.04 }); closeCat();
 });
 gate.addEventListener("pointerdown", (e) => knob && knobHit(e) && knob.set({ press: 1 }));
 gate.addEventListener("pointerleave", () => knob && !S.entered && knob.set({ press: 0, hover: 0, glow: 0 }));
@@ -1144,7 +1148,7 @@ $("#catBack").addEventListener("click", closeCat);
 // then sits between Practice and About for the rest of the visit) and glides to its start.
 $("#procBtn").addEventListener("click", () => {
   document.body.classList.add("show-process"); layoutRail(); readScroll();
-  note(SCALE[2], { dur: 0.5 }); note(SCALE[4], { dur: 0.5, when: 0.08 });
+  note(SCALE[2]); note(SCALE[4], { when: 0.08 });
   scrollTo({ top: procEl.offsetTop + innerHeight * 0.3, behavior: "auto" }); readScroll();
 });
 $("#catPrev").addEventListener("click", () => slideTo(Math.round(S.slideT) - 1));

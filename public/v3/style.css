@@ -603,3 +603,23 @@ body:not(.show-process) .process{display:none}
   .gate .gate__eyebrow{font-size:.9375rem}
   .lite .stations{gap:8px}.lite .stations button{padding:15px 8px}
 }
+/* ── case: fitted to the window (desktop) — media on the left fills the height, the text column
+   on the right; only that column scrolls if a case is long, with a thin designed rail instead
+   of the native scrollbar ── */
+.case__in,.case__body,.case__thumbs{scrollbar-width:thin;scrollbar-color:rgba(120,217,138,.55) transparent}
+.case__in::-webkit-scrollbar,.case__body::-webkit-scrollbar{width:3px}
+.case__thumbs::-webkit-scrollbar{height:3px}
+.case__in::-webkit-scrollbar-track,.case__body::-webkit-scrollbar-track,.case__thumbs::-webkit-scrollbar-track{background:rgba(233,240,244,.05)}
+.case__in::-webkit-scrollbar-thumb,.case__body::-webkit-scrollbar-thumb,.case__thumbs::-webkit-scrollbar-thumb{background:linear-gradient(var(--green),rgba(120,217,138,.35));border-radius:2px}
+@media (min-width:980px) and (min-height:560px){
+  .case__in{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(340px,1fr);grid-template-rows:minmax(0,1fr) auto;height:calc(100vh - 2*var(--pad));max-height:860px;width:min(1480px,100%);overflow:hidden}
+  .case__x{position:absolute;top:12px;right:14px;margin:0;z-index:3}
+  .case__media{grid-column:1;grid-row:1;aspect-ratio:auto;max-height:none;height:100%;min-height:0}
+  .case__thumbs{grid-column:1;grid-row:2;border-bottom:0;border-top:1px solid var(--line)}
+  .case__body{grid-column:2;grid-row:1;grid-template-columns:1fr;gap:18px;overflow-y:auto;min-height:0;padding:56px clamp(22px,2.4vw,36px) 24px;border-left:1px solid var(--line);
+    -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(180deg,#000 calc(100% - 36px),transparent)}
+  .case__body h2{font-size:clamp(1.6rem,2.4vw,2.4rem)}
+  .case dl div{grid-template-columns:96px 1fr;padding:11px 0}
+  .case dd{font-size:.875rem;line-height:1.55}
+  .case__foot{grid-column:2;grid-row:2;border-left:1px solid var(--line);padding:14px clamp(22px,2.4vw,36px) 18px;gap:12px 20px}
+}

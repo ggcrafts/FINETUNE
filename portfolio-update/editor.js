@@ -696,7 +696,7 @@ async function scanPortfolio(status) {
     } catch (e) { toast(`${p}: ${e.message}`, "err", 8000); }
   }
   guessTargets(list);
-  list.forEach((p) => { const j = jobs().find((x) => x.imported === p.url); if (j) { p.target = j.id; p.done = true; p.on = false; } });
+  list.forEach((p) => { const j = jobs().find((x) => x.imported === p.url || (Array.isArray(x.mergedFrom) && x.mergedFrom.includes(p.url))); if (j) { p.target = j.id; p.done = true; p.on = false; } });
   return list;
 }
 async function fetchFile(u, k) {

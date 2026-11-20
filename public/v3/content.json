@@ -1,6 +1,6 @@
 {
   "format": "finetune-portfolio/1",
-  "updated": "2026-11-17T13:28:37.598Z",
+  "updated": "2026-11-20T20:12:00.000Z",
   "hero": {
     "eyebrow": {
       "en": "Senior Motion Designer · Art Director · Creative Technologist",
@@ -148,14 +148,14 @@
     },
     {
       "id": "hbo-bff",
-      "title": "HBO Max — BFF Nossa Voz",
+      "title": "HBO Max — Campaigns & Openings",
       "client": "Moove House",
       "year": "2023",
-      "disciplines": "VFX · 3D · Compositing",
+      "disciplines": "VFX · 3D · Motion Design · Opening Titles",
       "tint": "#9e7aff",
       "context": {
-        "en": "VFX, 3D and compositing for an HBO Max campaign piece.",
-        "pt": "VFX, 3D e composição para uma peça de campanha da HBO Max."
+        "en": "VFX, 3D and opening titles for three HBO Max productions: BFF Nossa Voz, Use Sua Voz and O Melhor Verão das Nossas Vidas.",
+        "pt": "VFX, 3D e aberturas para três produções da HBO Max: BFF Nossa Voz, Use Sua Voz e O Melhor Verão das Nossas Vidas."
       },
       "categories": [
         "3d-vfx",
@@ -173,25 +173,35 @@
         "media/hbo-bff/02-247ad689-03fe-4444-8236-c4430804e718-rw-1920.webp",
         "media/hbo-bff/03-603b9edd-f23e-4446-9868-3fc930492646-rw-1920.webp",
         "https://www-ccv.adobe.io/v1/player/ccv/PmMTBXBh9sh/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
-        "https://www-ccv.adobe.io/v1/player/ccv/LjRgPsBCi7u/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View"
+        "https://www-ccv.adobe.io/v1/player/ccv/LjRgPsBCi7u/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
+        "covers/hbo-use-sua-voz.webp",
+        "https://www-ccv.adobe.io/v1/player/ccv/UIw99mCLrmj/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
+        "covers/melhor-verao.webp",
+        "https://www-ccv.adobe.io/v1/player/ccv/BSVmXNECN8g/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
+        "media/melhor-verao/01-5b524336-5636-471f-94e1-9e69d2ab9fa4-rw-1920.webp",
+        "https://www-ccv.adobe.io/v1/player/ccv/2MbxXweAUso/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
+        "https://www-ccv.adobe.io/v1/player/ccv/-W6vgFW9eYh/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
+        "https://www-ccv.adobe.io/v1/player/ccv/WM7v-6YY6FQ/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
+        "media/o-melhor-verao-das-nosas-vidas-abertura/00-3ab1df56-58ac-4fa0-80f3-450cb36be9b5-rwc-71x0x1048x658x10.webp",
+        "https://www-ccv.adobe.io/v1/player/ccv/4bg-B5A7m8k/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View"
       ],
       "challenge": {
-        "en": "Integrate 3D elements and effects into live-action footage for a youth-focused HBO Max campaign, keeping it natural.",
-        "pt": "Integrar elementos 3D e efeitos a imagens filmadas numa campanha jovem da HBO Max, mantendo tudo natural."
+        "en": "Three different briefs for the same broadcaster: integrate 3D and effects into live action for a youth campaign, open a talk format with attitude, and give a summer production a warm, nostalgic opening.",
+        "pt": "Três briefings diferentes para a mesma emissora: integrar 3D e efeitos a imagens filmadas numa campanha jovem, abrir um formato de conversa com atitude e dar a uma produção de verão uma abertura quente e nostálgica."
       },
       "idea": {
-        "en": "Use VFX to amplify the cast's voices — graphic energy that feels part of the scene, not stuck on top of it.",
-        "pt": "Usar o VFX para amplificar a voz do elenco: energia gráfica que parece parte da cena, e não colada por cima."
+        "en": "Treat motion and VFX as part of each story's voice: graphic energy inside the scene for BFF, type and collage for Use Sua Voz, sunlight and film texture for Melhor Verão.",
+        "pt": "Tratar motion e VFX como parte da voz de cada história: energia gráfica dentro da cena em BFF, tipografia e colagem em Use Sua Voz, sol e textura de película em Melhor Verão."
       },
       "execution": {
-        "en": "Tracking, 3D elements, compositing and finishing on the campaign pieces, produced with Moove House.",
-        "pt": "Tracking, elementos 3D, composição e finalização das peças da campanha, produzidas com a Moove House."
+        "en": "Tracking, 3D elements, compositing, title design, animation and finishing across the three projects, produced with Moove House.",
+        "pt": "Tracking, elementos 3D, composição, design de títulos, animação e finalização nos três projetos, produzidos com a Moove House."
       },
       "outcome": {
-        "en": "Campaign pieces delivered for HBO Max with seamless integration between footage and effects.",
-        "pt": "Peças de campanha entregues para a HBO Max com integração fluida entre filmagem e efeitos."
+        "en": "Campaign pieces and two opening sequences delivered for HBO Max, each with its own identity and a consistent level of finish.",
+        "pt": "Peças de campanha e duas aberturas entregues para a HBO Max, cada uma com identidade própria e o mesmo nível de acabamento."
       },
-      "role": "VFX · 3D · Compositing",
+      "role": "VFX · 3D · Compositing · Motion Design",
       "link": {
         "label": {
           "en": "View on Behance",
@@ -199,7 +209,13 @@
         },
         "url": "https://www.behance.net/gallery/194284575/VFX-HBOMax-BFF-Nossa-Voz"
       },
-      "imported": "https://finetunemotion.myportfolio.com/vfx-hbomax-bff-nossa-voz"
+      "imported": "https://finetunemotion.myportfolio.com/vfx-hbomax-bff-nossa-voz",
+      "mergedFrom": [
+        "https://finetunemotion.myportfolio.com/vfx-hbomax-bff-nossa-voz",
+        "https://finetunemotion.myportfolio.com/abertura-hbomax-use-sua-voz",
+        "https://finetunemotion.myportfolio.com/vfx-abertura-o-melhor-verao-das-nossas-vidas",
+        "https://finetunemotion.myportfolio.com/o-melhor-verao-das-nosas-vidas-abertura"
+      ]
     },
     {
       "id": "bravecto",
@@ -296,50 +312,6 @@
       "imported": "https://finetunemotion.myportfolio.com/vinheta-yes-idiomas-diga-sim-ao-mundo-diga-yes"
     },
     {
-      "id": "hbo-use-sua-voz",
-      "title": "HBO — Use Sua Voz",
-      "client": "",
-      "year": "",
-      "disciplines": "Motion Design · Opening Titles",
-      "tint": "#ff73b8",
-      "context": {
-        "en": "Opening sequence for HBO Max's 'Use Sua Voz'.",
-        "pt": "Abertura de 'Use Sua Voz', da HBO Max."
-      },
-      "categories": [
-        "motion-design"
-      ],
-      "tools": [],
-      "cover": "covers/hbo-use-sua-voz.webp",
-      "video": "https://www-ccv.adobe.io/v1/player/ccv/UIw99mCLrmj/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
-      "gallery": [],
-      "challenge": {
-        "en": "Give the project an opening with attitude that sets the tone in seconds.",
-        "pt": "Dar ao projeto uma abertura com atitude, que defina o tom em poucos segundos."
-      },
-      "idea": {
-        "en": "Typography and collage as a voice: bold shapes, color and rhythm that speak before the first word.",
-        "pt": "Tipografia e colagem como voz: formas fortes, cor e ritmo que falam antes da primeira palavra."
-      },
-      "execution": {
-        "en": "Design and animation of the title sequence, edited to the music.",
-        "pt": "Design e animação da sequência de abertura, com edição na música."
-      },
-      "outcome": {
-        "en": "An opening that frames the content with energy and a clear identity.",
-        "pt": "Uma abertura que apresenta o conteúdo com energia e identidade clara."
-      },
-      "role": "Motion design",
-      "link": {
-        "label": {
-          "en": "View on Behance",
-          "pt": "Ver no Behance"
-        },
-        "url": "https://www.behance.net/gallery/194283311/Abertura-HBOMax-Use-Sua-Voz"
-      },
-      "imported": "https://finetunemotion.myportfolio.com/abertura-hbomax-use-sua-voz"
-    },
-    {
       "id": "cleopatra",
       "title": "Cleopatra",
       "client": "",
@@ -382,55 +354,6 @@
         "url": "https://www.behance.net/gallery/144381729/Paralax-animation-for-Mobile-game-Cleopatra"
       },
       "imported": "https://finetunemotion.myportfolio.com/paralax-animation-for-mobile-game-cleopatra"
-    },
-    {
-      "id": "melhor-verao",
-      "title": "Melhor Verão",
-      "client": "",
-      "year": "",
-      "disciplines": "VFX · Compositing · Opening Titles",
-      "tint": "#73f2db",
-      "context": {
-        "en": "VFX for the opening of 'O Melhor Verão das Nossas Vidas'.",
-        "pt": "VFX para a abertura de 'O Melhor Verão das Nossas Vidas'."
-      },
-      "categories": [
-        "3d-vfx"
-      ],
-      "tools": [],
-      "cover": "covers/melhor-verao.webp",
-      "video": "https://www-ccv.adobe.io/v1/player/ccv/BSVmXNECN8g/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
-      "gallery": [
-        "media/melhor-verao/01-5b524336-5636-471f-94e1-9e69d2ab9fa4-rw-1920.webp",
-        "https://www-ccv.adobe.io/v1/player/ccv/2MbxXweAUso/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
-        "https://www-ccv.adobe.io/v1/player/ccv/-W6vgFW9eYh/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
-        "https://www-ccv.adobe.io/v1/player/ccv/WM7v-6YY6FQ/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View"
-      ],
-      "challenge": {
-        "en": "Bring a warm, nostalgic summer feeling to the opening while integrating graphics into the footage.",
-        "pt": "Trazer a sensação de verão e nostalgia para a abertura, integrando grafismos às imagens."
-      },
-      "idea": {
-        "en": "Light, color and texture as memory: effects that feel like sunlight and film.",
-        "pt": "Luz, cor e textura como memória: efeitos que parecem sol e película."
-      },
-      "execution": {
-        "en": "Compositing, tracking, title integration and finishing across the opening shots.",
-        "pt": "Composição, tracking, integração dos títulos e finalização dos planos da abertura."
-      },
-      "outcome": {
-        "en": "An opening with a warm, cohesive look that sets the mood of the story.",
-        "pt": "Uma abertura com visual quente e coeso, que prepara o clima da história."
-      },
-      "role": "VFX · Compositing",
-      "link": {
-        "label": {
-          "en": "View on Behance",
-          "pt": "Ver no Behance"
-        },
-        "url": "https://www.behance.net/gallery/143936867/VFX-Abertura-O-MELHOR-VERAO-DAS-NOSSAS-VIDAS"
-      },
-      "imported": "https://finetunemotion.myportfolio.com/vfx-abertura-o-melhor-verao-das-nossas-vidas"
     },
     {
       "id": "true-riches",
@@ -523,49 +446,6 @@
         "url": "https://www.behance.net/gallery/144190393/Conectivo-Matriculas-abertas-(SAE-Digital)"
       },
       "imported": "https://finetunemotion.myportfolio.com/conectivo-matriculas-abertas-sae-digital"
-    },
-    {
-      "id": "o-melhor-verao-das-nosas-vidas-abertura",
-      "title": "O Melhor Verão das Nosas Vidas - Abertura",
-      "client": "",
-      "year": "",
-      "disciplines": "Motion Design · Opening Titles",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "Opening titles for 'O Melhor Verão das Nossas Vidas'.",
-        "pt": "Abertura de 'O Melhor Verão das Nossas Vidas'."
-      },
-      "categories": [],
-      "tools": [],
-      "cover": "media/o-melhor-verao-das-nosas-vidas-abertura/00-3ab1df56-58ac-4fa0-80f3-450cb36be9b5-rwc-71x0x1048x658x10.webp",
-      "video": "https://www-ccv.adobe.io/v1/player/ccv/4bg-B5A7m8k/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
-      "gallery": [],
-      "challenge": {
-        "en": "Design an opening that feels like summer from the first frame.",
-        "pt": "Criar uma abertura com cara de verão desde o primeiro quadro."
-      },
-      "idea": {
-        "en": "Warm light, film texture and light-hearted typography.",
-        "pt": "Luz quente, textura de película e tipografia leve."
-      },
-      "execution": {
-        "en": "Title design, animation and finishing.",
-        "pt": "Design dos títulos, animação e finalização."
-      },
-      "outcome": {
-        "en": "A light, nostalgic opening for the production.",
-        "pt": "Uma abertura leve e nostálgica para a produção."
-      },
-      "role": "Motion design",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      },
-      "hidden": true,
-      "imported": "https://finetunemotion.myportfolio.com/o-melhor-verao-das-nosas-vidas-abertura"
     },
     {
       "id": "gabriel-guedes-oferta-agradavel-lyric",
@@ -928,6 +808,103 @@
       "imported": "https://finetunemotion.myportfolio.com/alcance-kids-vinhetas"
     },
     {
+      "id": "combalista-making-of",
+      "title": "Combalista — A Channel Built as a System",
+      "client": "",
+      "year": "2026",
+      "disciplines": "AI Pipeline · Motion Design · 3D · Automation",
+      "tint": "#6fd8ff",
+      "context": {
+        "en": "A semi-autonomous studio for Magic: The Gathering shorts, directed by me and built with AI.",
+        "pt": "Um estúdio semiautônomo de shorts de Magic: The Gathering, dirigido por mim e construído com IA."
+      },
+      "categories": [
+        "ai-creative-tech"
+      ],
+      "tools": [
+        "claude",
+        "blender",
+        "photoshop",
+        "after-effects",
+        "magnific",
+        "javascript"
+      ],
+      "cover": "media/combalista-making-of/cover.webp",
+      "video": "media/combalista-making-of/making-of.mp4",
+      "gallery": [],
+      "challenge": {
+        "en": "Publish short videos about Magic combos with a consistent identity, without editing every one by hand.",
+        "pt": "Publicar vídeos curtos sobre combos de Magic com identidade consistente, sem editar cada um à mão."
+      },
+      "idea": {
+        "en": "Automate the pipeline and keep the taste: research, script, voice and render run as one chain, while 3D, key art, the mascot and the final approval stay with me.",
+        "pt": "Automatizar a pipeline e manter o gosto: pesquisa, roteiro, voz e render rodam em cadeia, enquanto o 3D, o key art, a mascote e a aprovação final ficam comigo."
+      },
+      "execution": {
+        "en": "A desktop production panel, programmatic rendering, deckboxes modelled in Blender, key art composited in Photoshop, a mascot animated in After Effects, and skills that turn every correction into a rule.",
+        "pt": "Um painel de produção desktop, render programático, deckboxes modeladas no Blender, key art composto no Photoshop, uma mascote animada no After Effects e skills que transformam cada correção em regra."
+      },
+      "outcome": {
+        "en": "A working platform for the @combalista channel, with scripts checked against the card rules before anything is rendered.",
+        "pt": "Uma plataforma em funcionamento para o canal @combalista, com roteiros conferidos com as regras das cartas antes de qualquer render."
+      },
+      "role": "Direction · Design · 3D · Motion · Pipeline",
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": ""
+      }
+    },
+    {
+      "id": "finetune-making-of",
+      "title": "FineTune Portfolio — Making Of",
+      "client": "",
+      "year": "2026",
+      "disciplines": "Creative Direction · AI-Assisted Development · WebGL",
+      "tint": "#78d98a",
+      "context": {
+        "en": "How this portfolio was directed by a designer and built with AI.",
+        "pt": "Como este portfólio foi dirigido por um designer e construído com IA."
+      },
+      "categories": [
+        "ai-creative-tech"
+      ],
+      "tools": [
+        "claude",
+        "codex",
+        "javascript"
+      ],
+      "cover": "media/finetune-making-of/cover.webp",
+      "video": "media/finetune-making-of/making-of.mp4",
+      "gallery": [],
+      "challenge": {
+        "en": "Build an interactive portfolio that behaves like an instrument, without a development team.",
+        "pt": "Construir um portfólio interativo que se comporta como um instrumento, sem uma equipe de desenvolvimento."
+      },
+      "idea": {
+        "en": "Start with a brief, not a prompt: a master spec, approved references, and a review at the end of every round.",
+        "pt": "Começar com um briefing, e não com um prompt: um master spec, referências aprovadas e uma revisão ao fim de cada rodada."
+      },
+      "execution": {
+        "en": "AI wrote the code in raw WebGL2 while I directed each stage; a custom editor, Portfolio Update, keeps the content current without touching code.",
+        "pt": "A IA escreveu o código em WebGL2 puro enquanto eu dirigia cada etapa; um editor próprio, o Portfolio Update, mantém o conteúdo atualizado sem mexer em código."
+      },
+      "outcome": {
+        "en": "The site you are looking at, published on GitHub Pages and updated from a single editor.",
+        "pt": "O site que você está vendo, publicado no GitHub Pages e atualizado a partir de um único editor."
+      },
+      "role": "Direction · Design · Motion",
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": ""
+      }
+    },
+    {
       "id": "ggcrafts-ecomerce",
       "title": "GGCRAFTS - Ecomerce",
       "client": "",
@@ -977,54 +954,6 @@
         "url": "https://ggcrafts.com.br"
       },
       "imported": "https://finetunemotion.myportfolio.com/ggcrafts-ecomerce"
-    },
-    {
-      "id": "3d-hand",
-      "title": "3D HAND",
-      "client": "",
-      "year": "",
-      "disciplines": "3D · Modeling · Lookdev",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "A study in 3D modeling, shading and lighting of a hand.",
-        "pt": "Estudo de modelagem, shading e iluminação 3D de uma mão."
-      },
-      "categories": [],
-      "tools": [],
-      "cover": "media/3d-hand/00-137596d7-ca3f-42ea-86d7-abcc20f29ae9-rwc-101x0x1715x1076x.webp",
-      "video": "",
-      "gallery": [
-        "media/3d-hand/01-80206bf9-b2be-4bfa-9fe8-0237a7eccfaf-rw-1920.webp",
-        "media/3d-hand/02-c7980ca9-553a-4d3d-ac9d-8c6247c8c29d-rw-1920.webp",
-        "media/3d-hand/03-9233c3ba-9d50-41be-b6fc-1483d0a08d92-rw-1920.webp",
-        "media/3d-hand/04-684b2bc2-c506-4a0d-84cf-efcd5b4d7ec9-rw-1920.webp"
-      ],
-      "challenge": {
-        "en": "Get a convincing organic form — one of the hardest subjects in 3D.",
-        "pt": "Chegar a uma forma orgânica convincente, um dos temas mais difíceis do 3D."
-      },
-      "idea": {
-        "en": "Focus on anatomy and subtle surface detail rather than spectacle.",
-        "pt": "Focar na anatomia e nos detalhes sutis da superfície, e não no espetáculo."
-      },
-      "execution": {
-        "en": "Sculpting, materials and lighting, presented as still renders.",
-        "pt": "Escultura, materiais e iluminação, apresentados em renders."
-      },
-      "outcome": {
-        "en": "A personal study that sharpened organic modeling skills.",
-        "pt": "Um estudo pessoal que aprimorou a modelagem orgânica."
-      },
-      "role": "3D",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      },
-      "hidden": true,
-      "imported": "https://finetunemotion.myportfolio.com/3d-hand"
     },
     {
       "id": "lyric-video-me-leva-pra-casa",
@@ -1270,97 +1199,88 @@
       "imported": "https://finetunemotion.myportfolio.com/milky-way-motion-graphics"
     },
     {
-      "id": "crystals-3d-modeling",
-      "title": "Crystals - 3D modeling",
+      "id": "personal-3d",
+      "title": "Personal 3D — Studies & Exercises",
       "client": "",
       "year": "",
-      "disciplines": "3D · Modeling · Lookdev",
+      "disciplines": "3D · Modeling · Lookdev · Game Art",
       "tint": "#8fd8ff",
       "context": {
-        "en": "3D study of crystal modeling, materials and light.",
-        "pt": "Estudo 3D de modelagem, materiais e luz em cristais."
+        "en": "Self-initiated 3D studies and exercises: modeling, materials, lookdev and game-art environments.",
+        "pt": "Estudos e exercícios autorais de 3D: modelagem, materiais, lookdev e cenários de game art."
       },
-      "categories": [],
-      "tools": [],
-      "cover": "media/crystals-3d-modeling/00-8f1392edf4e08db8d52328ff09840eb15789f88230f775f218d4fb9ae.webp",
-      "video": "https://player.vimeo.com/video/252047077?autoplay=1&loop=1&title=0&byline=0&portrait=0&muted=1",
-      "gallery": [
-        "media/crystals-3d-modeling/01-3e13d2deffc0a0e21ad4d2b18d8c9f3a7656cdc3cb372043f7d2ea952.webp",
-        "media/crystals-3d-modeling/02-408877ec6e0a877e1ffc610ebf48cdda7f23ef908a032462c11a62849.webp",
-        "media/crystals-3d-modeling/03-baca8ef8be4f27bf7b109ace1a4ef77910af384afbd0b616a3d2d5933.webp"
+      "categories": [
+        "3d-vfx"
       ],
-      "challenge": {
-        "en": "Make light behave convincingly through refractive materials.",
-        "pt": "Fazer a luz se comportar de forma convincente em materiais refrativos."
-      },
-      "idea": {
-        "en": "Let the crystals be lenses: the subject is how they bend light.",
-        "pt": "Deixar os cristais serem lentes: o tema é como eles curvam a luz."
-      },
-      "execution": {
-        "en": "Modeling, refractive shaders and lighting, with renders and an animation.",
-        "pt": "Modelagem, shaders de refração e iluminação, com renders e animação."
-      },
-      "outcome": {
-        "en": "A personal lookdev study in refraction and light.",
-        "pt": "Um estudo pessoal de lookdev sobre refração e luz."
-      },
-      "role": "3D · Lookdev",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      },
-      "hidden": true,
-      "imported": "https://finetunemotion.myportfolio.com/crystals-3d-modeling"
-    },
-    {
-      "id": "deep",
-      "title": "DEEP",
-      "client": "",
-      "year": "",
-      "disciplines": "3D · Personal Work",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "Personal 3D piece.",
-        "pt": "Trabalho pessoal em 3D."
-      },
-      "categories": [],
       "tools": [],
       "cover": "media/deep/00-c4dc5d64-b25c-49a2-8751-b46a2d934bb4-carw-4x3x1920.webp",
       "video": "",
       "gallery": [
         "media/deep/01-f4d26aed-ea7f-4cf3-a58a-8d56a185b52d-rw-1920.webp",
-        "media/deep/02-803296e3-aa2f-4de4-a888-61b2dafd51de-rw-1920.webp"
+        "media/deep/02-803296e3-aa2f-4de4-a888-61b2dafd51de-rw-1920.webp",
+        "media/3d-hand/00-137596d7-ca3f-42ea-86d7-abcc20f29ae9-rwc-101x0x1715x1076x.webp",
+        "media/3d-hand/01-80206bf9-b2be-4bfa-9fe8-0237a7eccfaf-rw-1920.webp",
+        "media/3d-hand/02-c7980ca9-553a-4d3d-ac9d-8c6247c8c29d-rw-1920.webp",
+        "media/3d-hand/03-9233c3ba-9d50-41be-b6fc-1483d0a08d92-rw-1920.webp",
+        "media/3d-hand/04-684b2bc2-c506-4a0d-84cf-efcd5b4d7ec9-rw-1920.webp",
+        "media/crystals-3d-modeling/00-8f1392edf4e08db8d52328ff09840eb15789f88230f775f218d4fb9ae.webp",
+        "https://player.vimeo.com/video/252047077?autoplay=1&loop=1&title=0&byline=0&portrait=0&muted=1",
+        "media/crystals-3d-modeling/01-3e13d2deffc0a0e21ad4d2b18d8c9f3a7656cdc3cb372043f7d2ea952.webp",
+        "media/crystals-3d-modeling/02-408877ec6e0a877e1ffc610ebf48cdda7f23ef908a032462c11a62849.webp",
+        "media/crystals-3d-modeling/03-baca8ef8be4f27bf7b109ace1a4ef77910af384afbd0b616a3d2d5933.webp",
+        "media/dream/00-89eed7c4-b899-4904-bbc5-b86a7d4fe8c7-carw-4x3x1920.webp",
+        "media/dream/01-01e5a701-fc66-4137-b53c-bfcdc485e266-rw-1920.webp",
+        "media/dream/02-fd157965-9969-4470-a50a-1e4b9309f7f5-rw-1920.webp",
+        "media/the-core/00-9eb3b034-6cbc-4d7c-a357-409ff55c9ef4-carw-4x3x1920.webp",
+        "media/the-core/01-4455ad6b-9e36-42ca-b92c-172cffcb5a7c-rw-1920.webp",
+        "media/safe/00-7d60f618-0fa3-480f-8075-57799a835a85-carw-4x3x1920.webp",
+        "media/safe/01-f470799a-ba36-45b2-92d5-5e9767d2657f-rw-1920.webp",
+        "media/shotem-up/00-97485ebc-71ad-42a1-ae77-52b094c239c3-carw-4x3x1920.webp",
+        "media/shotem-up/01-0cfccdf7-ee69-4193-9ca5-70d1712833cd-rw-1920.webp",
+        "media/nano-enemy/00-cecfb6d0-490b-4ef2-9c40-90af47e52f41-carw-4x3x1920.webp",
+        "media/nano-enemy/01-276fb346-fa01-4b3f-a01c-a91eae1e6bcf-rw-1920.webp",
+        "media/nano-enemy/02-bed7f25e-dc33-4cc3-8419-bc0629871153-rw-1920.webp",
+        "media/pgc-materials/00-a5d0a377-73c4-415b-8f78-c47073be1ed1-carw-4x3x1920.webp",
+        "media/pgc-materials/01-0f2f4b34-7bfc-49dd-a8f0-a686483b61ba-rw-1200.webp",
+        "media/pgc-materials/02-f628c066-ce07-4c6a-85cb-adf0b02f2991-rw-1200.webp"
       ],
       "challenge": {
-        "en": "Explore mood and atmosphere in a self-initiated image.",
-        "pt": "Explorar clima e atmosfera numa imagem autoral."
+        "en": "Keep modeling, shading and lighting sharp between client projects.",
+        "pt": "Manter modelagem, shading e iluminação afiados entre os projetos de cliente."
       },
       "idea": {
-        "en": "Composition, light and depth working together to create a sense of immersion.",
-        "pt": "Composição, luz e profundidade trabalhando juntas para criar sensação de imersão."
+        "en": "Short self-set exercises, each one isolating a single problem: an organic form, crystals, smoked acrylic, a sci-fi set.",
+        "pt": "Pequenos exercícios autorais, cada um isolando um problema: uma forma orgânica, cristais, acrílico fumê, um cenário sci-fi."
       },
       "execution": {
-        "en": "Modeling, lighting and rendering.",
-        "pt": "Modelagem, iluminação e render."
+        "en": "Modeling, shading, lighting and rendering in Blender.",
+        "pt": "Modelagem, shading, iluminação e render no Blender."
       },
       "outcome": {
-        "en": "A personal piece exploring atmosphere.",
-        "pt": "Uma peça pessoal explorando atmosfera."
+        "en": "A growing library of studies that feeds the look and techniques of client work.",
+        "pt": "Uma biblioteca de estudos que alimenta o visual e as técnicas dos projetos de cliente."
       },
       "role": "3D",
+      "hidden": true,
+      "imported": "https://finetunemotion.myportfolio.com/deep",
+      "mergedFrom": [
+        "https://finetunemotion.myportfolio.com/deep",
+        "https://finetunemotion.myportfolio.com/3d-hand",
+        "https://finetunemotion.myportfolio.com/crystals-3d-modeling",
+        "https://finetunemotion.myportfolio.com/dream",
+        "https://finetunemotion.myportfolio.com/the-core",
+        "https://finetunemotion.myportfolio.com/safe",
+        "https://finetunemotion.myportfolio.com/shotem-up",
+        "https://finetunemotion.myportfolio.com/nano-enemy",
+        "https://finetunemotion.myportfolio.com/pgc-materials"
+      ],
       "link": {
         "label": {
           "en": "View project",
           "pt": "Ver projeto"
         },
         "url": ""
-      },
-      "hidden": true,
-      "imported": "https://finetunemotion.myportfolio.com/deep"
+      }
     },
     {
       "id": "comfrio-3d-architecture",
@@ -1411,279 +1331,6 @@
       },
       "hidden": true,
       "imported": "https://finetunemotion.myportfolio.com/comfrio-3d-architecture"
-    },
-    {
-      "id": "pgc-materials",
-      "title": "PGC - Materials",
-      "client": "",
-      "year": "",
-      "disciplines": "3D · Materials · Lookdev",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "Material and shading studies.",
-        "pt": "Estudos de materiais e shading."
-      },
-      "categories": [],
-      "tools": [],
-      "cover": "media/pgc-materials/00-a5d0a377-73c4-415b-8f78-c47073be1ed1-carw-4x3x1920.webp",
-      "video": "",
-      "gallery": [
-        "media/pgc-materials/01-0f2f4b34-7bfc-49dd-a8f0-a686483b61ba-rw-1200.webp",
-        "media/pgc-materials/02-f628c066-ce07-4c6a-85cb-adf0b02f2991-rw-1200.webp"
-      ],
-      "challenge": {
-        "en": "Build a set of believable materials for 3D work.",
-        "pt": "Construir um conjunto de materiais convincentes para trabalhos em 3D."
-      },
-      "idea": {
-        "en": "Study real surfaces and reproduce how they respond to light.",
-        "pt": "Estudar superfícies reais e reproduzir como elas respondem à luz."
-      },
-      "execution": {
-        "en": "Shader setup, texturing and test renders.",
-        "pt": "Configuração de shaders, texturização e renders de teste."
-      },
-      "outcome": {
-        "en": "A library of materials and look studies.",
-        "pt": "Uma biblioteca de materiais e estudos de look."
-      },
-      "role": "3D · Lookdev",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      },
-      "hidden": true,
-      "imported": "https://finetunemotion.myportfolio.com/pgc-materials"
-    },
-    {
-      "id": "dream",
-      "title": "Dream",
-      "client": "",
-      "year": "",
-      "disciplines": "3D · Personal Work",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "Personal 3D image.",
-        "pt": "Imagem pessoal em 3D."
-      },
-      "categories": [],
-      "tools": [],
-      "cover": "media/dream/00-89eed7c4-b899-4904-bbc5-b86a7d4fe8c7-carw-4x3x1920.webp",
-      "video": "",
-      "gallery": [
-        "media/dream/01-01e5a701-fc66-4137-b53c-bfcdc485e266-rw-1920.webp",
-        "media/dream/02-fd157965-9969-4470-a50a-1e4b9309f7f5-rw-1920.webp"
-      ],
-      "challenge": {
-        "en": "Create an image with a dreamlike mood.",
-        "pt": "Criar uma imagem com clima de sonho."
-      },
-      "idea": {
-        "en": "Soft light, color and composition that feel slightly unreal.",
-        "pt": "Luz suave, cor e composição levemente irreais."
-      },
-      "execution": {
-        "en": "Modeling, lighting and rendering.",
-        "pt": "Modelagem, iluminação e render."
-      },
-      "outcome": {
-        "en": "A personal piece exploring mood.",
-        "pt": "Uma peça pessoal explorando clima."
-      },
-      "role": "3D",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      },
-      "hidden": true,
-      "imported": "https://finetunemotion.myportfolio.com/dream"
-    },
-    {
-      "id": "the-core",
-      "title": "The Core",
-      "client": "",
-      "year": "",
-      "disciplines": "3D · Game Art",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "3D game-art piece, also published on ArtStation.",
-        "pt": "Peça de game art em 3D, publicada também no ArtStation."
-      },
-      "categories": [],
-      "tools": [],
-      "cover": "media/the-core/00-9eb3b034-6cbc-4d7c-a357-409ff55c9ef4-carw-4x3x1920.webp",
-      "video": "",
-      "gallery": [
-        "media/the-core/01-4455ad6b-9e36-42ca-b92c-172cffcb5a7c-rw-1920.webp"
-      ],
-      "challenge": {
-        "en": "Design and model assets with a strong, readable silhouette for a game context.",
-        "pt": "Criar e modelar assets com silhueta forte e legível para o contexto de jogo."
-      },
-      "idea": {
-        "en": "Shape language and materials that say what the object is at a glance.",
-        "pt": "Linguagem de formas e materiais que dizem o que o objeto é num relance."
-      },
-      "execution": {
-        "en": "Modeling, texturing and presentation renders.",
-        "pt": "Modelagem, texturização e renders de apresentação."
-      },
-      "outcome": {
-        "en": "A game-art piece for the 3D portfolio.",
-        "pt": "Uma peça de game art para o portfólio 3D."
-      },
-      "role": "3D · Game art",
-      "link": {
-        "label": {
-          "en": "View on ArtStation",
-          "pt": "Ver no ArtStation"
-        },
-        "url": "https://www.artstation.com/artwork/xz6ze2"
-      },
-      "hidden": true,
-      "imported": "https://finetunemotion.myportfolio.com/the-core"
-    },
-    {
-      "id": "safe",
-      "title": "S.A.F.E.",
-      "client": "",
-      "year": "",
-      "disciplines": "3D · Game Art",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "3D game-art piece, also published on ArtStation.",
-        "pt": "Peça de game art em 3D, publicada também no ArtStation."
-      },
-      "categories": [],
-      "tools": [],
-      "cover": "media/safe/00-7d60f618-0fa3-480f-8075-57799a835a85-carw-4x3x1920.webp",
-      "video": "",
-      "gallery": [
-        "media/safe/01-f470799a-ba36-45b2-92d5-5e9767d2657f-rw-1920.webp"
-      ],
-      "challenge": {
-        "en": "Design and model assets with a strong, readable silhouette for a game context.",
-        "pt": "Criar e modelar assets com silhueta forte e legível para o contexto de jogo."
-      },
-      "idea": {
-        "en": "Shape language and materials that say what the object is at a glance.",
-        "pt": "Linguagem de formas e materiais que dizem o que o objeto é num relance."
-      },
-      "execution": {
-        "en": "Modeling, texturing and presentation renders.",
-        "pt": "Modelagem, texturização e renders de apresentação."
-      },
-      "outcome": {
-        "en": "A game-art piece for the 3D portfolio.",
-        "pt": "Uma peça de game art para o portfólio 3D."
-      },
-      "role": "3D · Game art",
-      "link": {
-        "label": {
-          "en": "View on ArtStation",
-          "pt": "Ver no ArtStation"
-        },
-        "url": "https://www.artstation.com/artwork/JlqPOR"
-      },
-      "hidden": true,
-      "imported": "https://finetunemotion.myportfolio.com/safe"
-    },
-    {
-      "id": "shotem-up",
-      "title": "Shot'em Up",
-      "client": "",
-      "year": "",
-      "disciplines": "3D · Game Art",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "3D game-art piece, also published on ArtStation.",
-        "pt": "Peça de game art em 3D, publicada também no ArtStation."
-      },
-      "categories": [],
-      "tools": [],
-      "cover": "media/shotem-up/00-97485ebc-71ad-42a1-ae77-52b094c239c3-carw-4x3x1920.webp",
-      "video": "",
-      "gallery": [
-        "media/shotem-up/01-0cfccdf7-ee69-4193-9ca5-70d1712833cd-rw-1920.webp"
-      ],
-      "challenge": {
-        "en": "Design and model assets with a strong, readable silhouette for a game context.",
-        "pt": "Criar e modelar assets com silhueta forte e legível para o contexto de jogo."
-      },
-      "idea": {
-        "en": "Shape language and materials that say what the object is at a glance.",
-        "pt": "Linguagem de formas e materiais que dizem o que o objeto é num relance."
-      },
-      "execution": {
-        "en": "Modeling, texturing and presentation renders.",
-        "pt": "Modelagem, texturização e renders de apresentação."
-      },
-      "outcome": {
-        "en": "A game-art piece for the 3D portfolio.",
-        "pt": "Uma peça de game art para o portfólio 3D."
-      },
-      "role": "3D · Game art",
-      "link": {
-        "label": {
-          "en": "View on ArtStation",
-          "pt": "Ver no ArtStation"
-        },
-        "url": "https://www.artstation.com/artwork/zAY9x4"
-      },
-      "hidden": true,
-      "imported": "https://finetunemotion.myportfolio.com/shotem-up"
-    },
-    {
-      "id": "nano-enemy",
-      "title": "Nano enemy",
-      "client": "",
-      "year": "",
-      "disciplines": "3D · Game Art",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "3D game-art piece, also published on ArtStation.",
-        "pt": "Peça de game art em 3D, publicada também no ArtStation."
-      },
-      "categories": [],
-      "tools": [],
-      "cover": "media/nano-enemy/00-cecfb6d0-490b-4ef2-9c40-90af47e52f41-carw-4x3x1920.webp",
-      "video": "",
-      "gallery": [
-        "media/nano-enemy/01-276fb346-fa01-4b3f-a01c-a91eae1e6bcf-rw-1920.webp",
-        "media/nano-enemy/02-bed7f25e-dc33-4cc3-8419-bc0629871153-rw-1920.webp"
-      ],
-      "challenge": {
-        "en": "Design and model assets with a strong, readable silhouette for a game context.",
-        "pt": "Criar e modelar assets com silhueta forte e legível para o contexto de jogo."
-      },
-      "idea": {
-        "en": "Shape language and materials that say what the object is at a glance.",
-        "pt": "Linguagem de formas e materiais que dizem o que o objeto é num relance."
-      },
-      "execution": {
-        "en": "Modeling, texturing and presentation renders.",
-        "pt": "Modelagem, texturização e renders de apresentação."
-      },
-      "outcome": {
-        "en": "A game-art piece for the 3D portfolio.",
-        "pt": "Uma peça de game art para o portfólio 3D."
-      },
-      "role": "3D · Game art",
-      "link": {
-        "label": {
-          "en": "View on ArtStation",
-          "pt": "Ver no ArtStation"
-        },
-        "url": "https://www.artstation.com/artwork/xz6mqX"
-      },
-      "hidden": true,
-      "imported": "https://finetunemotion.myportfolio.com/nano-enemy"
     }
   ],
   "practices": [
@@ -1724,8 +1371,7 @@
       "tint": "#ffbd75",
       "jobs": [
         "hbo-bff",
-        "yes",
-        "hbo-use-sua-voz"
+        "yes"
       ]
     },
     {
