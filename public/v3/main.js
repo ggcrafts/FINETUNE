@@ -189,7 +189,10 @@ const gatePrev = $("#gatePrev"); let gateIdx = -1, gateAng = 0, gateIdle = 0, ga
 // the knob in the centre of the gate (knob.js): turns to the discipline under the cursor,
 // tilts toward the pointer, lights up on hover and presses in on click
 let knob = null, knobT = 0;
-try { knob = createKnob($("#knob"), { motion: S.motion, label: "Press to enter" }); } catch (err) { console.warn("[FineTune] knob:", err); }
+// phones and small touch screens run a lighter build: 1× WebGL resolution and a still knob
+const LITE = matchMedia("(pointer:coarse)").matches && Math.min(screen.width, screen.height) < 900;
+if (LITE) document.documentElement.classList.add("lite");
+try { knob = createKnob($("#knob"), { motion: S.motion, label: "Press to enter", lite: LITE }); } catch (err) { console.warn("[FineTune] knob:", err); }
 if (!knob) document.documentElement.classList.add("no-knob");
 GATE.forEach((g) => {
   const vid = /\.(webm|mp4|mov)$/i.test(g.src), el = document.createElement(vid ? "video" : "img");
@@ -591,7 +594,7 @@ function initGL() {
 
 let W = 1, H = 1, DPR = 1, dockD = 4.4;
 function resize() {
-  DPR = Math.min(window.devicePixelRatio || 1, innerWidth > 2200 ? 1 : 1.5);
+  DPR = document.documentElement.classList.contains("lite") ? 1 : Math.min(window.devicePixelRatio || 1, innerWidth > 2200 ? 1 : 1.5);
   W = Math.round(innerWidth * DPR); H = Math.round(innerHeight * DPR);
   if (gl) { canvas.width = W; canvas.height = H; gl.viewport(0, 0, W, H); }
   const aspect = innerWidth / innerHeight, th = Math.tan(FOV / 2);
@@ -989,7 +992,7 @@ addEventListener("wheel", (e) => {
 // drag / swipe
 let drag = null;
 addEventListener("pointerdown", (e) => { if (S.cat < 0 || S.caseOpen || e.button !== 0 || e.target.closest("button:not(#hit),a,.catui")) return; drag = { x: e.clientX, s: S.slideT, moved: false }; });
-addEventListener("pointermove", (e) => { if (!drag) return; const dx = e.clientX - drag.x; if (Math.abs(dx) > 6) drag.moved = true; if (drag.moved) S.slideT = clamp(drag.s - dx / (innerWidth * 0.32), -0.3, CATS[S.cat].jobs.length - 0.7); });
+addEventListener("pointermove", (e) => { if (!drag) return; const dx = e.clientX - drag.x; if (Math.abs(dx) > 6) drag.moved = true; if (drag.moved) S.slideT = clamp(drag.s - dx / (e.pointerType === "touch" ? Math.min(innerWidth * 0.55, 260) : innerWidth * 0.32), -0.3, CATS[S.cat].jobs.length - 0.7); });
 addEventListener("pointerup", () => { if (!drag) return; const d = drag; drag = null; if (!d.moved) return; hit.dataset.dragged = "1"; setTimeout(() => delete hit.dataset.dragged, 50);
   const r = clamp(Math.round(S.slideT + Math.sign(S.slideT - d.s) * 0.25), 0, CATS[S.cat].jobs.length - 1); S.slideT = S.slide; slideTo(r); S.slideT = r; });
 function goTo() { closeCat(); scrollTo({ top: 0, behavior: S.motion ? "smooth" : "auto" }); }

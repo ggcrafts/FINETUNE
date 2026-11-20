@@ -120,7 +120,7 @@ void main(){
   float b = dot(ro, rd), c = dot(ro, ro) - 1.12 * 1.12, disc = b * b - c;
   float t = disc > 0. ? -b - sqrt(disc) : 1e9, tEnd = disc > 0. ? -b + sqrt(disc) : 0.;
   vec2 hit = vec2(1., -1.);
-  for (int i = 0; i < 80; i++){
+  for (int i = 0; i < STEPS; i++){
     if (t > tEnd) break;
     hit = map(ro + rd * t);
     if (hit.x < 0.0006) break;
@@ -142,7 +142,7 @@ void main(){
     return;
   }
   vec3 p = ro + rd * t, n = nrm(p), col;
-  float r = length(p.xy), th = atan(p.y, p.x), id = hit.y, occ = ao(p, n);
+  float r = length(p.xy), th = atan(p.y, p.x), id = hit.y, occ = AO(p, n);
   vec3 nW = R * n, vW = -rdW;
   float flat_ = smoothstep(.975, .997, n.z);
   float lathe = hash(vec2(floor(r * 900.), 1.7));
@@ -298,11 +298,14 @@ function buildMask(size = 1024) {
   return cv;
 }
 
-export function createKnob(canvas, { motion = true, label = "" } = {}) {
+// lite (phones): fewer raymarch steps, no ambient-occlusion taps, 1× resolution, and no idle
+// redraw — the knob is drawn once per change and then sits as a still image.
+export function createKnob(canvas, { motion = true, label = "", lite = false } = {}) {
+  const FSQ = FS.replace("precision highp float;", `precision highp float;\n#define STEPS ${lite ? 52 : 80}\n#define AO(p, n) ${lite ? "1." : "ao(p, n)"}`);
   const gl = canvas.getContext("webgl2", { alpha: true, premultipliedAlpha: true, antialias: false });
   if (!gl) return null;
   const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; };
-  const pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(pr);
+  const pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FSQ)); gl.linkProgram(pr);
   if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(pr));
   const U = {}; ["uMask", "uRing", "uLed", "uTime", "uAng", "uLag", "uPress", "uHover", "uGlow", "uGem", "uTilt", "uLight"].forEach((k) => (U[k] = gl.getUniformLocation(pr, k)));
   const vao = gl.createVertexArray(); gl.bindVertexArray(vao);
@@ -324,7 +327,7 @@ export function createKnob(canvas, { motion = true, label = "" } = {}) {
   Object.assign(K, { tiltY: 0.06 });
   let alive = true, time = 0, idle = 0;
   const resize = () => {
-    const d = Math.min(devicePixelRatio || 1, 1.5), w = Math.min(1200, Math.round(canvas.clientWidth * d));
+    const d = lite ? 1 : Math.min(devicePixelRatio || 1, 1.5), w = Math.min(lite ? 520 : 1200, Math.round(canvas.clientWidth * d));
     if (canvas.width !== w) { canvas.width = canvas.height = w; dirty = true; }
   };
   const ease = (k, rate, dt) => { const d = T[k] - K[k]; if (Math.abs(d) < 1e-4) { K[k] = T[k]; return false; } K[k] += d * (1 - Math.exp(-rate * dt)); return true; };
@@ -342,7 +345,7 @@ export function createKnob(canvas, { motion = true, label = "" } = {}) {
       let dl = K.angle - K.lag; dl = Math.atan2(Math.sin(dl), Math.cos(dl));                 // trail: a slower copy of the angle
       if (Math.abs(dl) > 1e-3) { K.lag += dl * (1 - Math.exp(-(motion ? 1.6 : 60) * dt)); moving = true; }
       for (const [k, r] of [["tiltX", 5], ["tiltY", 5], ["hover", 8], ["press", 18], ["glow", 4], ["gem", 3.5], ["lx", 3], ["ly", 3], ["lr", 5], ["lg", 5], ["lb", 5]]) moving = ease(k, motion ? r : 60, dt) || moving;
-      if (!moving && !dirty) { idle += dt; if (!motion || idle < 0.05) return; }
+      if (!moving && !dirty) { idle += dt; if (!motion || lite || idle < 0.05) return; }
       idle = 0;
       dirty = false;
       gl.viewport(0, 0, canvas.width, canvas.height);
