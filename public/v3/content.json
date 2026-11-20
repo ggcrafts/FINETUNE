@@ -1,6 +1,6 @@
 {
   "format": "finetune-portfolio/1",
-  "updated": "2026-11-20T21:23:07.046Z",
+  "updated": "2026-11-20T21:40:16.841Z",
   "hero": {
     "eyebrow": {
       "en": "Senior Motion Designer · Art Director · Creative Technologist",
@@ -1796,7 +1796,7 @@
         "en": "Openings, campaigns and brand films where rhythm carries the idea.",
         "pt": "Aberturas, campanhas e filmes de marca em que o ritmo conduz a ideia."
       },
-      "cover": "media/videoclipe-o-amor-de-deus/02-b1bf126a-e3cc-4747-ad4f-87a93ae9f4bb-rw-1920.mp4",
+      "cover": "media/gate/cena-base-motion-cana-2.mp4",
       "tint": "#6bd6ff"
     },
     {
@@ -1809,7 +1809,7 @@
         "en": "Modeling, lighting, simulation and compositing for campaigns and content.",
         "pt": "Modelagem, iluminação, simulação e composição para campanhas e conteúdo."
       },
-      "cover": "media/nano-enemy/01-276fb346-fa01-4b3f-a01c-a91eae1e6bcf-rw-1920.webp",
+      "cover": "media/bravecto/layer-3.webp",
       "tint": "#ffffff"
     },
     {
@@ -1822,7 +1822,7 @@
         "en": "Visual systems built around one clear idea, from key visual to experience.",
         "pt": "Sistemas visuais em torno de uma ideia clara, do key visual à experiência."
       },
-      "cover": "media/categories/04-fd332715-f933-44ba-8033-051c572e159a-rw-1920.webp",
+      "cover": "media/gate/teste-2.mp4",
       "tint": "#ffb35c"
     },
     {
@@ -1835,7 +1835,7 @@
         "en": "Generative tools, code and automation inside a directed pipeline.",
         "pt": "Ferramentas generativas, código e automação dentro de um pipeline dirigido."
       },
-      "cover": "media/secreto-lugar-animation/02-4a50bfa2-9826-4abc-9e98-2ad48516fdf2-rw-1920.webp",
+      "cover": "media/gate/combalista-making-of-1min-16x9-1.mp4",
       "tint": "#00ffe1"
     }
   ]
