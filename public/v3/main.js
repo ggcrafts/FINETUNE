@@ -756,7 +756,7 @@ function frame(now) {
   gl.useProgram(R.st.p); gl.bindVertexArray(R.stVao);
   gl.uniformMatrix4fv(R.st.u.uVP, false, VP); gl.uniform1f(R.st.u.uCamZ, camZ); gl.uniform1f(R.st.u.uDefocus, 1 - enter);
   gl.uniform1f(R.st.u.uFocusD, dockD); gl.uniform1f(R.st.u.uPx, H / 900 * clamp(1100 / innerHeight, 0.75, 1)); gl.uniform3fv(R.st.u.uTint, tint);
-  gl.drawArrays(gl.POINTS, 0, R.STARS);
+  if (!LITE) gl.drawArrays(gl.POINTS, 0, R.STARS);        // phones: no particle field (it was the bottleneck in transitions)
 
   gl.useProgram(R.tr.p); gl.bindVertexArray(R.trVao);
   gl.uniformMatrix4fv(R.tr.u.uVP, false, VP); gl.uniform1f(R.tr.u.uCamZ, camZ); gl.uniform1f(R.tr.u.uTime, S.time);
@@ -770,7 +770,7 @@ function frame(now) {
     const cz = -(S.catShown + 1) * D;
     CATS[S.catShown].jobs.forEach((ji, kk) => { const p = jobPose(kk, cz); if (p.alpha > 0.01) list.push({ ...p, d: camZ - p.z, i: ji, kk, job: 1, ghost: 0 }); });
   }
-  for (const g of R.ghosts) { const d = (((camZ - g.z) % 108) + 108) % 108; if (d > 0.6 && d < 46) list.push({ ...g, z: camZ - d, d, ghost: 1 }); }
+  if (!LITE) for (const g of R.ghosts) { const d = (((camZ - g.z) % 108) + 108) % 108; if (d > 0.6 && d < 46) list.push({ ...g, z: camZ - d, d, ghost: 1 }); }
   list.sort((a, b) => b.d - a.d);
   gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
   idleVideos();

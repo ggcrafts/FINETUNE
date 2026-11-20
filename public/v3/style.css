@@ -584,3 +584,22 @@ body:not(.show-process) .process{display:none}
 .lite .gate.tuning .gate__prev>.on{filter:none}
 .lite .stations button{padding:22px 10px}
 @media (max-height:720px){.lite .stations button{padding:14px 8px}}
+
+/* ── phones, dial v4 ── sized from the space that is really visible (browser bars included), so
+   the knob is as large on a 360×660 viewport as on a tall one: header + two-line title above,
+   wordmark + two rows of station buttons + the bottom bar below */
+@media (max-width:600px){
+  .gate.gate{--gw:min(100vw,calc((100vh - 368px)/.91));padding-bottom:calc(100vh - 236px - var(--gw)*.91)}
+  .gate .gate__eyebrow{transform:translateY(calc(var(--gw)*-.47 - 34px))}
+  .gate .logo--gate,body:not(.is-gate) .logo--gate{transform:translateY(calc(var(--gw)*.47 + 30px))}
+  .lite .stations{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  .lite .stations button{padding:17px 8px}
+}
+@supports (height:100dvh){@media (max-width:600px){
+  .gate.gate{--gw:min(100vw,calc((100dvh - 368px)/.91));padding-bottom:calc(100dvh - 236px - var(--gw)*.91)}
+}}
+@media (max-width:600px) and (max-height:720px){
+  .gate .logo--gate .logo__tag{display:none}
+  .gate .gate__eyebrow{font-size:.9375rem}
+  .lite .stations{gap:8px}.lite .stations button{padding:15px 8px}
+}
