@@ -102,15 +102,11 @@ PRACTICES.forEach((p, i) => { p.img = `practice/practice-0${i + 1}.webp`; });
   Object.assign(p, { t: tx(c.name, "en") || p.t, tp: tx(c.name, "pt") || p.tp, k: tx(c.keys, "en"), kp: tx(c.keys, "pt"), d: tx(c.text, "en"), dp: tx(c.text, "pt"),
     era: { y: (e.year || "").trim() || null, t: tx(e.title, "en"), tp: tx(e.title, "pt"), w: tx(e.where, "en"), wp: tx(e.where, "pt") } });
 });
-// Gate previews: one low-opacity clip or still per discipline, in ring order (clockwise from 12 o'clock).
-const GATE = (Array.isArray(C.gate) && C.gate.length === 8 ? C.gate.map((g) => ({ n: g.name || "—", src: g.media ? "./" + g.media : "", ph: !g.media })) : [
-  { n: "Motion", src: "./reel/clip-01.webm" }, { n: "3D", src: "./reel/clip-02.webm" }, { n: "VFX", src: "./reel/clip-03.webm" },
-  { n: "Art Direction", src: "./covers/bravecto.webp" }, { n: "AI", src: "./practice/practice-03.webp", ph: true }, { n: "Creative Tech", src: "./reel/clip-04.webm" },
-  { n: "Compositing", src: "./reel/clip-07.webm" }, { n: "Automation", src: "./practice/practice-04.webp", ph: true }]);
-// LED colour per gate discipline (knob arc, index notch, glow behind the knob, eyebrow dot);
-// content.json gate[i].tint overrides. Order matches the ring, clockwise from 12 o'clock.
-const LED = ["#78D98A", "#5fd4ff", "#ff6b8e", "#ffb35c", "#a98bff", "#4de0c4", "#ff8a5c", "#d6ef6b"];
-GATE.forEach((g, i) => { const t = Array.isArray(C.gate) && C.gate[i] && C.gate[i].tint; g.led = /^#[0-9a-f]{6}$/i.test(t || "") ? t : LED[i % LED.length]; });
+// The dial's stations are the portfolio categories, clockwise from 12 o'clock: each one has a
+// low-opacity preview (its cover), an LED colour (its tint) and opens its lateral carousel.
+const hexOf = (t) => "#" + t.map((v) => Math.round(Math.min(1, Math.max(0, v)) * 255).toString(16).padStart(2, "0")).join("");
+const GATE = CATS.map((c) => ({ n: c.name, nP: c.nameP, src: c.cover ? "./" + c.cover : "", led: hexOf(c.tint), count: c.jobs.length }));
+const SEC = 360 / GATE.length;                      // degrees per station
 const rgb01 = (h) => [1, 3, 5].map((k) => parseInt(h.slice(k, k + 2), 16) / 255);
 // hero + about copy (applied to the DOM just before the EN strings are captured)
 function applyContent() {
@@ -153,7 +149,7 @@ const I18N = {
     n3: "Sobre & contato", n3d: "Retrato, assinatura em escala gigante, “Observe. Create. Refine.”",
     talk: "Vamos conversar", phMedia: "Placeholder — vídeo / breakdown entra aqui",
     cChallenge: "Desafio", cIdea: "Ideia", cExec: "Execução", cOutcome: "Resultado", cRole: "Função", cTools: "Ferramentas", cMore: "Ver projeto",
-    catBack: "Todas as categorias", catHint: "Role ou arraste para explorar", catWord: "Categoria", works: "trabalhos", work: "trabalho", explore: "Explorar", openCase: "Abrir case" },
+    catBack: "Voltar ao dial", gateHint: "Gire para sintonizar · pressione para entrar", gateMore: "Role ↓ Práticas · Processo · Sobre", catHint: "Role ou arraste para explorar", catWord: "Categoria", works: "trabalhos", work: "trabalho", explore: "Explorar", openCase: "Abrir case" },
 };
 const $ = (s) => document.querySelector(s);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -179,7 +175,7 @@ function buildRing() {
     const a = (i / 180) * Math.PI * 2, maj = i % 15 === 0, r0 = maj ? 196 : 203, r1 = 210;
     ticks += `<line class="tick${maj ? " maj" : ""}" x1="${Math.cos(a) * r0}" y1="${Math.sin(a) * r0}" x2="${Math.cos(a) * r1}" y2="${Math.sin(a) * r1}"/>`;
   }
-  const labels = GATE.map((g) => g.n.toUpperCase());
+  const labels = GATE.map((g) => (S.lang === "pt" ? g.nP : g.n).toUpperCase());
   let txt = `<defs><path id="lp" d="M0,-228 A228,228 0 1,1 -0.01,-228"/></defs>`;
   labels.forEach((l, i) => { txt += `<text text-anchor="middle" data-g="${i}"><textPath href="#lp" startOffset="${((i + 0.5) / labels.length) * 100}%">${l}</textPath></text>`; });
   // aperture blades: thin arcs that close toward the centre when the pointer approaches
@@ -196,22 +192,25 @@ let knob = null, knobT = 0;
 try { knob = createKnob($("#knob"), { motion: S.motion, label: "Press to enter" }); } catch (err) { console.warn("[FineTune] knob:", err); }
 if (!knob) document.documentElement.classList.add("no-knob");
 GATE.forEach((g) => {
-  const vid = /\.(webm|mp4)$/.test(g.src), el = document.createElement(vid ? "video" : "img");
+  const vid = /\.(webm|mp4|mov)$/i.test(g.src), el = document.createElement(vid ? "video" : "img");
   if (vid) { el.muted = true; el.loop = true; el.playsInline = true; el.preload = "none"; el.dataset.src = g.src; } else { el.loading = "lazy"; el.alt = ""; if (g.src) el.src = g.src; }
   gatePrev.appendChild(el); g.el = el;
 });
-function setGate(i) {
-  if (i === gateIdx) return; gateIdx = i;
+let tuneT = 0;
+function setGate(i, turn = gateIdle > 2) {
+  if (i === gateIdx || i < 0) return; gateIdx = i;
   GATE.forEach((g, k) => { const on = k === i; g.el.classList.toggle("on", on);
     if (g.el.tagName === "VIDEO") { if (on) { if (!g.el.src) g.el.src = g.el.dataset.src; g.el.play().catch(() => {}); } else g.el.pause(); } });
   document.querySelectorAll("#ring text").forEach((t) => t.classList.toggle("on", +t.dataset.g === i));
-  gatePrev.classList.toggle("on", i >= 0);
-  $("#gateDisc").textContent = i >= 0 ? GATE[i].n + (GATE[i].ph ? " · placeholder" : "") : "\u00a0";
-  if (i < 0) return;
-  let target = (i + 0.5) * 45; while (target - gateAng > 180) target -= 360; while (target - gateAng < -180) target += 360;   // shortest way round
+  gatePrev.classList.add("on");
+  const g = GATE[i], pt = S.lang === "pt", w = g.count === 1 ? (pt ? "trabalho" : "work") : (pt ? "trabalhos" : "works");
+  $("#gateDisc").textContent = `CH ${String(i + 1).padStart(2, "0")} — ${pt ? g.nP : g.n} · ${g.count} ${w}`;
+  // a moment of static while the dial settles on the new station
+  const gt = $("#gate"); gt.classList.add("tuning"); clearTimeout(tuneT); tuneT = setTimeout(() => gt.classList.remove("tuning"), 420);
+  let target = (i + 0.5) * SEC; while (target - gateAng > 180) target -= 360; while (target - gateAng < -180) target += 360;   // shortest way round
   gateAng = target; gatePrev.style.setProperty("--ang", gateAng + "deg");
-  if (knob) { const [lr, lg, lb] = rgb01(GATE[i].led); knob.set(gateIdle > 2 ? { angle: -((i + 0.5) * 45) * Math.PI / 180, lr, lg, lb } : { lr, lg, lb }); }
-  $("#gate").style.setProperty("--led", GATE[i].led);
+  if (knob) { const [lr, lg, lb] = rgb01(g.led); knob.set(turn ? { angle: -((i + 0.5) * SEC) * Math.PI / 180, lr, lg, lb } : { lr, lg, lb }); }
+  gt.style.setProperty("--led", g.led);
 }
 
 /* ───────────── "form": the self-calibrating word (ported from v2 formType.ts) ───────────── */
@@ -556,7 +555,7 @@ function resize() {
 const unit = () => innerHeight * 1.1;
 const pracEl = $("#practice"), lens = $("#lens"), procEl = $("#process"), aboutEl = $("#about"), inst = $("#instrument");
 function readScroll() {
-  S.pT = clamp(scrollY / unit(), 0, N); S.past = scrollY > unit() * (N + 0.4);
+  S.past = scrollY > innerHeight * 0.25;                 // left the dial: Practice is next
   const top = pracEl.offsetTop, span = pracEl.offsetHeight - innerHeight, ih = innerHeight;
   S.prQ = clamp((scrollY - top) / span, 0, 1);
   S.prIn = sstep(top - ih, top, scrollY);                                   // approach (camera leaves the corridor)
@@ -627,10 +626,14 @@ function frame(now) {
   requestAnimationFrame(frame);
   if (document.hidden) return;
   const dt = Math.min(0.05, (now - (frame.t || now)) / 1000); frame.t = now;
+  // "entered" = tuned in: a category is open (or closing), a case is open, or the page has scrolled past the dial
+  const tuned = S.cat >= 0 || S.catT > 0.35 || S.caseOpen || S.past;
+  if (tuned !== S.entered) { S.entered = tuned; document.body.classList.toggle("is-gate", !tuned); if (!tuned && knob) knob.set({ press: 0, hover: 0, glow: 0 }); }
+  S.pT = (S.cat >= 0 ? S.cat : Math.max(0, gateIdx)) + 1;   // the camera waits at the tuned station
   if (knob) { knobT = S.entered ? knobT + dt : 0; if (knobT < 1.4) knob.frame(dt); }
   const k = 1 - Math.pow(0.001, dt);           // framerate-independent smoothing
   if (S.motion && !S.caseOpen) S.time += dt;
-  S.p = S.motion ? mix(S.p, S.pT, clamp(k * 0.75, 0, 1)) : S.pT;
+  S.p = S.motion ? mix(S.p, S.pT, clamp(k * (S.entered ? 0.75 : 0.3), 0, 1)) : S.pT;
   S.focusT = S.entered ? 1 : S.gateNear * 0.28;
   S.focus = mix(S.focus, S.focusT, clamp(k * (S.entered ? 0.32 : 0.6), 0, 1));
   S.catT = S.motion ? mix(S.catT, S.cat >= 0 ? 1 : 0, clamp(k * 0.45, 0, 1)) : (S.cat >= 0 ? 1 : 0);
@@ -644,7 +647,7 @@ function frame(now) {
   if (S.prT < 1) S.prT = Math.min(1, S.prT + (S.motion ? dt / 0.95 : 1));
   const tint = tintAt(pe);
   const aspect = W / H;
-  const plateVis = S.entered ? sstep(0.6, 0.05, S.p) * sstep(0.2, 1, fo) : 0, shift = plateVis * 0.44 * sstep(1.05, 1.5, aspect);
+  const shift = 0;
   const P = M.persp(FOV, aspect, 0.1, 200); P[8] = -shift;
   const V = M.mul(M.mul(M.rotX(S.my * 0.022), M.rotY(-S.mx * 0.034)), M.trans(-S.mx * 0.28, S.my * 0.18, -camZ));
   const VP = M.mul(P, V);
@@ -652,7 +655,6 @@ function frame(now) {
   /* ── DOM sync ── */
   const active = S.entered && !S.past ? Math.round(S.p) - 1 : -2;       // -1 = title plate
   const settle = 1 - Math.min(1, Math.abs(S.p - Math.round(S.p)) * 2.6);  // 1 when resting on a stop
-  plate.style.setProperty("--o", (S.entered && !S.past ? sstep(0.55, 0, S.p) * sstep(0.6, 1, fo) : 0).toFixed(3));
   if (active !== S.active) { S.active = active; onActive(active); }
   const inCat = S.cat >= 0, cur = inCat ? clamp(Math.round(S.slideT), 0, CATS[S.cat].jobs.length - 1) : -1;
   const key = `${active}|${S.cat}|${cur}|${S.lang}`; if (key !== S.capKey) { S.capKey = key; renderCap(active, cur); }
@@ -674,9 +676,9 @@ function frame(now) {
   flankL.classList.toggle("on", !!flankOn); flankR.classList.toggle("on", !!flankOn);
   waves.tick(dt);
   updateRail();
-  const plateOn = S.entered && !S.past && S.p < 0.6;
+  const plateOn = S.abV > 0.2;                            // the "form" word now lives in About
   if (plateOn && !S.caseOpen) { tickForm(dt); if (S.motion) tickAccent(dt); }
-  if (!S.entered && S.motion) { gateIdle += dt; if (gateIdle > 2.4) { gateAuto += dt; if (gateAuto > 2.6 || gateIdx < 0) { gateAuto = 0; setGate((gateIdx + 1) % GATE.length); needle.style.transform = `rotate(${(gateIdx + 0.5) * 45}deg)`; } } }
+  if (!S.entered && S.motion) { gateIdle += dt; if (gateIdle > 2.4) { gateAuto += dt; if (gateAuto > 2.6 || gateIdx < 0) { gateAuto = 0; setGate((gateIdx + 1) % GATE.length, true); } } }
   if (!gl || !R) return;
 
   /* ── draw ── */
@@ -701,7 +703,7 @@ function frame(now) {
   for (let i = 0; i < R.TRAILS; i++) gl.drawArrays(gl.TRIANGLE_STRIP, i * R.SEG * 2, R.SEG * 2);
   // panes + ghosts, far → near
   const list = [];
-  for (let i = 0; i < N; i++) { const p = panePose(i, camZ); if (p) p.alpha *= (1 - sstep(0.1, 0.8, S.prIn)) * shard * (1 - sstep(0, 0.45, S.catT)); if (p && p.alpha > 0.01 && p.d < 60) list.push({ ...p, i, ghost: 0 }); }
+  for (let i = 0; i < N; i++) { const p = panePose(i, camZ); if (p) p.alpha = 0; /* category panes are gone: the dial is the category navigation */ if (p && p.alpha > 0.01 && p.d < 60) list.push({ ...p, i, ghost: 0 }); }
   if (S.catShown >= 0 && S.catT > 0.01) {
     const cz = -(S.catShown + 1) * D;
     CATS[S.catShown].jobs.forEach((ji, kk) => { const p = jobPose(kk, cz); if (p.alpha > 0.01) list.push({ ...p, d: camZ - p.z, i: ji, kk, job: 1, ghost: 0 }); });
@@ -903,7 +905,8 @@ const setTint = (t) => document.documentElement.style.setProperty("--tint", `rgb
 /* ───────────── category carousel ───────────── */
 function openCat(k, at = 0) {
   if (!CATS[k]) return;
-  const c = CATS[k]; S.cat = k; S.catShown = k; S.slideT = clamp(at, 0, c.jobs.length - 1); if (S.catT < 0.05) S.slide = S.slideT;
+  const c = CATS[k], sw = S.cat >= 0 && S.cat !== k; S.cat = k; S.catShown = k; S.slideT = clamp(at, 0, c.jobs.length - 1); if (S.catT < 0.05 || sw) S.slide = S.slideT;
+  setGate(k, true); if (scrollY > 2) scrollTo(0, 0);
   document.body.classList.add("is-cat");
   $("#catName").textContent = L() === "pt" ? c.nameP : c.name;
   $("#catDots").replaceChildren(...c.jobs.map((ji, i) => { const b = document.createElement("button"); b.type = "button"; b.setAttribute("aria-label", PROJECTS[ji].title); b.onclick = () => slideTo(i); return b; }));
@@ -918,8 +921,7 @@ function slideTo(i) {
 /** jump straight to a job: its category, opened at its slide */
 function showJob(ji) {
   const k = CATS.findIndex((c) => c.jobs.includes(ji)); if (k < 0) return;
-  if (!S.entered) enter();
-  scrollTo({ top: (k + 1) * unit() + 1, behavior: "auto" }); readScroll(); S.p = S.pT; openCat(k, CATS[k].jobs.indexOf(ji)); S.slide = S.slideT;
+  scrollTo({ top: 0, behavior: "auto" }); readScroll(); openCat(k, CATS[k].jobs.indexOf(ji)); S.p = S.pT = k + 1; S.slide = S.slideT;
 }
 // wheel / trackpad: slides sideways; past the last work it carries on to the next category
 let snapT = 0, over = 0, overAt = 0;
@@ -932,7 +934,7 @@ addEventListener("wheel", (e) => {
   let t = S.slideT + d / 520;
   if (t > lim + 0.3) { over += t - (lim + 0.3); t = lim + 0.3; overAt = performance.now(); } else if (t < -0.3) { over -= -0.3 - t; t = -0.3; overAt = performance.now(); } else over = 0;
   S.slideT = t;
-  if (over > 0.7) { const next = S.cat + 2; over = 0; closeCat(); goTo(Math.min(N + 1, next)); return; }
+  if (over > 0.7) { const next = S.cat + 1; over = 0; if (next < N) openCat(next); else closeCat(); return; }   // past the last work: retune to the next station
   if (over < -0.7) { over = 0; closeCat(); return; }
   clearTimeout(snapT); snapT = setTimeout(() => { const r = clamp(Math.round(S.slideT), 0, lim); S.slideT = S.slide; slideTo(r); S.slideT = r; }, 140);
 }, { passive: false });
@@ -942,7 +944,7 @@ addEventListener("pointerdown", (e) => { if (S.cat < 0 || S.caseOpen || e.button
 addEventListener("pointermove", (e) => { if (!drag) return; const dx = e.clientX - drag.x; if (Math.abs(dx) > 6) drag.moved = true; if (drag.moved) S.slideT = clamp(drag.s - dx / (innerWidth * 0.32), -0.3, CATS[S.cat].jobs.length - 0.7); });
 addEventListener("pointerup", () => { if (!drag) return; const d = drag; drag = null; if (!d.moved) return; hit.dataset.dragged = "1"; setTimeout(() => delete hit.dataset.dragged, 50);
   const r = clamp(Math.round(S.slideT + Math.sign(S.slideT - d.s) * 0.25), 0, CATS[S.cat].jobs.length - 1); S.slideT = S.slide; slideTo(r); S.slideT = r; });
-function goTo(stop) { scrollTo({ top: stop * unit() + 1, behavior: S.motion ? "smooth" : "auto" }); }
+function goTo() { closeCat(); scrollTo({ top: 0, behavior: S.motion ? "smooth" : "auto" }); }
 
 // pager
 const pager = $("#pager");
@@ -951,15 +953,18 @@ const pager = $("#pager");
   b.type = "button"; b.textContent = label; b.setAttribute("aria-label", label); b.onclick = () => { closeCat(); goTo(k); }; li.appendChild(b); pager.appendChild(li);
 });
 $("#total").textContent = "/ " + pad(N);
-$("#gallery").style.setProperty("--stops", N + 1);
+
 
 // gate
 const gate = $("#gate"), needle = $("#needle");
-function enter() {
-  if (S.entered) return; if (knob) knob.set({ press: 1, glow: 1 }); S.entered = true; setGate(-1); document.body.classList.remove("is-gate"); scrollTo(0, 0); readScroll();
+const knobHit = (e) => Math.hypot(e.clientX - innerWidth / 2, e.clientY - innerHeight / 2) < $("#knob").clientWidth * 0.33;
+const stationAt = (e) => { const deg = (((Math.atan2(e.clientY - innerHeight / 2, e.clientX - innerWidth / 2) * 180) / Math.PI + 90) % 360 + 360) % 360; return Math.floor(deg / SEC) % GATE.length; };
+function enter() {                                     // press: tune in to the station under the index
+  if (S.cat >= 0) return; if (knob) knob.set({ press: 1, glow: 1 }); openCat(Math.max(0, gateIdx));
 }
-gate.addEventListener("click", enter);
-gate.addEventListener("pointerdown", () => knob && knob.set({ press: 1 }));
+// a press on the knob enters; a tap anywhere else on the dial (touch) tunes to that station
+gate.addEventListener("click", (e) => { if (e.detail === 0 || knobHit(e) || !$("#knob").clientWidth) enter(); else { gateIdle = 0; gateAuto = 0; setGate(stationAt(e), true); } });
+gate.addEventListener("pointerdown", (e) => knob && knobHit(e) && knob.set({ press: 1 }));
 gate.addEventListener("pointerleave", () => knob && !S.entered && knob.set({ press: 0, hover: 0, glow: 0 }));
 addEventListener("pointermove", (e) => {
   S.mxT = (e.clientX / innerWidth) * 2 - 1; S.myT = (e.clientY / innerHeight) * 2 - 1;
@@ -968,10 +973,10 @@ addEventListener("pointermove", (e) => {
     S.gateNear = 1 - clamp(r, 0, 1);
     const deg = (((Math.atan2(dy, dx) * 180) / Math.PI + 90) % 360 + 360) % 360;
     needle.style.transform = `rotate(${deg}deg)`;
-    gateIdle = 0; gateAuto = 0; setGate(r > 0.34 ? Math.floor(deg / 45) % 8 : -1);
-    if (knob) { const kr = $("#knob").clientWidth * .32, inside = Math.hypot(dx, dy) < kr * 1.08;
-      if (r > 0.34) knob.set({ angle: -deg * Math.PI / 180 });                     // the dial follows the pointer continuously
-      knob.set({ tiltX: clamp(dx / innerWidth, -.5, .5) * .28, tiltY: .06 + clamp(dy / innerHeight, -.5, .5) * .22, lx: dx / innerWidth * 2, ly: dy / innerHeight * 2, hover: inside ? 1 : 0, glow: inside ? 1 : 0 }); }
+    gateIdle = 0; gateAuto = 0;
+    const inside = knob ? knobHit(e) : r < 0.3;
+    if (!inside) { setGate(Math.floor(deg / SEC) % GATE.length, false); if (knob) knob.set({ angle: -deg * Math.PI / 180 }); }   // the dial follows the pointer; over the knob the station holds
+    if (knob) knob.set({ tiltX: clamp(dx / innerWidth, -.5, .5) * .28, tiltY: .06 + clamp(dy / innerHeight, -.5, .5) * .22, lx: dx / innerWidth * 2, ly: dy / innerHeight * 2, hover: inside ? 1 : 0, glow: inside ? 1 : 0 });
     document.querySelectorAll(".ap").forEach((c, i) => (c.style.transform = `rotate(${i * 47 + S.gateNear * (60 + i * 25)}deg) scale(${1 - S.gateNear * 0.16})`));
   }
 });
@@ -1038,10 +1043,11 @@ addEventListener("keydown", (e) => {
     if (e.key === "Enter" && document.activeElement === document.body) { e.preventDefault(); hit.click(); }
     return;
   }
-  if (!S.entered) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); enter(); } return; }
-  const cur = Math.round(S.pT);
-  if (e.key === "ArrowDown" || e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); goTo(Math.min(N + 1.1, cur + 1)); }
-  if (e.key === "ArrowUp" || e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); goTo(Math.max(0, cur - 1)); }
+  if (!S.entered) {                                    // at the dial: ← → tune, Enter presses; ↓ scrolls on as usual
+    if ((e.key === "Enter" || e.key === " ") && !e.target.closest("a,button:not(#gate)")) { e.preventDefault(); enter(); }
+    if (e.key === "ArrowRight") { e.preventDefault(); gateIdle = 0; gateAuto = 0; setGate((Math.max(0, gateIdx) + 1) % GATE.length, true); }
+    if (e.key === "ArrowLeft") { e.preventDefault(); gateIdle = 0; gateAuto = 0; setGate((Math.max(0, gateIdx) + GATE.length - 1) % GATE.length, true); }
+  }
 });
 
 // dock
@@ -1052,6 +1058,7 @@ $("#lang").addEventListener("click", () => {
   document.querySelectorAll("#lang b").forEach((b) => b.classList.toggle("on", b.dataset.l === S.lang));
   document.querySelectorAll("[data-i18n]").forEach((el) => (el.textContent = (S.lang === "pt" && I18N.pt[el.dataset.i18n]) || EN[el.dataset.i18n]));
   if (knob) knob.setLabel(S.lang === "pt" ? I18N.pt.gateCta : "Press to enter");
+  buildRing(); { const g = Math.max(0, gateIdx); gateIdx = -2; setGate(g, false); }
   setMotionLabel(); buildRows(); buildProcess(); if (S.active >= 0) onActive(S.active); if (S.caseOpen) openCase(caseIdx); S.capKey = ""; if (S.cat >= 0) $("#catName").textContent = L() === "pt" ? CATS[S.cat].nameP : CATS[S.cat].name;
 });
 const setMotionLabel = () => { $("#motionLbl").textContent = S.lang === "pt" ? (S.motion ? "Movimento on" : "Movimento off") : S.motion ? "Motion on" : "Motion off"; $("#motion").setAttribute("aria-pressed", S.motion); };
@@ -1064,6 +1071,7 @@ addEventListener("scroll", readScroll, { passive: true });
 let snapIdle = 0, snapRaf = 0, touching = false, snapping = false;
 const cancelSnap = () => { cancelAnimationFrame(snapRaf); snapRaf = 0; snapping = false; };
 function corridorSnap() {
+  return;                                              // no corridor any more: the dial is one screen
   if (!S.entered || S.cat >= 0 || S.caseOpen || touching) return;
   const u = unit(), y = scrollY; if (y > u * (N + 0.45)) return;            // past the corridor: normal page
   const goal = Math.round(y / u) * u + 1, d = goal - y; if (Math.abs(d) < 3) return;
@@ -1085,10 +1093,10 @@ if (document.fonts) document.fonts.ready.then(() => { layoutRail(); });
 // deep links (used by Portfolio Update's preview): ?skip ?lang=pt ?case=<id> ?at=practice|process|about
 if (QS.get("lang") === "pt") $("#lang").click();
 const qCase = QS.get("case"), qAt = QS.get("at");
-if (QS.has("skip") || qCase || qAt || QS.has("cat") || location.hash === "#gallery") enter();
 const qCat = QS.get("cat");
 if (qCase) { const k = PROJECTS.findIndex((p) => p.slug === qCase); if (k >= 0) { showJob(k); openCase(k); } }
-else if (qCat) { const k = CATS.findIndex((c) => c.id === qCat); if (k >= 0) { scrollTo(0, (k + 1) * unit() + 1); readScroll(); S.p = S.pT; openCat(k); } }
+else if (qCat) { const k = CATS.findIndex((c) => c.id === qCat); if (k >= 0) { openCat(k); S.p = S.pT = k + 1; } }
 else if (qAt && document.getElementById(qAt)) { const el = document.getElementById(qAt); scrollTo(0, el.offsetTop + (qAt === "about" ? 0 : innerHeight * 0.25)); readScroll(); }
 window.__ft = { S, goTo, enter, openCat, closeCat, slideTo, showJob, waves };
+setGate(0, true);
 requestAnimationFrame(frame);

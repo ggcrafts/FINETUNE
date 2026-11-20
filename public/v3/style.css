@@ -17,7 +17,7 @@
 html{font-size:16px;background:var(--black);color:var(--pearl);font-family:var(--f-body);-webkit-font-smoothing:antialiased}
 html{scrollbar-width:none}html::-webkit-scrollbar{display:none}   /* hidden scrollbar: WebGL, hit areas and signature lines share one viewport width */
 body{min-height:100vh;overflow-x:hidden}
-body.is-gate,body.is-case{overflow:hidden}
+body.is-case{overflow:hidden}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 :focus-visible{outline:1px solid var(--green);outline-offset:4px}
@@ -34,8 +34,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .hdr{position:fixed;z-index:20;top:0;left:0;right:0;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
   padding:18px var(--pad);border-bottom:1px solid transparent;transition:opacity .9s var(--ease),transform .9s var(--ease),border-color .4s}
 .hdr::before{content:"";position:absolute;inset:0 0 -34px;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(5,9,14,.92),rgba(5,9,14,.6) 55%,rgba(5,9,14,0))}
-.is-gate .hdr,.is-gate .dock,.is-gate .talk{opacity:0;pointer-events:none;transform:translateY(-8px)}
-.is-gate .dock,.is-gate .talk{transform:translateY(8px)}
 .brand{display:flex;align-items:center;gap:10px;font:500 1.0625rem var(--f-head);letter-spacing:-.03em}
 .brand .logo__mark{width:22px;height:22px}
 .logo__mark{color:var(--pearl);display:block;overflow:visible}
@@ -70,6 +68,7 @@ body:not(.is-gate) .gate__knob{opacity:0;filter:blur(8px);transform:scale(1.35)}
 @media (max-width:600px){
   .gate.gate{--gw:min(94vw,56vh)}
   .gate__eyebrow{flex-direction:column;gap:4px;font-size:1rem}
+  .gate__sub{max-width:92vw;text-align:center}.gate__sub b,.gate__sub i{letter-spacing:.1em;font-size:.5625rem;line-height:1.5}
   .gate__eyebrow em::before{display:none}
   .gate__dot{display:none}
 }
@@ -104,6 +103,11 @@ body:not(.is-gate) .gate::before{opacity:0}
 .gate__ring .dot{fill:var(--green);filter:drop-shadow(0 0 6px var(--green))}
 .gate__ring .ap{fill:none;stroke:rgba(233,240,244,.16);stroke-width:1;transition:transform 1.2s var(--ease)}
 .gate__sub{align-self:center;transform:translateY(calc(var(--gw)*.5 + clamp(96px,14vh,150px)));display:grid;justify-items:center;gap:8px;font:400 .625rem var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+.gate__sub i{font-style:normal}.gate__more{color:var(--mist);opacity:.75;margin-top:6px;animation:pulse 3.2s ease-in-out infinite}
+/* retuning: a blink of static on the preview and the ring labels */
+.gate.tuning .gate__prev>.on{filter:saturate(.4) contrast(1.5) blur(5px)}
+.gate.tuning .gate__ring text{opacity:.55}
+.gate__ring text{cursor:pointer}
 .gate__sub b{font:500 .6875rem var(--f-mono);letter-spacing:.22em;color:var(--pearl);min-height:1em}
 .gate__sub i{font-style:normal}
 /* discipline previews: a wedge of low-opacity image/video that follows the needle */
@@ -123,7 +127,8 @@ body:not(.is-gate) .gate{opacity:0;visibility:hidden;pointer-events:none}
 body:not(.is-gate) .gate__ring{transform:scale(5.5) rotate(40deg)}
 
 /* gallery (scroll-driven) */
-.gallery{position:relative;z-index:5;height:calc(var(--stops,9)*110vh + 20vh);pointer-events:none}
+.gallery{position:relative;z-index:5;height:100vh;pointer-events:none}   /* one screen: the dial */
+.pager{display:none!important}
 .plate{position:fixed;left:var(--pad);top:50%;transform:translateY(-50%);max-width:min(680px,90vw);pointer-events:none;
   opacity:var(--o,0);filter:blur(calc((1 - var(--o,0))*14px));will-change:opacity,filter}
 .plate h1{font:600 clamp(3.2rem,6.6vw,7.2rem)/.9 var(--f-head);letter-spacing:-.055em;margin:18px 0 14px}
@@ -313,8 +318,15 @@ body.is-cat{overflow:hidden}
 /* about: signature + ID card */
 .about{position:relative;z-index:6;min-height:100vh;padding:clamp(110px,14vh,170px) var(--pad) 0;display:grid;align-content:center;gap:clamp(22px,4vh,44px);overflow:hidden;
   background:linear-gradient(180deg,rgba(5,9,14,0),rgba(5,9,14,.7) 22%,rgba(5,9,14,.86))}
+/* "Where ideas take form." — the hero line, now a quiet motto above the signature */
+.motto{justify-self:center;display:grid;justify-items:center;gap:8px;pointer-events:none}
+.motto__line{display:flex;align-items:baseline;gap:.32em;margin:0;font:600 clamp(1.5rem,3vw,2.6rem)/1 var(--f-head);letter-spacing:-.04em;color:var(--pearl)}
+.motto .h-lead{display:inline;font-size:1em;font-weight:500;margin:0;color:rgba(233,240,244,.78);text-shadow:none}
+.motto .h-form{display:inline-block;font-size:1.12em;margin:0;min-width:3.4em;text-align:left}
+.motto .plate__state{margin:0;opacity:.7}
+.catui__name::before{content:"● Tuned in";display:block;margin-bottom:4px;font:500 .5625rem var(--f-mono);letter-spacing:.24em;text-transform:uppercase;color:var(--led,var(--green))}
 .about__sig{position:relative;justify-self:center;margin:clamp(6px,2vh,28px) 0 -0.06em;white-space:nowrap;pointer-events:none;
-  font:700 clamp(4.4rem,15vw,17rem)/.78 var(--f-head);letter-spacing:-.07em;color:rgba(233,240,244,.2);
+  font:700 clamp(3.6rem,11.5vw,12.5rem)/.78 var(--f-head);letter-spacing:-.07em;color:rgba(233,240,244,.2);
   -webkit-mask-image:repeating-linear-gradient(180deg,#000 0 2px,transparent 2px 5px),linear-gradient(180deg,#000 30%,transparent 100%);mask-image:repeating-linear-gradient(180deg,#000 0 2px,transparent 2px 5px),linear-gradient(180deg,#000 30%,transparent 100%);
   -webkit-mask-composite:source-in;mask-composite:intersect}
 .about__sig i{font-style:normal;color:var(--green)}
