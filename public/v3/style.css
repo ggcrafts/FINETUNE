@@ -106,6 +106,22 @@ body:not(.is-gate) .gate::before{opacity:0}
 .gate__ring .ap{fill:none;stroke:rgba(233,240,244,.16);stroke-width:1;transition:transform 1.2s var(--ease)}
 .gate__sub{align-self:center;transform:translateY(calc(var(--gw)*.5 + clamp(96px,14vh,150px)));display:grid;justify-items:center;gap:8px;font:400 .625rem var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
 .gate__sub i{font-style:normal}.gate__more{color:var(--mist);opacity:.75;margin-top:6px;animation:pulse 3.2s ease-in-out infinite}
+/* switched off (before the first click): the dial is dim and asks to be switched on */
+.gate__power{align-self:center;transform:translateY(calc(var(--gw)*.5 + clamp(96px,14vh,150px)));display:flex;align-items:center;gap:10px;font:500 .6875rem var(--f-mono);letter-spacing:.22em;text-transform:uppercase;color:var(--pearl);opacity:0;transition:opacity .4s;pointer-events:none;white-space:nowrap}
+.gate__power i{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 1.4s ease-in-out infinite}
+.is-off .gate__power{opacity:1}
+.is-off .gate__sub{opacity:0}
+.is-off .gate__knob canvas{filter:brightness(.5) saturate(.35)}
+.is-off .gate__knob::before,.is-off .gate__knob::after{opacity:0;animation:none}
+.is-off .gate__prev{opacity:0!important}
+.gate__knob canvas{transition:filter .9s var(--ease)}
+.gate__sub{transition:opacity .4s}
+body:not(.is-gate) .gate__power{opacity:0}
+/* returning from a category: the dial snaps back quickly (leaving it keeps the slower zoom) */
+.is-gate .gate__knob{transition:opacity .28s,transform .45s var(--ease),filter .3s}
+.is-gate .gate__ring{transition:transform .55s var(--ease),opacity .3s}
+.is-gate .logo--gate{transition:opacity .3s,filter .3s,transform .45s var(--ease)}
+.is-gate .gate{transition:opacity .25s,--led .8s}
 /* each new station makes the wordmark and the readout blink once, pointing at the button */
 .gate.blink .logo--gate .logo__word{animation:ftBlink .5s ease-out}
 .gate.blink #gateDisc{animation:ftBlink .5s ease-out}

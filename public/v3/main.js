@@ -149,7 +149,7 @@ const I18N = {
     n3: "Sobre & contato", n3d: "Retrato, assinatura em escala gigante, “Observe. Create. Refine.”",
     talk: "Vamos conversar", phMedia: "Placeholder — vídeo / breakdown entra aqui",
     cChallenge: "Desafio", cIdea: "Ideia", cExec: "Execução", cOutcome: "Resultado", cRole: "Função", cTools: "Ferramentas", cMore: "Ver projeto",
-    catBack: "Voltar ao dial", gateHint: "Gire para sintonizar · pressione para entrar", gateMore: "Role ↓ Práticas · Processo · Sobre", catHint: "Role ou arraste para explorar", catWord: "Categoria", works: "trabalhos", work: "trabalho", explore: "Explorar", openCase: "Abrir case" },
+    catBack: "Voltar ao dial", gatePower: "Clique em qualquer lugar para ligar", gateHint: "Gire para sintonizar · pressione para entrar", gateMore: "Role ↓ Práticas · Processo · Sobre", catHint: "Role ou arraste para explorar", catWord: "Categoria", works: "trabalhos", work: "trabalho", explore: "Explorar", openCase: "Abrir case" },
 };
 const $ = (s) => document.querySelector(s);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -212,7 +212,18 @@ function audio() {
   const wet = AC.createGain(); wet.gain.value = 0.85; verb.connect(wet).connect(AC.destination);
   return AC;
 }
-["pointerdown", "keydown", "touchstart"].forEach((ev) => addEventListener(ev, () => { const a = audio(); if (a && a.state === "suspended") a.resume(); }, { passive: true }));
+// Power on: browsers keep audio locked until a real click / tap / key press (moving the mouse does
+// not count), so the dial starts "switched off" and the first press anywhere switches it on —
+// that same gesture unlocks the sound. It never enters a category by itself.
+let poweredAt = -1e9;
+function powerOn() {
+  if (S.power) { if (AC && AC.state === "suspended") AC.resume(); return; }
+  S.power = true; poweredAt = performance.now(); document.body.classList.remove("is-off");
+  const a = audio(), up = () => [0, 2, 4].forEach((s, k) => note(SCALE[s], { when: k * 0.09, dur: 0.45 }));
+  if (a && a.state !== "running") a.resume().then(up).catch(() => {}); else up();
+  pulseGem();
+}
+["pointerup", "keydown"].forEach((ev) => addEventListener(ev, powerOn, true));
 function note(semi, { gain = 0.075, dur = 0.34, when = 0 } = {}) {
   if (!when) pulseGem();                                // the flash happens even while sound is still locked
   if (!AC || AC.state !== "running" || !S.motion) return;
@@ -664,7 +675,7 @@ function frame(now) {
   if (document.hidden) return;
   const dt = Math.min(0.05, (now - (frame.t || now)) / 1000); frame.t = now;
   // "entered" = tuned in: a category is open (or closing), a case is open, or the page has scrolled past the dial
-  const tuned = S.cat >= 0 || S.catT > 0.35 || S.caseOpen || S.past;
+  const tuned = S.cat >= 0 || S.caseOpen || S.past;       // the dial comes back the moment a category closes
   if (tuned !== S.entered) { S.entered = tuned; document.body.classList.toggle("is-gate", !tuned); if (!tuned && knob) knob.set({ press: 0, hover: 0, glow: 0 }); }
   S.pT = (S.cat >= 0 ? S.cat : Math.max(0, gateIdx)) + 1;   // the camera waits at the tuned station
   if (knob) { knobT = S.entered ? knobT + dt : 0; if (knobT < 1.4) knob.frame(dt); }
@@ -997,13 +1008,14 @@ const gate = $("#gate"), needle = $("#needle");
 const knobHit = (e) => Math.hypot(e.clientX - innerWidth / 2, e.clientY - innerHeight / 2) < $("#knob").clientWidth * 0.33;
 const stationAt = (e) => { const deg = (((Math.atan2(e.clientY - innerHeight / 2, e.clientX - innerWidth / 2) * 180) / Math.PI + 90) % 360 + 360) % 360; return Math.floor(deg / SEC) % GATE.length; };
 function enter() {                                     // press: tune in to the station under the index
-  if (S.cat >= 0) return; if (knob) knob.set({ press: 1, glow: 1 });
+  if (S.cat >= 0 || performance.now() - poweredAt < 500) return;   // the press that switched the dial on does not also enter
+  if (knob) knob.set({ press: 1, glow: 1 });
   const s = stationNote(Math.max(0, gateIdx)); note(s - 12, { gain: 0.08, dur: 0.7 }); note(s + 7, { gain: 0.05, dur: 0.6, when: 0.07 });
   openCat(Math.max(0, gateIdx));
 }
 // a press anywhere on the dial enters the station it is tuned to
 // (on touch there is no hover, so a tap on another station's side of the dial tunes to it first)
-gate.addEventListener("click", (e) => { if (e.detail === 0 || knobHit(e) || !$("#knob").clientWidth || stationAt(e) === gateIdx) enter(); else { gateIdle = 0; gateAuto = 0; setGate(stationAt(e), true); } });
+gate.addEventListener("click", (e) => { if (performance.now() - poweredAt < 500) return; if (e.detail === 0 || knobHit(e) || !$("#knob").clientWidth || stationAt(e) === gateIdx) enter(); else { gateIdle = 0; gateAuto = 0; setGate(stationAt(e), true); } });
 // inside a category: a click on empty space returns to the dial; a click beside the centre slide moves to that neighbour
 document.addEventListener("click", (e) => {
   if (S.cat < 0 || S.caseOpen || S.catT < 0.6 || hit.dataset.dragged || e.target.closest("button,a,.catui,.cap,.hdr,.dock,.case")) return;
