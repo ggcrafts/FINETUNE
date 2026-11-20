@@ -964,7 +964,7 @@ addEventListener("pointermove", (e) => {
     needle.style.transform = `rotate(${deg}deg)`;
     gateIdle = 0; gateAuto = 0; setGate(r > 0.34 ? Math.floor(deg / 45) % 8 : -1);
     if (knob) { const kr = $("#knob").clientWidth / 2.6, inside = Math.hypot(dx, dy) < kr * 1.08;
-      knob.set({ tiltX: clamp(dx / innerWidth, -.5, .5) * .55, tiltY: .42 + clamp(dy / innerHeight, -.5, .5) * .4, lx: dx / innerWidth * 2, ly: dy / innerHeight * 2, hover: inside ? 1 : 0, glow: inside ? 1 : 0 }); }
+      knob.set({ tiltX: clamp(dx / innerWidth, -.5, .5) * .28, tiltY: .06 + clamp(dy / innerHeight, -.5, .5) * .22, lx: dx / innerWidth * 2, ly: dy / innerHeight * 2, hover: inside ? 1 : 0, glow: inside ? 1 : 0 }); }
     document.querySelectorAll(".ap").forEach((c, i) => (c.style.transform = `rotate(${i * 47 + S.gateNear * (60 + i * 25)}deg) scale(${1 - S.gateNear * 0.16})`));
   }
 });

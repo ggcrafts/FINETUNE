@@ -19,13 +19,13 @@ const FS = `#version 300 es
 precision highp float;
 in vec2 vUv; out vec4 fragColor;
 uniform sampler2D uMask;
-uniform float uTime, uAng, uPress, uHover, uGlow;
+uniform float uTime, uAng, uPress, uHover, uGlow, uSweep;
 uniform vec2 uTilt, uLight;
 
 const float PI = 3.14159265;
 const float H  = 0.24;    // half height of the knob body
-const float RB = 0.62;    // push-button radius
-const float RC = 0.665;   // cavity radius (gap around the button)
+const float RB = 0.56;    // push-button (cap) radius
+const float RC = 0.69;    // channel radius: the lit groove between cap and ring
 
 mat3 rotX(float a){ float c=cos(a), s=sin(a); return mat3(1.,0.,0., 0.,c,s, 0.,-s,c); }
 mat3 rotY(float a){ float c=cos(a), s=sin(a); return mat3(c,0.,-s, 0.,1.,0., s,0.,c); }
@@ -35,7 +35,7 @@ float sdRCyl(vec3 p, float r, float h, float rr){
   vec2 d = vec2(length(p.xy) - r + rr, abs(p.z) - h + rr);
   return min(max(d.x, d.y), 0.) + length(max(d, 0.)) - rr;
 }
-float btnTop(){ return H + 0.012 - uPress * 0.055; }
+float btnTop(){ return H + 0.02 - uPress * 0.06; }
 
 // returns distance; id: 0 knurled side, 1 brushed top rim, 2 button, 3 cavity
 vec2 map(vec3 p){
@@ -43,15 +43,15 @@ vec2 map(vec3 p){
   // body + knurl (triangular ridges on the side band only)
   float band = smoothstep(H - 0.035, H - 0.09, abs(p.z)) * smoothstep(0.86, 0.97, r);
   float tri = abs(fract(th * 54. / (2. * PI)) - .5) * 2.;
-  float body = sdRCyl(p, 1., H, 0.06) + band * 0.016 * tri;
-  // cavity around the button
-  float cav = max(r - RC, (H - 0.11) - p.z);
+  float body = sdRCyl(p, 1., H, 0.075) + band * 0.016 * tri;
+  // channel around the cap
+  float cav = max(r - RC, (H - 0.10) - p.z);
   body = max(body, -cav);
-  // push button: rounded puck with a shallow concave dish on top
-  float zc = (btnTop() + (H - 0.11)) * .5, hb = (btnTop() - (H - 0.11)) * .5;
-  float btn = sdRCyl(p - vec3(0., 0., zc), RB, hb, 0.03) + 0.03 * (1. - clamp(r * r / (RB * RB), 0., 1.)) * step(zc, p.z);
+  // push button: flat cap with a bright chamfer
+  float zc = (btnTop() + (H - 0.10)) * .5, hb = (btnTop() - (H - 0.10)) * .5;
+  float btn = sdRCyl(p - vec3(0., 0., zc), RB, hb, 0.032);
   if (btn < body) return vec2(btn, 2.);
-  float id = p.z > H - 0.03 && r > RC + 0.01 ? 1. : (r < RC + 0.005 && p.z < H - 0.02 ? 3. : 0.);
+  float id = p.z > H - 0.03 && r > RC + 0.01 && r < .93 ? 1. : (r < RC + 0.005 && p.z < H - 0.02 ? 3. : 0.);
   return vec2(body, id);
 }
 vec3 nrm(vec3 p){
@@ -83,6 +83,22 @@ vec3 env(vec3 d, float rough){
 }
 vec3 fres(vec3 f0, float c){ return f0 + (1. - f0) * pow(1. - c, 5.); }
 
+// concentric brushing seen head-on: each light paints a pair of opposite wedges
+// (the "conic" look of a lathe-turned cap). Light angles drift with the cursor.
+vec3 conic(float th, float e){
+  float s = uLight.x * .9 - uLight.y * .45;
+  vec3 c = vec3(0.);
+  c += vec3(1., .98, .95) * pow(abs(cos(th - 2.30 - s)), e);
+  c += vec3(.12, .78, 1.) * 1.3 * pow(abs(cos(th + .80 - s)), e);
+  c += vec3(1., .38, .52) * .6 * pow(abs(cos(th - .45 - s * .6)), e * 1.4);
+  c += vec3(1., .76, .46) * .35 * pow(abs(cos(th + 2.0 - s * .6)), e * 1.4);
+  return c;
+}
+const vec3 GREEN = vec3(.47, .85, .54);
+float arcMask(float th, float sweep){            // clockwise from 12 o'clock, soft ends
+  float a = mod(PI * .5 - th, 2. * PI);
+  return smoothstep(0., .05, a) * (1. - smoothstep(sweep - .05, sweep, a));
+}
 void main(){
   vec2 uv = vUv;
   mat3 R = rotY(uTilt.x) * rotX(uTilt.y);           // object → world
@@ -99,65 +115,67 @@ void main(){
     if (hit.x < 0.0006) break;
     t += hit.x * .85;
   }
-  // miss: soft contact shadow + hover halo on transparent
+  // miss: soft contact shadow, outer spectral arc (rose → amber, lower left) and hover halo
   if (t > tEnd || hit.x > 0.003){
-    vec2 su = uv * 1.58; float r = length(su - vec2(.0, -.07));
-    float sh = .62 * smoothstep(1.28, .9, r);
-    float halo = uHover * .22 * smoothstep(1.3, 1.02, length(su)) * smoothstep(.98, 1.05, length(su));
-    fragColor = vec4(vec3(.47, .85, .54) * halo, sh + halo);
+    vec2 su = uv * 1.58; float r = length(su), th = atan(su.y, su.x);
+    float sh = .62 * smoothstep(1.28, .9, length(su - vec2(.0, -.05)));
+    float s = uLight.x * .3;
+    float am = smoothstep(-2.95 + s, -2.55 + s, th) * (1. - smoothstep(-1.75 + s, -1.35 + s, th));
+    vec3 ac = mix(vec3(1., .42, .5), vec3(1., .72, .4), smoothstep(-2.8, -1.5, th));
+    float line = exp(-pow((r - 1.035) / .006, 2.)), glow = exp(-pow((r - 1.035) / .05, 2.)) * .45;
+    vec3 col = ac * am * (line * 2.2 + glow * 1.3) * (.8 + uHover * .4);
+    float halo = uHover * .16 * smoothstep(1.3, 1.02, r) * smoothstep(.98, 1.05, r);
+    col += GREEN * halo;
+    float a = clamp(sh + am * (line + glow) + halo, 0., 1.);
+    fragColor = vec4(col, a);
     return;
   }
   vec3 p = ro + rd * t, n = nrm(p), col;
   float r = length(p.xy), th = atan(p.y, p.x), id = hit.y, occ = ao(p, n);
-  vec3 nW, vW = -rdW;
+  vec3 nW = R * n, vW = -rdW;
+  float flat_ = smoothstep(.975, .997, n.z);
+  float lathe = hash(vec2(floor(r * 900.), 1.7));
+  float rm = (RB + RC) * .5;                                  // channel centre line
+  float arc = arcMask(th, uSweep);
+  vec3 edgeEnv = env(reflect(-vW, nW), .08) * fres(vec3(.9, .91, .93), max(dot(nW, vW), 0.));
 
   if (id > 1.5 && id < 2.5){
-    // ── polished push button with engraving ──
+    // ── cap: polished, lathe-turned silver with the engraving ──
     vec2 muv = vec2(p.x, -p.y) / (RB * 2.) + .5;
     vec4 m = texture(uMask, muv);
     float px = 1. / 1024.;
     float bl = texture(uMask, muv + vec2(px * 3., 0.)).b - texture(uMask, muv - vec2(px * 3., 0.)).b;
     float bu = texture(uMask, muv - vec2(0., px * 3.)).b - texture(uMask, muv + vec2(0., px * 3.)).b;
-    float top = smoothstep(.9, .99, n.z);
-    n = normalize(n + top * vec3(-bl, -bu, 0.) * 2.2);
-    // fine lathe rings on the polished face
-    float lathe = hash(vec2(floor(r * 900.), 1.7));
-    nW = R * n;
-    vec3 rf = reflect(-vW, nW);
-    float engr = m.r * top;
-    float rough = mix(.045 + lathe * .03, .42, engr);
-    vec3 f0 = mix(vec3(.95, .955, .965), vec3(.22, .23, .25), engr);
-    col = env(rf, rough) * fres(f0, max(dot(nW, vW), 0.));
-    col *= mix(1., .55, engr) * mix(.93, 1., lathe);
-    col += vec3(.47, .85, .54) * m.g * top * (1.1 + uGlow * 1.6 + uHover * .6);   // painted green square
+    float engr = m.r * flat_;
+    vec3 face = vec3(.03, .035, .045) + conic(th, 5.) * .42 + conic(th, 40.) * .7;
+    face *= mix(.9, 1.04, lathe) * smoothstep(.0, .06, r + .02);
+    // engraved walls catch the key light from the upper left
+    float wall = clamp(-bl * .9 + bu * .9, -1., 1.) * flat_;
+    vec3 groove = face * .1 + vec3(.9, .95, 1.) * max(wall, 0.) * .9 + face * max(-wall, 0.) * .05;
+    col = mix(mix(edgeEnv * 1.15, face, flat_), groove, engr);
+    col += GREEN * m.g * flat_ * (1.1 + uGlow * 1.6 + uHover * .6);                  // painted green square
+    col += GREEN * arc * .35 * (1. - flat_) * (.6 + uGlow);                          // chamfer picks up the channel light
+    col *= 1. + uHover * .12;
   } else if (id > .5 && id < 1.5){
-    // ── brushed aluminium rim: concentric lathe, highlight streaks run radially ──
-    vec3 rad = R * normalize(vec3(p.xy, 0.)), tan_ = R * normalize(vec3(-p.y, p.x, 0.));
-    nW = R * n;
-    float ring = hash(vec2(floor(r * 700.), 3.1));
-    vec3 acc = vec3(0.);
-    for (int i = -2; i <= 2; i++){
-      vec3 nn = normalize(nW + rad * float(i) * .09);
-      acc += env(reflect(-vW, nn), .16);
-    }
-    col = acc / 5. * fres(vec3(.80, .81, .83), max(dot(nW, vW), 0.)) * (.88 + ring * .16);
-    // dial: engraved ticks every 10°, green index line, turning with the knob
-    float a = th - uAng, seg = a / (2. * PI) * 36.;
-    float tick = (1. - smoothstep(.0, .012, abs(fract(seg + .5) - .5) / 36. * 2. * PI * r)) * smoothstep(.925, .935, r) * smoothstep(.975, .965, r);
-    col *= 1. - tick * .7;
-    float ia = abs(atan(sin(a - PI * .5), cos(a - PI * .5)));
-    float index = (1. - smoothstep(.0, .02, ia * r)) * smoothstep(.72, .74, r) * smoothstep(.93, .91, r);
-    col = mix(col, vec3(.47, .85, .54) * (1.4 + uGlow), index);
+    // ── outer ring: dark brushed metal, softer wedges ──
+    vec3 face = vec3(.002, .0025, .004) + conic(th, 3.) * .016 + conic(th, 24.) * .045;
+    face *= mix(.85, 1.08, hash(vec2(floor(r * 700.), 3.1)));
+    col = face;
+    // index notch at the knob angle (green) — the dial turns with the hovered discipline
+    float a = th - uAng, ia = abs(atan(sin(a - PI * .5), cos(a - PI * .5)));
+    float index = (1. - smoothstep(.0, .012, ia * r)) * smoothstep(.74, .76, r) * smoothstep(.88, .86, r);
+    col = mix(col, GREEN * (1.5 + uGlow), index);
   } else if (id > 2.5){
-    col = env(reflect(-vW, R * n), .5) * .08;                  // cavity: dark, rough
-    nW = R * n;
+    // ── channel: dark floor with the green calibration arc (clockwise from 12 to the dial) ──
+    float line = exp(-pow((r - rm) / .0075, 2.)), glow = exp(-pow((r - rm) / .035, 2.));
+    col = vec3(.006, .008, .01) + GREEN * arc * (line * 2.2 + glow * .45) * (.75 + uGlow * .5);
+    col += GREEN * arc * .18 * (1. - abs(n.z));                                     // walls lit by the arc
   } else {
-    // ── knurled side: darker anodised gunmetal ──
-    nW = R * n;
-    col = env(reflect(-vW, nW), .22) * fres(vec3(.42, .43, .46), max(dot(nW, vW), 0.)) * .9;
+    // ── outer bevel and side ──
+    col = mix(env(reflect(-vW, nW), .22) * fres(vec3(.42, .43, .46), max(dot(nW, vW), 0.)) * .9, edgeEnv * .8, smoothstep(.0, .2, p.z - H + .12));
   }
-  col *= occ;
-  col = 1. - exp(-col * 1.15);                                  // gentle tone map
+  col *= mix(1., occ, .85);
+  col = 1. - exp(-col * 1.2);                                    // gentle tone map
   col = pow(col, vec3(1. / 2.2));
   fragColor = vec4(col, 1.);
 }`;
@@ -205,7 +223,7 @@ export function createKnob(canvas, { motion = true } = {}) {
   const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; };
   const pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(pr);
   if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(pr));
-  const U = {}; ["uMask", "uTime", "uAng", "uPress", "uHover", "uGlow", "uTilt", "uLight"].forEach((k) => (U[k] = gl.getUniformLocation(pr, k)));
+  const U = {}; ["uMask", "uTime", "uAng", "uPress", "uHover", "uGlow", "uTilt", "uLight", "uSweep"].forEach((k) => (U[k] = gl.getUniformLocation(pr, k)));
   const vao = gl.createVertexArray(); gl.bindVertexArray(vao);
   const vb = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, vb); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
   const loc = gl.getAttribLocation(pr, "aP"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
@@ -217,8 +235,8 @@ export function createKnob(canvas, { motion = true } = {}) {
   if (document.fonts) document.fonts.load('700 100px "Space Grotesk"').then(upload).catch(() => {});
 
   const K = { angle: 0, tiltX: 0, tiltY: 0, hover: 0, press: 0, glow: 0, lx: 0, ly: 0 };
-  const T = { ...K, tiltY: 0.42 };
-  Object.assign(K, { tiltY: 0.42 });
+  const T = { ...K, tiltY: 0.06 };
+  Object.assign(K, { tiltY: 0.06 });
   let alive = true, time = 0;
   const resize = () => {
     const d = Math.min(devicePixelRatio || 1, 2), w = Math.min(520, Math.round(canvas.clientWidth * d));
@@ -242,7 +260,7 @@ export function createKnob(canvas, { motion = true } = {}) {
       gl.useProgram(pr); gl.bindVertexArray(vao);
       gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex); gl.uniform1i(U.uMask, 0);
       gl.uniform1f(U.uTime, time); gl.uniform1f(U.uAng, K.angle); gl.uniform1f(U.uPress, K.press); gl.uniform1f(U.uHover, K.hover); gl.uniform1f(U.uGlow, K.glow);
-      gl.uniform2f(U.uTilt, K.tiltX, K.tiltY); gl.uniform2f(U.uLight, K.lx, K.ly);
+      gl.uniform2f(U.uTilt, K.tiltX, K.tiltY); gl.uniform1f(U.uSweep, Math.max(.35, ((-K.angle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI))); gl.uniform2f(U.uLight, K.lx, K.ly);
       gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     },
