@@ -504,3 +504,12 @@ body.is-hole .hdr,body.is-hole .dock,body.is-hole .talk,body.is-hole .grain{opac
   .gate .gate__sub,.gate .gate__power{transform:translateY(calc(var(--gw)*.62 + 72px))}
   .gate__sub i{display:none}
 }
+
+/* phones: station chips under the dial (tap to enter); the turn-to-tune hints are hidden */
+.stations{display:none}
+.lite .stations{position:fixed;left:0;right:0;z-index:31;top:calc(50% + min(78vw,48vh)*.62 + 70px);display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:0 14px;transition:opacity .3s}
+.lite .stations button{padding:9px 12px;border:1px solid rgba(233,240,244,.22);border-radius:3px;background:rgba(5,9,14,.55);font:500 .625rem var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mist);transition:color .4s,border-color .4s,box-shadow .4s}
+.lite .stations button.on{color:var(--pearl);border-color:var(--c);box-shadow:0 0 12px -2px var(--c)}
+.lite body:not(.is-gate) .stations{opacity:0;pointer-events:none}
+.lite .gate__sub,.lite .gate__power{display:none}
+@media (max-height:720px){.lite .stations{top:calc(50% + min(72vw,40vh)*.62 + 58px)}.lite .stations button{padding:7px 10px}}

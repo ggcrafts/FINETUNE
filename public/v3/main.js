@@ -191,7 +191,15 @@ const gatePrev = $("#gatePrev"); let gateIdx = -1, gateAng = 0, gateIdle = 0, ga
 let knob = null, knobT = 0;
 // phones and small touch screens run a lighter build: 1× WebGL resolution and a still knob
 const LITE = matchMedia("(pointer:coarse)").matches && Math.min(screen.width, screen.height) < 900;
-if (LITE) document.documentElement.classList.add("lite");
+if (LITE) { document.documentElement.classList.add("lite"); document.body.classList.remove("is-off"); }
+// phones: no turning — the stations are a row of chips under the dial; a tap on one enters it,
+// a tap on the knob enters the station that is lit (they take turns by themselves)
+const stations = document.createElement("nav"); stations.className = "stations"; stations.setAttribute("aria-label", "Categories"); document.body.appendChild(stations);
+function buildStations() {
+  stations.replaceChildren(...GATE.map((g, i) => { const b = document.createElement("button"); b.type = "button"; b.style.setProperty("--c", g.led);
+    b.textContent = S.lang === "pt" ? g.nP : g.n; b.classList.toggle("on", i === gateIdx);
+    b.onclick = () => { quietTune = true; setGate(i, true); quietTune = false; note(stationNote(i)); openCat(i); }; return b; }));
+}
 try { knob = createKnob($("#knob"), { motion: S.motion, label: "Press to enter", lite: LITE }); } catch (err) { console.warn("[FineTune] knob:", err); }
 if (!knob) document.documentElement.classList.add("no-knob");
 GATE.forEach((g) => {
@@ -220,6 +228,7 @@ function audio() {
 // that same gesture unlocks the sound. It never enters a category by itself.
 let poweredAt = -1e9;
 function powerOn() {
+  if (LITE && !S.power) { S.power = true; const a = audio(); if (a && a.state !== "running") a.resume().catch(() => {}); return; }   // phones: no switch-on step, the first tap just enters
   if (S.power) { if (AC && AC.state === "suspended") AC.resume(); return; }
   S.power = true; poweredAt = performance.now(); document.body.classList.remove("is-off");
   const a = audio(), up = () => [0, 2, 4].forEach((s, k) => note(SCALE[s], { when: k * 0.09, dur: 0.45 }));
@@ -262,6 +271,7 @@ function setGate(i, turn = gateIdle > 2) {
   gateAng = target; gatePrev.style.setProperty("--ang", gateAng + "deg");
   if (knob) { const [lr, lg, lb] = rgb01(g.led); knob.set(turn ? { angle: -((i + 0.5) * SEC) * Math.PI / 180, lr, lg, lb } : { lr, lg, lb }); }
   gt.style.setProperty("--led", g.led);
+  stations.querySelectorAll("button").forEach((b, k) => b.classList.toggle("on", k === i));
 }
 
 /* ───────────── "form": the self-calibrating word (ported from v2 formType.ts) ───────────── */
@@ -956,6 +966,7 @@ const setTint = (t) => document.documentElement.style.setProperty("--tint", `rgb
 /* ───────────── category carousel ───────────── */
 function openCat(k, at = 0) {
   if (!CATS[k]) return;
+  if (S.cat < 0) pushHist("cat");
   const c = CATS[k], sw = S.cat >= 0 && S.cat !== k; S.cat = k; S.catShown = k; S.slideT = clamp(at, 0, c.jobs.length - 1); if (S.catT < 0.05 || sw) S.slide = S.slideT;
   setGate(k, true); if (scrollY > 2) scrollTo(0, 0);
   document.body.classList.add("is-cat");
@@ -964,7 +975,14 @@ function openCat(k, at = 0) {
   S.capKey = "";
   setTimeout(() => { waves.trace(flankL, { strength: 1 }); waves.trace(flankR, { strength: 1, up: true }); }, 420);
 }
-function closeCat() { if (S.cat < 0) return; S.cat = -1; document.body.classList.remove("is-cat"); S.capKey = ""; }
+function closeCatNow() { if (S.cat < 0) return; S.cat = -1; document.body.classList.remove("is-cat"); S.capKey = ""; }
+/* Browser / phone Back button: an open category and an open case each add a history entry, so
+   Back closes the case, then the category, and only then leaves the site. Closing through the
+   page's own controls steps back over that entry, so the two stay in sync. */
+const histTag = () => (history.state && history.state.ft) || "";
+const pushHist = (tag) => { try { history.pushState({ ft: tag }, ""); } catch { /* sandboxed frames */ } };
+function closeCat() { if (S.cat < 0) return; if (histTag() === "cat") history.back(); else closeCatNow(); }
+addEventListener("popstate", () => { if (S.caseOpen) closeCaseNow(); else if (S.cat >= 0) closeCatNow(); });
 function slideTo(i) {
   if (S.cat < 0) return; const n = CATS[S.cat].jobs.length, t = clamp(i, 0, n - 1); if (t === Math.round(S.slideT)) return;
   S.slideT = t; setTimeout(() => waves.trace(t > S.slide ? flankR : flankL, { strength: 0.7, up: t < S.slide }), 160);
@@ -1018,7 +1036,7 @@ function enter() {                                     // press: tune in to the 
 }
 // a press anywhere on the dial enters the station it is tuned to
 // (on touch there is no hover, so a tap on another station's side of the dial tunes to it first)
-gate.addEventListener("click", (e) => { if (performance.now() - poweredAt < 500) return; if (e.detail === 0 || knobHit(e) || !$("#knob").clientWidth || stationAt(e) === gateIdx) enter(); else { gateIdle = 0; gateAuto = 0; setGate(stationAt(e), true); } });
+gate.addEventListener("click", (e) => { if (performance.now() - poweredAt < 500) return; if (LITE || e.detail === 0 || knobHit(e) || !$("#knob").clientWidth || stationAt(e) === gateIdx) enter(); else { gateIdle = 0; gateAuto = 0; setGate(stationAt(e), true); } });
 // inside a category: a click on empty space returns to the dial; a click beside the centre slide moves to that neighbour
 document.addEventListener("click", (e) => {
   if (S.cat < 0 || S.caseOpen || S.catT < 0.6 || hit.dataset.dragged || e.target.closest("button,a,.catui,.cap,.hdr,.dock,.case")) return;
@@ -1067,7 +1085,7 @@ function showStage(k) {
   caseMedia.replaceChildren(el); caseMedia.dataset.kind = it.kind;
   caseThumbs.querySelectorAll("button").forEach((b, i) => b.classList.toggle("on", i === k));
 }
-function openCase(i) { const pr = PROJECTS[i]; if (!pr) return;
+function openCase(i) { const pr = PROJECTS[i]; if (!pr) return; if (!S.caseOpen) pushHist("case");
   const j = pr.job || {}, L = S.lang === "pt" ? "pt" : "en"; caseIdx = i; caseItems = [];
   const v = embedOf(j.video); if (v) caseItems.push({ ...v, alt: pr.title + " — video" });
   if (pr.cover) caseItems.push({ kind: /\.(webm|mp4|mov)$/i.test(pr.cover) ? "video" : "img", src: "./" + pr.cover, alt: pr.title + " — cover" });
@@ -1087,12 +1105,13 @@ function openCase(i) { const pr = PROJECTS[i]; if (!pr) return;
   const link = $("#caseLink"), url = j.link && j.link.url;
   link.hidden = !url; if (url) { link.href = url; link.firstElementChild.textContent = tx(j.link.label, L) || (L === "pt" ? I18N.pt.cMore : "View project"); }
   caseEl.hidden = false; caseIn.scrollTop = 0; showStage(0); setTimeout(() => { waves.trace(caseIn, { edge: "l", strength: 0.8 }); waves.trace(caseIn, { edge: "r", strength: 0.8, up: true }); }, 380); document.body.classList.add("is-case"); S.caseOpen = true; if (window.self === window.top) $("#caseX").focus(); }
-function closeCase() { if (caseEl.hidden) return; caseEl.hidden = true; caseMedia.replaceChildren(); document.body.classList.remove("is-case"); S.caseOpen = false; hit.focus({ preventScroll: true }); }
+function closeCase() { if (caseEl.hidden) return; if (histTag() === "case") history.back(); else closeCaseNow(); }
+function closeCaseNow() { if (caseEl.hidden) return; caseEl.hidden = true; caseMedia.replaceChildren(); document.body.classList.remove("is-case"); S.caseOpen = false; hit.focus({ preventScroll: true }); }
 hit.addEventListener("click", () => { if (hit.dataset.dragged) return; if (S.cat >= 0) openCase(CATS[S.cat].jobs[clamp(Math.round(S.slideT), 0, CATS[S.cat].jobs.length - 1)]); else if (S.active >= 0) openCat(S.active); });
 $("#catBack").addEventListener("click", closeCat);
 $("#catPrev").addEventListener("click", () => slideTo(Math.round(S.slideT) - 1));
 $("#catNext").addEventListener("click", () => slideTo(Math.round(S.slideT) + 1));
-document.querySelectorAll(".nav a, .talk").forEach((a) => a.addEventListener("click", closeCat));
+document.querySelectorAll(".nav a, .talk").forEach((a) => a.addEventListener("click", closeCatNow));
 $("#caseX").addEventListener("click", closeCase);
 caseEl.addEventListener("click", (e) => { if (e.target === caseEl) closeCase(); });
 
@@ -1120,7 +1139,7 @@ $("#lang").addEventListener("click", () => {
   document.querySelectorAll("#lang b").forEach((b) => b.classList.toggle("on", b.dataset.l === S.lang));
   document.querySelectorAll("[data-i18n]").forEach((el) => (el.textContent = (S.lang === "pt" && I18N.pt[el.dataset.i18n]) || EN[el.dataset.i18n]));
   if (knob) knob.setLabel(S.lang === "pt" ? I18N.pt.gateCta : "Press to enter");
-  buildRing(); { const g = Math.max(0, gateIdx); gateIdx = -2; quietTune = true; setGate(g, false); quietTune = false; }
+  buildStations(); buildRing(); { const g = Math.max(0, gateIdx); gateIdx = -2; quietTune = true; setGate(g, false); quietTune = false; }
   setMotionLabel(); buildRows(); buildProcess(); if (S.active >= 0) onActive(S.active); if (S.caseOpen) openCase(caseIdx); S.capKey = ""; if (S.cat >= 0) $("#catName").textContent = L() === "pt" ? CATS[S.cat].nameP : CATS[S.cat].name;
 });
 const setMotionLabel = () => { $("#motionLbl").textContent = S.lang === "pt" ? (S.motion ? "Movimento on" : "Movimento off") : S.motion ? "Motion on" : "Motion off"; $("#motion").setAttribute("aria-pressed", S.motion); };
@@ -1160,5 +1179,5 @@ if (qCase) { const k = PROJECTS.findIndex((p) => p.slug === qCase); if (k >= 0) 
 else if (qCat) { const k = CATS.findIndex((c) => c.id === qCat); if (k >= 0) { openCat(k); S.p = S.pT = k + 1; } }
 else if (qAt && document.getElementById(qAt)) { const el = document.getElementById(qAt); scrollTo(0, el.offsetTop + (qAt === "about" ? 0 : innerHeight * 0.25)); readScroll(); }
 window.__ft = { S, goTo, enter, openCat, closeCat, slideTo, showJob, waves };
-quietTune = true; setGate(0, true); quietTune = false;
+quietTune = true; setGate(0, true); quietTune = false; buildStations();
 requestAnimationFrame(frame);
