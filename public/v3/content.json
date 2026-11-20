@@ -1,6 +1,6 @@
 {
   "format": "finetune-portfolio/1",
-  "updated": "2026-11-20T21:40:16.841Z",
+  "updated": "2026-11-20T21:48:29.282Z",
   "hero": {
     "eyebrow": {
       "en": "Senior Motion Designer · Art Director · Creative Technologist",
@@ -1357,7 +1357,7 @@
         "en": "Visual languages built around one clear idea — from the first frame and key visual to the system that keeps every piece coherent.",
         "pt": "Linguagens visuais construídas em torno de uma ideia clara — do primeiro frame e do key visual ao sistema que mantém cada peça coerente."
       },
-      "image": "practice/practice-01.webp",
+      "image": "media/practice/captura-de-tela-2026-11-09-173956.webp",
       "tint": "#bd9eff",
       "jobs": [
         "bravecto",
@@ -1377,7 +1377,7 @@
         "en": "Animation, modeling, shading, lighting, rendering and compositing for campaigns, content and immersive experiences.",
         "pt": "Animação, modelagem, shading, iluminação, render e composição para campanhas, conteúdo e experiências imersivas."
       },
-      "image": "practice/practice-02.webp",
+      "image": "media/nano-enemy/00-cecfb6d0-490b-4ef2-9c40-90af47e52f41-carw-4x3x1920.webp",
       "tint": "#ffbd75",
       "jobs": [
         "hbo-bff",
@@ -1397,7 +1397,7 @@
         "en": "Generative tools placed inside a directed pipeline — used to explore faster, while art direction decides what stays.",
         "pt": "Ferramentas generativas dentro de um pipeline dirigido — para explorar mais rápido, enquanto a direção de arte decide o que fica."
       },
-      "image": "practice/practice-03.webp",
+      "image": "media/practice/especificacao-visual-da-finetune-prism.webp",
       "tint": "#80e0ff",
       "jobs": []
     },
@@ -1414,7 +1414,7 @@
         "en": "Scripts, Blender add-ons, automations and web prototypes that remove friction from production and open new visual possibilities.",
         "pt": "Scripts, add-ons de Blender, automações e protótipos web que tiram o atrito da produção e abrem novas possibilidades visuais."
       },
-      "image": "practice/practice-04.webp",
+      "image": "media/practice/og-image.webp",
       "tint": "#9ec2ff",
       "jobs": []
     }
@@ -1796,7 +1796,7 @@
         "en": "Openings, campaigns and brand films where rhythm carries the idea.",
         "pt": "Aberturas, campanhas e filmes de marca em que o ritmo conduz a ideia."
       },
-      "cover": "media/gate/cena-base-motion-cana-2.mp4",
+      "cover": "reel/clip-03.webm",
       "tint": "#6bd6ff"
     },
     {
@@ -1835,7 +1835,7 @@
         "en": "Generative tools, code and automation inside a directed pipeline.",
         "pt": "Ferramentas generativas, código e automação dentro de um pipeline dirigido."
       },
-      "cover": "media/gate/combalista-making-of-1min-16x9-1.mp4",
+      "cover": "media/combalista-making-of/making-of.mp4",
       "tint": "#00ffe1"
     }
   ]
