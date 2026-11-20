@@ -3,6 +3,7 @@
 // corridor; each category is a glass pane that docks in front of the lens, and opens into a
 // lateral carousel of its works.
 import { createLineWaves } from "./lines.js";
+import { createKnob } from "./knob.js";
 
 const PROJECTS = [
   { slug: "hbo-bff", title: "HBO Max — BFF Nossa Voz", disc: "VFX · 3D · Compositing", ctx: "VFX, 3D and compositing for an HBO Max campaign piece.", pt: "VFX, 3D e composição para uma peça de campanha da HBO Max.", tint: [0.62, 0.48, 1.0] },
@@ -138,7 +139,7 @@ const I18N = {
     idRole: "Senior Motion Designer · Diretor de Arte · Creative Technologist",
     idBio: "12+ anos em animação, 3D, VFX e experiências imersivas — hoje combinados com workflows assistidos por IA, código e automação.",
     idF1: "Experiência", idF1v: "12+ anos", idF2: "Base", idF2v: "Curitiba, Brasil", idF3: "Atuação", idF3v: "Remoto · Internacional", idCta: "Entrar em contato",
-    featured: "Observado", gateRole: "Luiz Gustavo Czaika", gateCta: "Clique para focar",
+    featured: "Observado", gateRole: "Luiz Gustavo Czaika", gateCta: "Pressione para entrar", gateArc: "Portfólio · Seleção de trabalhos",
     eyebrow: "Senior Motion Designer · Diretor de Arte · Creative Technologist",
     lead: "Sistemas visuais onde motion, 3D, VFX, IA e tecnologia criativa convergem.", hint: "Role para observar", open: "Abrir case",
     nextTitle: "O caminho de luz continua.",
@@ -184,6 +185,11 @@ function buildRing() {
 }
 buildRing();
 const gatePrev = $("#gatePrev"); let gateIdx = -1, gateAng = 0, gateIdle = 0, gateAuto = 0;
+// the knob in the centre of the gate (knob.js): turns to the discipline under the cursor,
+// tilts toward the pointer, lights up on hover and presses in on click
+let knob = null, knobT = 0;
+try { knob = createKnob($("#knob"), { motion: S.motion }); } catch (err) { console.warn("[FineTune] knob:", err); }
+if (!knob) document.documentElement.classList.add("no-knob");
 GATE.forEach((g) => {
   const vid = /\.(webm|mp4)$/.test(g.src), el = document.createElement(vid ? "video" : "img");
   if (vid) { el.muted = true; el.loop = true; el.playsInline = true; el.preload = "none"; el.dataset.src = g.src; } else { el.loading = "lazy"; el.alt = ""; if (g.src) el.src = g.src; }
@@ -199,6 +205,7 @@ function setGate(i) {
   if (i < 0) return;
   let target = (i + 0.5) * 45; while (target - gateAng > 180) target -= 360; while (target - gateAng < -180) target += 360;   // shortest way round
   gateAng = target; gatePrev.style.setProperty("--ang", gateAng + "deg");
+  if (knob) knob.set({ angle: -((i + 0.5) * 45) * Math.PI / 180 });
 }
 
 /* ───────────── "form": the self-calibrating word (ported from v2 formType.ts) ───────────── */
@@ -614,6 +621,7 @@ function frame(now) {
   requestAnimationFrame(frame);
   if (document.hidden) return;
   const dt = Math.min(0.05, (now - (frame.t || now)) / 1000); frame.t = now;
+  if (knob) { knobT = S.entered ? knobT + dt : 0; if (knobT < 1.4) knob.frame(dt); }
   const k = 1 - Math.pow(0.001, dt);           // framerate-independent smoothing
   if (S.motion && !S.caseOpen) S.time += dt;
   S.p = S.motion ? mix(S.p, S.pT, clamp(k * 0.75, 0, 1)) : S.pT;
@@ -942,9 +950,11 @@ $("#gallery").style.setProperty("--stops", N + 1);
 // gate
 const gate = $("#gate"), needle = $("#needle");
 function enter() {
-  if (S.entered) return; S.entered = true; setGate(-1); document.body.classList.remove("is-gate"); scrollTo(0, 0); readScroll();
+  if (S.entered) return; if (knob) knob.set({ press: 1, glow: 1 }); S.entered = true; setGate(-1); document.body.classList.remove("is-gate"); scrollTo(0, 0); readScroll();
 }
 gate.addEventListener("click", enter);
+gate.addEventListener("pointerdown", () => knob && knob.set({ press: 1 }));
+gate.addEventListener("pointerleave", () => knob && !S.entered && knob.set({ press: 0, hover: 0, glow: 0 }));
 addEventListener("pointermove", (e) => {
   S.mxT = (e.clientX / innerWidth) * 2 - 1; S.myT = (e.clientY / innerHeight) * 2 - 1;
   if (!S.entered) {
@@ -953,6 +963,8 @@ addEventListener("pointermove", (e) => {
     const deg = (((Math.atan2(dy, dx) * 180) / Math.PI + 90) % 360 + 360) % 360;
     needle.style.transform = `rotate(${deg}deg)`;
     gateIdle = 0; gateAuto = 0; setGate(r > 0.34 ? Math.floor(deg / 45) % 8 : -1);
+    if (knob) { const kr = $("#knob").clientWidth / 2.6, inside = Math.hypot(dx, dy) < kr * 1.08;
+      knob.set({ tiltX: clamp(dx / innerWidth, -.5, .5) * .55, tiltY: .42 + clamp(dy / innerHeight, -.5, .5) * .4, lx: dx / innerWidth * 2, ly: dy / innerHeight * 2, hover: inside ? 1 : 0, glow: inside ? 1 : 0 }); }
     document.querySelectorAll(".ap").forEach((c, i) => (c.style.transform = `rotate(${i * 47 + S.gateNear * (60 + i * 25)}deg) scale(${1 - S.gateNear * 0.16})`));
   }
 });
