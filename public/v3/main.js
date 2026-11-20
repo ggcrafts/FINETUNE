@@ -198,7 +198,7 @@ const stations = document.createElement("nav"); stations.className = "stations";
 function buildStations() {
   stations.replaceChildren(...GATE.map((g, i) => { const b = document.createElement("button"); b.type = "button"; b.style.setProperty("--c", g.led);
     b.textContent = S.lang === "pt" ? g.nP : g.n; b.classList.toggle("on", i === gateIdx);
-    b.onclick = () => { quietTune = true; setGate(i, true); quietTune = false; note(stationNote(i)); openCat(i); }; return b; }));
+    b.onclick = () => { quietTune = true; setGate(i, true); quietTune = false; note(stepNote(1)); openCat(i); }; return b; }));
 }
 try { knob = createKnob($("#knob"), { motion: S.motion, label: "Press to enter", lite: LITE }); } catch (err) { console.warn("[FineTune] knob:", err); }
 if (!knob) document.documentElement.classList.add("no-knob");
@@ -211,7 +211,18 @@ let tuneT = 0, quietTune = false;
 /* ── tuning notes: one short tone per station on the Egyptian pentatonic scale: a filtered square wave with a hard attack and a long synthetic reverb ──
    Browsers only allow sound after a first click / tap / key press, so the dial is silent until
    then. Sound follows the Motion toggle (Motion off = silent). */
-const SCALE = [0, 2, 5, 7, 10, 12, 14, 17, 19, 22];      // Egyptian (suspended) pentatonic: 1 2 4 5 b7
+const SCALE = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21, 23, 24];   // major scale (G), two octaves
+// The dial walks the scale instead of giving each station a fixed note: every new station moves
+// two scale degrees (a third) up when turning clockwise and down when turning back, across three
+// octaves, bouncing at the ends — wide, dramatic steps that follow the gesture.
+const DIAL = [-12, -10, -8, -7, -5, -3, -1, ...SCALE, 26, 28, 29, 31, 33, 35, 36];
+let dialPos = 7, dialDir = 1;
+function stepNote(dir) {
+  let p = dialPos + 2 * dir * dialDir;
+  if (p < 0 || p >= DIAL.length) { dialDir = -dialDir; p = dialPos + 2 * dir * dialDir; }
+  dialPos = Math.max(0, Math.min(DIAL.length - 1, p));
+  return DIAL[dialPos];
+}
 let AC = null, verb = null;
 function audio() {
   if (AC) return AC;
@@ -236,12 +247,12 @@ function powerOn() {
   pulseGem();
 }
 ["pointerup", "keydown"].forEach((ev) => addEventListener(ev, powerOn, true));
-function note(semi, { gain = 0.075, dur = 0.34, when = 0 } = {}) {
+function note(semi, { gain = 0.056, dur = 0.16, when = 0 } = {}) {
   if (!when) pulseGem();                                // the flash happens even while sound is still locked
   if (!AC || AC.state !== "running" || !S.motion) return;
   const t = AC.currentTime + when, f = 392 * Math.pow(2, semi / 12), g = AC.createGain(), lp = AC.createBiquadFilter();
   // hard attack: a 2 ms rise to an accent 1.8× the body, then the decay
-  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(gain * 1.8, t + 0.002); g.gain.exponentialRampToValueAtTime(gain, t + 0.035); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(gain * 2.2, t + 0.0015); g.gain.exponentialRampToValueAtTime(gain, t + 0.018);   // "tic": a 1.5 ms spike, the reverb carries the tail g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
   // the filter opens on the attack and closes with the note, so the square stays bright but not harsh
   lp.type = "lowpass"; lp.Q.value = 2.5; lp.frequency.setValueAtTime(Math.min(9000, f * 9), t); lp.frequency.exponentialRampToValueAtTime(f * 2.2, t + dur);
   [["square", 1, 0.8], ["square", 2.003, 0.12]].forEach(([type, mul, lv]) => { const o = AC.createOscillator(), og = AC.createGain(); o.type = type; o.frequency.value = f * mul; og.gain.value = lv; o.connect(og).connect(lp); o.start(t); o.stop(t + dur + 0.05); });
@@ -253,9 +264,27 @@ function pulseGem() {
   if (knob) { knob.snap({ gem: 1 }); knob.set({ gem: 0 }); }
   document.body.classList.remove("tone"); void document.body.offsetWidth; document.body.classList.add("tone"); clearTimeout(gemT); gemT = setTimeout(() => document.body.classList.remove("tone"), 700);
 }
-const stationNote = (i) => SCALE[i % SCALE.length];
+const stationNote = () => DIAL[dialPos];            // the note the dial currently rests on
+/* ratchet: a dry little click for every 3° of dial rotation — a slow turn goes tic… tic…, a fast
+   one rattles (up to five clicks per pointer move, a few milliseconds apart) */
+let clickBuf = null, tickDeg = null;
+function click(when = 0) {
+  if (!AC || AC.state !== "running" || !S.motion) return;
+  if (!clickBuf) { const n = Math.floor(AC.sampleRate * 0.012); clickBuf = AC.createBuffer(1, n, AC.sampleRate); const d = clickBuf.getChannelData(0); for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (n * 0.12)); }
+  const t = AC.currentTime + when, s = AC.createBufferSource(), bp = AC.createBiquadFilter(), g = AC.createGain();
+  s.buffer = clickBuf; s.playbackRate.value = 0.85 + Math.random() * 0.3;
+  bp.type = "bandpass"; bp.frequency.value = 3400; bp.Q.value = 1.4; g.gain.value = 0.11;
+  s.connect(bp).connect(g); g.connect(AC.destination); const w = AC.createGain(); w.gain.value = 0.25; g.connect(w).connect(verb); s.start(t);
+}
+function dialTick(deg) {
+  if (tickDeg === null) { tickDeg = deg; return; }
+  const d = ((deg - tickDeg + 540) % 360) - 180, STEP = 3, n = Math.floor(Math.abs(d) / STEP);
+  if (!n) return;
+  tickDeg = (tickDeg + Math.sign(d) * n * STEP + 360) % 360;
+  for (let k = 0; k < Math.min(n, 5); k++) click(k * 0.011);
+}
 function setGate(i, turn = gateIdle > 2) {
-  if (i === gateIdx || i < 0) return; gateIdx = i;
+  if (i === gateIdx || i < 0) return; const was = gateIdx; gateIdx = i;
   GATE.forEach((g, k) => { const on = k === i; g.el.classList.toggle("on", on);
     if (g.el.tagName === "VIDEO") { if (on) { if (!g.el.src) g.el.src = g.el.dataset.src; g.el.play().catch(() => {}); } else g.el.pause(); } });
   document.querySelectorAll("#ring text").forEach((t) => t.classList.toggle("on", +t.dataset.g === i));
@@ -263,7 +292,8 @@ function setGate(i, turn = gateIdle > 2) {
   const g = GATE[i], pt = S.lang === "pt", w = g.count === 1 ? (pt ? "trabalho" : "work") : (pt ? "trabalhos" : "works");
   $("#gateDisc").textContent = `CH ${String(i + 1).padStart(2, "0")} — ${pt ? g.nP : g.n} · ${g.count} ${w}`;
   // a moment of static while the dial settles on the new station
-  if (!quietTune && !S.entered && gateIdle < 2.4) note(stationNote(i));
+  const prev = was < 0 ? i : was, dir = (((i - prev) % GATE.length) + GATE.length) % GATE.length <= GATE.length / 2 ? 1 : -1;
+  if (!quietTune && !S.entered && gateIdle < 2.4) note(stepNote(dir));
   if (knob && !quietTune) { knob.snap({ glow: 1, hover: 0.8 }); knob.set({ glow: 0, hover: 0 }); }     // the button blinks: "press me"
   const gt = $("#gate"); gt.classList.remove("blink"); void gt.offsetWidth; gt.classList.add("blink");
   gt.classList.add("tuning"); clearTimeout(tuneT); tuneT = setTimeout(() => gt.classList.remove("tuning"), 420);
@@ -1056,7 +1086,7 @@ addEventListener("pointermove", (e) => {
     needle.style.transform = `rotate(${deg}deg)`;
     gateIdle = 0; gateAuto = 0;
     const inside = knob ? knobHit(e) : r < 0.3;
-    if (!inside) { setGate(Math.floor(deg / SEC) % GATE.length, false); if (knob) knob.set({ angle: -deg * Math.PI / 180 }); }   // the dial follows the pointer; over the knob the station holds
+    if (!inside) { dialTick(deg); setGate(Math.floor(deg / SEC) % GATE.length, false); if (knob) knob.set({ angle: -deg * Math.PI / 180 }); }   // the dial follows the pointer; over the knob the station holds
     if (knob) knob.set({ tiltX: clamp(dx / innerWidth, -.5, .5) * .28, tiltY: .06 + clamp(dy / innerHeight, -.5, .5) * .22, lx: dx / innerWidth * 2, ly: dy / innerHeight * 2, hover: inside ? 1 : 0, glow: inside ? 1 : 0 });
     document.querySelectorAll(".ap").forEach((c, i) => (c.style.transform = `rotate(${i * 47 + S.gateNear * (60 + i * 25)}deg) scale(${1 - S.gateNear * 0.16})`));
   }
