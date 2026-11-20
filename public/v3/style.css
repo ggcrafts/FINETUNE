@@ -41,6 +41,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* the keyframe of the mark is a small crystal LED: it cycles through the spectrum and glows */
 @keyframes ftGem{0%,100%{fill:#78D98A;color:#78D98A}20%{fill:#5fd4ff;color:#5fd4ff}40%{fill:#a98bff;color:#a98bff}60%{fill:#ff6b8e;color:#ff6b8e}80%{fill:#ffb35c;color:#ffb35c}}
 @media (prefers-reduced-motion:reduce){.logo__sq{animation:none}}
+.tone .logo__sq{animation:ftGem 14s linear infinite,ftTone .7s ease-out}
+@keyframes ftTone{0%{filter:drop-shadow(0 0 7px currentColor) drop-shadow(0 0 3px #fff) brightness(2.2)}100%{filter:drop-shadow(0 0 2px currentColor) brightness(1)}}
 .logo--gate{display:grid;justify-items:center;gap:clamp(8px,1.4vmin,14px);transition:opacity .6s,filter .7s,transform 1.2s var(--ease)}
 .logo--gate .logo__mark{width:clamp(30px,5.2vmin,48px);height:auto}
 /* gate knob: raymarched metal dial + push button (knob.js), arc labels around it */
@@ -335,7 +337,9 @@ body.is-cat{overflow:hidden}
   -webkit-mask-composite:source-in;mask-composite:intersect}
 .about__sig i{font-style:normal;color:var(--green)}
 .about__head{position:relative;text-align:center}
-.about h2{font:600 clamp(1.8rem,3.4vw,3.2rem)/1 var(--f-head);letter-spacing:-.045em;margin-top:12px}
+.about h2{font:600 clamp(2rem,3.8vw,3.6rem)/1 var(--f-head);letter-spacing:-.045em;margin-top:12px}
+.about h2 .h-form{display:block;font-size:1.75em;line-height:.95;margin:.06em 0 0}   /* the mutable "form" word, on its own centred line */
+.about__state{justify-content:center;margin:10px 0 0;opacity:.75}
 .about h2 em{font-style:normal;font-weight:400;color:var(--mist)}
 .idwrap{position:relative;justify-self:center;width:min(58rem,100%);perspective:1400px}
 .idcard{--rx:0deg;--ry:0deg;--px:50%;--py:50%;position:relative;display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.5fr);grid-template-rows:auto 1fr auto;column-gap:clamp(18px,3vw,36px);

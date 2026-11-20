@@ -20,7 +20,7 @@ precision highp float;
 in vec2 vUv; out vec4 fragColor;
 uniform sampler2D uMask, uRing;
 uniform vec3 uLed;
-uniform float uTime, uAng, uLag, uPress, uHover, uGlow;
+uniform float uTime, uAng, uLag, uPress, uHover, uGlow, uGem;
 uniform vec2 uTilt, uLight;
 
 const float PI = 3.14159265;
@@ -175,10 +175,10 @@ void main(){
         vec3 g = inner * (1.7 - md * .9) + env(reflect(-vW, fnW), .02) * fres(vec3(.05), max(dot(fnW, vW), 0.)) * 2.5;
         g += vec3(1.) * pow(1. - md, 5.) * 1.4;                                           // hot core
         g += inner * (smoothstep(.07, .0, min(abs(q.x), abs(q.y))) * (1. - table) * .5 + smoothstep(.035, .0, abs(md - .43)) * .45);  // facet edges
-        col = g * (1. + uGlow * .3 + uHover * .25);
+        col = g * (1. + uGlow * .3 + uHover * .25 + uGem * 1.6) + vec3(1.) * uGem * (1. - md) * 1.2;   // flashes with each tone
       }
     }
-    col += gemColor(uTime) * .4 * exp(-max(md - 1.22, 0.) * 6.) * step(1.22, md) * flat_;   // light spilling onto the metal
+    col += gemColor(uTime) * (.4 + uGem * 1.4) * exp(-max(md - 1.22, 0.) * (6. - uGem * 3.)) * step(1.22, md) * flat_;   // light spilling onto the metal
     col += uLed * near * .3 * (1. - flat_) * (.6 + uGlow);                          // chamfer picks up the LED light
     col *= 1. + uHover * .12;
   } else if (id > .5 && id < 1.5){
@@ -304,7 +304,7 @@ export function createKnob(canvas, { motion = true, label = "" } = {}) {
   const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; };
   const pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(pr);
   if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(pr));
-  const U = {}; ["uMask", "uRing", "uLed", "uTime", "uAng", "uLag", "uPress", "uHover", "uGlow", "uTilt", "uLight"].forEach((k) => (U[k] = gl.getUniformLocation(pr, k)));
+  const U = {}; ["uMask", "uRing", "uLed", "uTime", "uAng", "uLag", "uPress", "uHover", "uGlow", "uGem", "uTilt", "uLight"].forEach((k) => (U[k] = gl.getUniformLocation(pr, k)));
   const vao = gl.createVertexArray(); gl.bindVertexArray(vao);
   const vb = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, vb); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
   const loc = gl.getAttribLocation(pr, "aP"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
@@ -319,7 +319,7 @@ export function createKnob(canvas, { motion = true, label = "" } = {}) {
   upload(); uploadRing();
   if (document.fonts) Promise.all([document.fonts.load('700 100px "Space Grotesk"'), document.fonts.load('500 40px "IBM Plex Mono"')]).then(() => { upload(); uploadRing(); }).catch(() => {});
 
-  const K = { angle: 0, lag: 0, tiltX: 0, tiltY: 0, hover: 0, press: 0, glow: 0, lx: 0, ly: 0, lr: .47, lg: .85, lb: .54 };   // lr/lg/lb: LED colour
+  const K = { angle: 0, lag: 0, gem: 0, tiltX: 0, tiltY: 0, hover: 0, press: 0, glow: 0, lx: 0, ly: 0, lr: .47, lg: .85, lb: .54 };   // lr/lg/lb: LED colour
   const T = { ...K, tiltY: 0.06 };
   Object.assign(K, { tiltY: 0.06 });
   let alive = true, time = 0, idle = 0;
@@ -341,7 +341,7 @@ export function createKnob(canvas, { motion = true, label = "" } = {}) {
       if (Math.abs(da) > 1e-4) { K.angle += da * (1 - Math.exp(-7 * dt)); moving = true; }
       let dl = K.angle - K.lag; dl = Math.atan2(Math.sin(dl), Math.cos(dl));                 // trail: a slower copy of the angle
       if (Math.abs(dl) > 1e-3) { K.lag += dl * (1 - Math.exp(-(motion ? 1.6 : 60) * dt)); moving = true; }
-      for (const [k, r] of [["tiltX", 5], ["tiltY", 5], ["hover", 8], ["press", 18], ["glow", 4], ["lx", 3], ["ly", 3], ["lr", 5], ["lg", 5], ["lb", 5]]) moving = ease(k, motion ? r : 60, dt) || moving;
+      for (const [k, r] of [["tiltX", 5], ["tiltY", 5], ["hover", 8], ["press", 18], ["glow", 4], ["gem", 3.5], ["lx", 3], ["ly", 3], ["lr", 5], ["lg", 5], ["lb", 5]]) moving = ease(k, motion ? r : 60, dt) || moving;
       if (!moving && !dirty) { idle += dt; if (!motion || idle < 0.05) return; }
       idle = 0;
       dirty = false;
@@ -350,7 +350,7 @@ export function createKnob(canvas, { motion = true, label = "" } = {}) {
       gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex); gl.uniform1i(U.uMask, 0);
       gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, rtex); gl.uniform1i(U.uRing, 1); gl.activeTexture(gl.TEXTURE0);
       gl.uniform3f(U.uLed, K.lr, K.lg, K.lb);
-      gl.uniform1f(U.uTime, time); gl.uniform1f(U.uAng, K.angle); gl.uniform1f(U.uPress, K.press); gl.uniform1f(U.uHover, K.hover); gl.uniform1f(U.uGlow, K.glow);
+      gl.uniform1f(U.uTime, time); gl.uniform1f(U.uAng, K.angle); gl.uniform1f(U.uPress, K.press); gl.uniform1f(U.uHover, K.hover); gl.uniform1f(U.uGlow, K.glow); gl.uniform1f(U.uGem, K.gem);
       gl.uniform2f(U.uTilt, K.tiltX, K.tiltY); gl.uniform1f(U.uLag, K.lag); gl.uniform2f(U.uLight, K.lx, K.ly);
       gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);

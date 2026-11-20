@@ -136,7 +136,7 @@ const I18N = {
     rdOrder: "Ordem", rdParts: "Partículas", tlEyebrow: "Trajetória", tlT1: "12+ anos.", tlT2: "Uma linha contínua.", tlYears: "anos de prática",
     nextEyebrow: "Próxima etapa, aguardando aprovação",
     hLead: "Onde ideias ganham",
-    abEyebrow: "Sobre · Contato", abT1: "Vamos dar à sua próxima ideia", abT2: "uma forma.", idAvail: "Disponível · Remoto",
+    abEyebrow: "Sobre · Contato", abT1: "Vamos dar à sua próxima ideia", abT2: "uma", idAvail: "Disponível · Remoto",
     idRole: "Senior Motion Designer · Diretor de Arte · Creative Technologist",
     idBio: "12+ anos em animação, 3D, VFX e experiências imersivas — hoje combinados com workflows assistidos por IA, código e automação.",
     idF1: "Experiência", idF1v: "12+ anos", idF2: "Base", idF2v: "Curitiba, Brasil", idF3: "Atuação", idF3v: "Remoto · Internacional", idCta: "Entrar em contato",
@@ -197,28 +197,38 @@ GATE.forEach((g) => {
   gatePrev.appendChild(el); g.el = el;
 });
 let tuneT = 0, quietTune = false;
-/* ── tuning notes: one short pentatonic tone per station, with a small synthetic reverb ──
+/* ── tuning notes: one short tone per station on the Egyptian pentatonic scale: a filtered square wave with a hard attack and a long synthetic reverb ──
    Browsers only allow sound after a first click / tap / key press, so the dial is silent until
    then. Sound follows the Motion toggle (Motion off = silent). */
-const SCALE = [0, 2, 4, 7, 9, 12, 14, 16, 19, 21];       // C major pentatonic, in semitones
+const SCALE = [0, 2, 5, 7, 10, 12, 14, 17, 19, 22];      // Egyptian (suspended) pentatonic: 1 2 4 5 b7
 let AC = null, verb = null;
 function audio() {
   if (AC) return AC;
   const Ctor = window.AudioContext || window.webkitAudioContext; if (!Ctor) return null;
   AC = new Ctor();
-  const len = Math.floor(AC.sampleRate * 1.8), buf = AC.createBuffer(2, len, AC.sampleRate);
-  for (let ch = 0; ch < 2; ch++) { const d = buf.getChannelData(ch); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3.2); }
+  const len = Math.floor(AC.sampleRate * 3.2), buf = AC.createBuffer(2, len, AC.sampleRate);
+  for (let ch = 0; ch < 2; ch++) { const d = buf.getChannelData(ch); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.6); }
   verb = AC.createConvolver(); verb.buffer = buf;
-  const wet = AC.createGain(); wet.gain.value = 0.42; verb.connect(wet).connect(AC.destination);
+  const wet = AC.createGain(); wet.gain.value = 0.85; verb.connect(wet).connect(AC.destination);
   return AC;
 }
 ["pointerdown", "keydown", "touchstart"].forEach((ev) => addEventListener(ev, () => { const a = audio(); if (a && a.state === "suspended") a.resume(); }, { passive: true }));
-function note(semi, { gain = 0.09, dur = 0.32, when = 0 } = {}) {
+function note(semi, { gain = 0.075, dur = 0.34, when = 0 } = {}) {
+  if (!when) pulseGem();                                // the flash happens even while sound is still locked
   if (!AC || AC.state !== "running" || !S.motion) return;
-  const t = AC.currentTime + when, f = 392 * Math.pow(2, semi / 12), g = AC.createGain();
-  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(gain, t + 0.008); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-  [["sine", 1, 1], ["triangle", 2, 0.25]].forEach(([type, mul, lv]) => { const o = AC.createOscillator(), og = AC.createGain(); o.type = type; o.frequency.value = f * mul; og.gain.value = lv; o.connect(og).connect(g); o.start(t); o.stop(t + dur + 0.05); });
-  g.connect(AC.destination); g.connect(verb);
+  const t = AC.currentTime + when, f = 392 * Math.pow(2, semi / 12), g = AC.createGain(), lp = AC.createBiquadFilter();
+  // hard attack: a 2 ms rise to an accent 1.8× the body, then the decay
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(gain * 1.8, t + 0.002); g.gain.exponentialRampToValueAtTime(gain, t + 0.035); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  // the filter opens on the attack and closes with the note, so the square stays bright but not harsh
+  lp.type = "lowpass"; lp.Q.value = 2.5; lp.frequency.setValueAtTime(Math.min(9000, f * 9), t); lp.frequency.exponentialRampToValueAtTime(f * 2.2, t + dur);
+  [["square", 1, 0.8], ["square", 2.003, 0.12]].forEach(([type, mul, lv]) => { const o = AC.createOscillator(), og = AC.createGain(); o.type = type; o.frequency.value = f * mul; og.gain.value = lv; o.connect(og).connect(lp); o.start(t); o.stop(t + dur + 0.05); });
+  lp.connect(g); g.connect(AC.destination); g.connect(verb);
+}
+// the crystal of the mark flashes with every tone: on the knob and on the small marks in the page
+let gemT = 0;
+function pulseGem() {
+  if (knob) { knob.snap({ gem: 1 }); knob.set({ gem: 0 }); }
+  document.body.classList.remove("tone"); void document.body.offsetWidth; document.body.classList.add("tone"); clearTimeout(gemT); gemT = setTimeout(() => document.body.classList.remove("tone"), 700);
 }
 const stationNote = (i) => SCALE[i % SCALE.length];
 function setGate(i, turn = gateIdle > 2) {
@@ -660,7 +670,7 @@ function frame(now) {
   if (knob) { knobT = S.entered ? knobT + dt : 0; if (knobT < 1.4) knob.frame(dt); }
   const k = 1 - Math.pow(0.001, dt);           // framerate-independent smoothing
   if (S.motion && !S.caseOpen) S.time += dt;
-  S.p = S.motion ? mix(S.p, S.pT, clamp(k * (S.entered ? 0.75 : 0.3), 0, 1)) : S.pT;
+  S.p = S.motion ? mix(S.p, S.pT, clamp(k * (S.entered ? 0.75 : 0.07), 0, 1)) : S.pT;
   S.focusT = S.entered ? 1 : S.gateNear * 0.28;
   S.focus = mix(S.focus, S.focusT, clamp(k * (S.entered ? 0.32 : 0.6), 0, 1));
   S.catT = S.motion ? mix(S.catT, S.cat >= 0 ? 1 : 0, clamp(k * 0.45, 0, 1)) : (S.cat >= 0 ? 1 : 0);
