@@ -153,7 +153,7 @@ void main(){
     float wall = clamp(-bl * .9 + bu * .9, -1., 1.) * flat_;
     vec3 groove = face * .1 + vec3(.9, .95, 1.) * max(wall, 0.) * .9 + face * max(-wall, 0.) * .05;
     col = mix(mix(edgeEnv * 1.15, face, flat_), groove, engr);
-    col += GREEN * m.g * flat_ * (1.1 + uGlow * 1.6 + uHover * .6);                  // painted green square
+    col += GREEN * m.g * flat_ * (1.7 + uGlow * 1.4 + uHover * .6);                  // painted green square
     col += GREEN * arc * .35 * (1. - flat_) * (.6 + uGlow);                          // chamfer picks up the channel light
     col *= 1. + uHover * .12;
   } else if (id > .5 && id < 1.5){
@@ -180,7 +180,7 @@ void main(){
   fragColor = vec4(col, 1.);
 }`;
 
-function buildMask(size = 1024) {
+function buildMask(size = 1024, label = "") {
   const cv = document.createElement("canvas"); cv.width = cv.height = size;
   const g = cv.getContext("2d");
   const draw = (ctx, withSquare) => {
@@ -208,6 +208,15 @@ function buildMask(size = 1024) {
   const sq = document.createElement("canvas"); sq.width = sq.height = size; const sc = sq.getContext("2d");
   sc.fillStyle = "#000"; sc.fillRect(0, 0, size, size); sc.fillStyle = "#fff";
   { const s = size * 0.0108; sc.fillRect(size / 2 - 16 * s + 26 * s, size * 0.405 - 16 * s + 26 * s, 6 * s, 6 * s); }
+  if (label) {   // "Press to enter", engraved and filled with green paint under the wordmark
+    let fs = size * 0.05; const txt = label.toUpperCase(), sp = 0.28;
+    const width = (f) => { sc.font = `500 ${f}px "IBM Plex Mono", ui-monospace, monospace`; return [...txt].reduce((w, ch) => w + sc.measureText(ch).width + f * sp, -f * sp); };
+    while (width(fs) > size * 0.66 && fs > 8) fs *= 0.95;
+    let x = size / 2 - width(fs) / 2; const y = size * 0.815;
+    sc.textBaseline = "alphabetic";
+    ac.font = sc.font; ac.fillStyle = "#fff";
+    for (const ch of txt) { sc.fillText(ch, x, y); ac.fillText(ch, x, y); x += sc.measureText(ch).width + fs * sp; }
+  }
   const bl = document.createElement("canvas"); bl.width = bl.height = size; const bc = bl.getContext("2d");
   bc.filter = `blur(${size * 0.0035}px)`; bc.drawImage(a, 0, 0);
   const A = ac.getImageData(0, 0, size, size).data, S = sc.getImageData(0, 0, size, size).data, B = bc.getImageData(0, 0, size, size).data;
@@ -217,7 +226,7 @@ function buildMask(size = 1024) {
   return cv;
 }
 
-export function createKnob(canvas, { motion = true } = {}) {
+export function createKnob(canvas, { motion = true, label = "" } = {}) {
   const gl = canvas.getContext("webgl2", { alpha: true, premultipliedAlpha: true, antialias: false });
   if (!gl) return null;
   const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; };
@@ -228,23 +237,24 @@ export function createKnob(canvas, { motion = true } = {}) {
   const vb = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, vb); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
   const loc = gl.getAttribLocation(pr, "aP"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
   const tex = gl.createTexture();
-  const upload = () => { gl.bindTexture(gl.TEXTURE_2D, tex); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, buildMask()); gl.generateMipmap(gl.TEXTURE_2D);
+  const upload = () => { gl.bindTexture(gl.TEXTURE_2D, tex); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, buildMask(1024, label)); gl.generateMipmap(gl.TEXTURE_2D);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR); dirty = true; };
   let dirty = true;
   upload();
-  if (document.fonts) document.fonts.load('700 100px "Space Grotesk"').then(upload).catch(() => {});
+  if (document.fonts) Promise.all([document.fonts.load('700 100px "Space Grotesk"'), document.fonts.load('500 40px "IBM Plex Mono"')]).then(upload).catch(() => {});
 
   const K = { angle: 0, tiltX: 0, tiltY: 0, hover: 0, press: 0, glow: 0, lx: 0, ly: 0 };
   const T = { ...K, tiltY: 0.06 };
   Object.assign(K, { tiltY: 0.06 });
   let alive = true, time = 0;
   const resize = () => {
-    const d = Math.min(devicePixelRatio || 1, 2), w = Math.min(520, Math.round(canvas.clientWidth * d));
+    const d = Math.min(devicePixelRatio || 1, 1.5), w = Math.min(1200, Math.round(canvas.clientWidth * d));
     if (canvas.width !== w) { canvas.width = canvas.height = w; dirty = true; }
   };
   const ease = (k, rate, dt) => { const d = T[k] - K[k]; if (Math.abs(d) < 1e-4) { K[k] = T[k]; return false; } K[k] += d * (1 - Math.exp(-rate * dt)); return true; };
   return {
     set(o) { Object.assign(T, o); dirty = true; },
+    setLabel(l) { if (l !== label) { label = l; upload(); } },
     snap(o) { Object.assign(T, o); Object.assign(K, o); dirty = true; },
     frame(dt) {
       if (!alive) return;

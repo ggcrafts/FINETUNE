@@ -188,7 +188,7 @@ const gatePrev = $("#gatePrev"); let gateIdx = -1, gateAng = 0, gateIdle = 0, ga
 // the knob in the centre of the gate (knob.js): turns to the discipline under the cursor,
 // tilts toward the pointer, lights up on hover and presses in on click
 let knob = null, knobT = 0;
-try { knob = createKnob($("#knob"), { motion: S.motion }); } catch (err) { console.warn("[FineTune] knob:", err); }
+try { knob = createKnob($("#knob"), { motion: S.motion, label: "Press to enter" }); } catch (err) { console.warn("[FineTune] knob:", err); }
 if (!knob) document.documentElement.classList.add("no-knob");
 GATE.forEach((g) => {
   const vid = /\.(webm|mp4)$/.test(g.src), el = document.createElement(vid ? "video" : "img");
@@ -963,7 +963,7 @@ addEventListener("pointermove", (e) => {
     const deg = (((Math.atan2(dy, dx) * 180) / Math.PI + 90) % 360 + 360) % 360;
     needle.style.transform = `rotate(${deg}deg)`;
     gateIdle = 0; gateAuto = 0; setGate(r > 0.34 ? Math.floor(deg / 45) % 8 : -1);
-    if (knob) { const kr = $("#knob").clientWidth / 2.6, inside = Math.hypot(dx, dy) < kr * 1.08;
+    if (knob) { const kr = $("#knob").clientWidth * .32, inside = Math.hypot(dx, dy) < kr * 1.08;
       knob.set({ tiltX: clamp(dx / innerWidth, -.5, .5) * .28, tiltY: .06 + clamp(dy / innerHeight, -.5, .5) * .22, lx: dx / innerWidth * 2, ly: dy / innerHeight * 2, hover: inside ? 1 : 0, glow: inside ? 1 : 0 }); }
     document.querySelectorAll(".ap").forEach((c, i) => (c.style.transform = `rotate(${i * 47 + S.gateNear * (60 + i * 25)}deg) scale(${1 - S.gateNear * 0.16})`));
   }
@@ -1044,6 +1044,7 @@ $("#lang").addEventListener("click", () => {
   S.lang = S.lang === "en" ? "pt" : "en"; document.documentElement.lang = S.lang === "pt" ? "pt-BR" : "en";
   document.querySelectorAll("#lang b").forEach((b) => b.classList.toggle("on", b.dataset.l === S.lang));
   document.querySelectorAll("[data-i18n]").forEach((el) => (el.textContent = (S.lang === "pt" && I18N.pt[el.dataset.i18n]) || EN[el.dataset.i18n]));
+  if (knob) knob.setLabel(S.lang === "pt" ? I18N.pt.gateCta : "Press to enter");
   setMotionLabel(); buildRows(); buildProcess(); if (S.active >= 0) onActive(S.active); if (S.caseOpen) openCase(caseIdx); S.capKey = ""; if (S.cat >= 0) $("#catName").textContent = L() === "pt" ? CATS[S.cat].nameP : CATS[S.cat].name;
 });
 const setMotionLabel = () => { $("#motionLbl").textContent = S.lang === "pt" ? (S.motion ? "Movimento on" : "Movimento off") : S.motion ? "Motion on" : "Motion off"; $("#motion").setAttribute("aria-pressed", S.motion); };
