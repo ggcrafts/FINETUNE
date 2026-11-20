@@ -104,6 +104,10 @@ body:not(.is-gate) .gate::before{opacity:0}
 .gate__ring .ap{fill:none;stroke:rgba(233,240,244,.16);stroke-width:1;transition:transform 1.2s var(--ease)}
 .gate__sub{align-self:center;transform:translateY(calc(var(--gw)*.5 + clamp(96px,14vh,150px)));display:grid;justify-items:center;gap:8px;font:400 .625rem var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
 .gate__sub i{font-style:normal}.gate__more{color:var(--mist);opacity:.75;margin-top:6px;animation:pulse 3.2s ease-in-out infinite}
+/* each new station makes the wordmark and the readout blink once, pointing at the button */
+.gate.blink .logo--gate .logo__word{animation:ftBlink .5s ease-out}
+.gate.blink #gateDisc{animation:ftBlink .5s ease-out}
+@keyframes ftBlink{0%{opacity:.35;text-shadow:0 0 18px var(--led)}35%{opacity:1;text-shadow:0 0 22px var(--led)}100%{opacity:1;text-shadow:0 0 0 transparent}}
 /* retuning: a blink of static on the preview and the ring labels */
 .gate.tuning .gate__prev>.on{filter:saturate(.4) contrast(1.5) blur(5px)}
 .gate.tuning .gate__ring text{opacity:.55}

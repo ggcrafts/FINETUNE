@@ -196,7 +196,31 @@ GATE.forEach((g) => {
   if (vid) { el.muted = true; el.loop = true; el.playsInline = true; el.preload = "none"; el.dataset.src = g.src; } else { el.loading = "lazy"; el.alt = ""; if (g.src) el.src = g.src; }
   gatePrev.appendChild(el); g.el = el;
 });
-let tuneT = 0;
+let tuneT = 0, quietTune = false;
+/* ── tuning notes: one short pentatonic tone per station, with a small synthetic reverb ──
+   Browsers only allow sound after a first click / tap / key press, so the dial is silent until
+   then. Sound follows the Motion toggle (Motion off = silent). */
+const SCALE = [0, 2, 4, 7, 9, 12, 14, 16, 19, 21];       // C major pentatonic, in semitones
+let AC = null, verb = null;
+function audio() {
+  if (AC) return AC;
+  const Ctor = window.AudioContext || window.webkitAudioContext; if (!Ctor) return null;
+  AC = new Ctor();
+  const len = Math.floor(AC.sampleRate * 1.8), buf = AC.createBuffer(2, len, AC.sampleRate);
+  for (let ch = 0; ch < 2; ch++) { const d = buf.getChannelData(ch); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3.2); }
+  verb = AC.createConvolver(); verb.buffer = buf;
+  const wet = AC.createGain(); wet.gain.value = 0.42; verb.connect(wet).connect(AC.destination);
+  return AC;
+}
+["pointerdown", "keydown", "touchstart"].forEach((ev) => addEventListener(ev, () => { const a = audio(); if (a && a.state === "suspended") a.resume(); }, { passive: true }));
+function note(semi, { gain = 0.09, dur = 0.32, when = 0 } = {}) {
+  if (!AC || AC.state !== "running" || !S.motion) return;
+  const t = AC.currentTime + when, f = 392 * Math.pow(2, semi / 12), g = AC.createGain();
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(gain, t + 0.008); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  [["sine", 1, 1], ["triangle", 2, 0.25]].forEach(([type, mul, lv]) => { const o = AC.createOscillator(), og = AC.createGain(); o.type = type; o.frequency.value = f * mul; og.gain.value = lv; o.connect(og).connect(g); o.start(t); o.stop(t + dur + 0.05); });
+  g.connect(AC.destination); g.connect(verb);
+}
+const stationNote = (i) => SCALE[i % SCALE.length];
 function setGate(i, turn = gateIdle > 2) {
   if (i === gateIdx || i < 0) return; gateIdx = i;
   GATE.forEach((g, k) => { const on = k === i; g.el.classList.toggle("on", on);
@@ -206,7 +230,10 @@ function setGate(i, turn = gateIdle > 2) {
   const g = GATE[i], pt = S.lang === "pt", w = g.count === 1 ? (pt ? "trabalho" : "work") : (pt ? "trabalhos" : "works");
   $("#gateDisc").textContent = `CH ${String(i + 1).padStart(2, "0")} — ${pt ? g.nP : g.n} · ${g.count} ${w}`;
   // a moment of static while the dial settles on the new station
-  const gt = $("#gate"); gt.classList.add("tuning"); clearTimeout(tuneT); tuneT = setTimeout(() => gt.classList.remove("tuning"), 420);
+  if (!quietTune && !S.entered && gateIdle < 2.4) note(stationNote(i));
+  if (knob && !quietTune) { knob.snap({ glow: 1, hover: 0.8 }); knob.set({ glow: 0, hover: 0 }); }     // the button blinks: "press me"
+  const gt = $("#gate"); gt.classList.remove("blink"); void gt.offsetWidth; gt.classList.add("blink");
+  gt.classList.add("tuning"); clearTimeout(tuneT); tuneT = setTimeout(() => gt.classList.remove("tuning"), 420);
   let target = (i + 0.5) * SEC; while (target - gateAng > 180) target -= 360; while (target - gateAng < -180) target += 360;   // shortest way round
   gateAng = target; gatePrev.style.setProperty("--ang", gateAng + "deg");
   if (knob) { const [lr, lg, lb] = rgb01(g.led); knob.set(turn ? { angle: -((i + 0.5) * SEC) * Math.PI / 180, lr, lg, lb } : { lr, lg, lb }); }
@@ -960,10 +987,20 @@ const gate = $("#gate"), needle = $("#needle");
 const knobHit = (e) => Math.hypot(e.clientX - innerWidth / 2, e.clientY - innerHeight / 2) < $("#knob").clientWidth * 0.33;
 const stationAt = (e) => { const deg = (((Math.atan2(e.clientY - innerHeight / 2, e.clientX - innerWidth / 2) * 180) / Math.PI + 90) % 360 + 360) % 360; return Math.floor(deg / SEC) % GATE.length; };
 function enter() {                                     // press: tune in to the station under the index
-  if (S.cat >= 0) return; if (knob) knob.set({ press: 1, glow: 1 }); openCat(Math.max(0, gateIdx));
+  if (S.cat >= 0) return; if (knob) knob.set({ press: 1, glow: 1 });
+  const s = stationNote(Math.max(0, gateIdx)); note(s - 12, { gain: 0.08, dur: 0.7 }); note(s + 7, { gain: 0.05, dur: 0.6, when: 0.07 });
+  openCat(Math.max(0, gateIdx));
 }
-// a press on the knob enters; a tap anywhere else on the dial (touch) tunes to that station
-gate.addEventListener("click", (e) => { if (e.detail === 0 || knobHit(e) || !$("#knob").clientWidth) enter(); else { gateIdle = 0; gateAuto = 0; setGate(stationAt(e), true); } });
+// a press anywhere on the dial enters the station it is tuned to
+// (on touch there is no hover, so a tap on another station's side of the dial tunes to it first)
+gate.addEventListener("click", (e) => { if (e.detail === 0 || knobHit(e) || !$("#knob").clientWidth || stationAt(e) === gateIdx) enter(); else { gateIdle = 0; gateAuto = 0; setGate(stationAt(e), true); } });
+// inside a category: a click on empty space returns to the dial; a click beside the centre slide moves to that neighbour
+document.addEventListener("click", (e) => {
+  if (S.cat < 0 || S.caseOpen || S.catT < 0.6 || hit.dataset.dragged || e.target.closest("button,a,.catui,.cap,.hdr,.dock,.case")) return;
+  const r = hit.getBoundingClientRect();
+  if (e.clientY > r.top && e.clientY < r.bottom && r.width) { slideTo(Math.round(S.slideT) + (e.clientX > r.right ? 1 : -1)); return; }
+  note(stationNote(S.cat) - 12, { gain: 0.05, dur: 0.4 }); closeCat();
+});
 gate.addEventListener("pointerdown", (e) => knob && knobHit(e) && knob.set({ press: 1 }));
 gate.addEventListener("pointerleave", () => knob && !S.entered && knob.set({ press: 0, hover: 0, glow: 0 }));
 addEventListener("pointermove", (e) => {
@@ -1058,7 +1095,7 @@ $("#lang").addEventListener("click", () => {
   document.querySelectorAll("#lang b").forEach((b) => b.classList.toggle("on", b.dataset.l === S.lang));
   document.querySelectorAll("[data-i18n]").forEach((el) => (el.textContent = (S.lang === "pt" && I18N.pt[el.dataset.i18n]) || EN[el.dataset.i18n]));
   if (knob) knob.setLabel(S.lang === "pt" ? I18N.pt.gateCta : "Press to enter");
-  buildRing(); { const g = Math.max(0, gateIdx); gateIdx = -2; setGate(g, false); }
+  buildRing(); { const g = Math.max(0, gateIdx); gateIdx = -2; quietTune = true; setGate(g, false); quietTune = false; }
   setMotionLabel(); buildRows(); buildProcess(); if (S.active >= 0) onActive(S.active); if (S.caseOpen) openCase(caseIdx); S.capKey = ""; if (S.cat >= 0) $("#catName").textContent = L() === "pt" ? CATS[S.cat].nameP : CATS[S.cat].name;
 });
 const setMotionLabel = () => { $("#motionLbl").textContent = S.lang === "pt" ? (S.motion ? "Movimento on" : "Movimento off") : S.motion ? "Motion on" : "Motion off"; $("#motion").setAttribute("aria-pressed", S.motion); };
@@ -1098,5 +1135,5 @@ if (qCase) { const k = PROJECTS.findIndex((p) => p.slug === qCase); if (k >= 0) 
 else if (qCat) { const k = CATS.findIndex((c) => c.id === qCat); if (k >= 0) { openCat(k); S.p = S.pT = k + 1; } }
 else if (qAt && document.getElementById(qAt)) { const el = document.getElementById(qAt); scrollTo(0, el.offsetTop + (qAt === "about" ? 0 : innerHeight * 0.25)); readScroll(); }
 window.__ft = { S, goTo, enter, openCat, closeCat, slideTo, showJob, waves };
-setGate(0, true);
+quietTune = true; setGate(0, true); quietTune = false;
 requestAnimationFrame(frame);
