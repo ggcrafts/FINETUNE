@@ -567,3 +567,20 @@ body:not(.show-process) .process{display:none}
 /* the ring label of the station the dial snaps to grows and takes the LED colour */
 .lite .gate__ring text{transition:font-size .35s var(--ease),fill .35s}
 .lite .gate__ring text.on{font-size:15px;fill:var(--led)}
+
+/* ── phones, dial v3 ── bigger knob (its transparent canvas margin may leave the screen), sharp still render */
+@media (max-width:600px){
+  .gate.gate{--gw:min(100vw,46vh);padding-bottom:29vh}
+  .gate__prev{inset:0}
+}
+@media (max-width:600px) and (max-height:720px){
+  .gate.gate{--gw:min(96vw,38vh);padding-bottom:30vh}
+}
+.lite .gate__knob canvas.snap{animation:ftSnap .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes ftSnap{0%{transform:rotate(-9deg)}60%{transform:rotate(1.5deg)}100%{transform:rotate(0)}}
+/* the preview fills the whole screen behind the dial instead of a thin wedge, so the clip is not cropped */
+.lite .gate__prev{-webkit-mask-image:linear-gradient(180deg,transparent 4%,#000 20%,#000 70%,transparent 90%);mask-image:linear-gradient(180deg,transparent 4%,#000 20%,#000 70%,transparent 90%);-webkit-mask-composite:source-over;mask-composite:add}
+.lite .gate__prev.on{opacity:.3}
+.lite .gate.tuning .gate__prev>.on{filter:none}
+.lite .stations button{padding:22px 10px}
+@media (max-height:720px){.lite .stations button{padding:14px 8px}}

@@ -739,8 +739,9 @@ function frame(now) {
   updateRail();
   const plateOn = false;                                 // the mutable "form" word is retired                            // the "form" word now lives in About
   if (plateOn && !S.caseOpen) { tickForm(dt); if (S.motion) tickAccent(dt); }
-  if (!S.entered && S.motion) { gateIdle += dt; if (gateIdle > 2.4) { gateAuto += dt; if (gateAuto > (LITE ? 2.2 : 2.6) || gateIdx < 0) { gateAuto = 0; setGate((gateIdx + 1) % GATE.length, true); if (LITE && knob) { const ang = -((gateIdx + 0.5) * SEC) * Math.PI / 180; knob.set({ angle: ang - 0.16 }); setTimeout(() => knob.set({ angle: ang }), 190); pulseGem(); }   /* phones: a small overshoot, then the snap */ } } }
+  if (!S.entered && S.motion) { gateIdle += dt; if (gateIdle > 2.4) { gateAuto += dt; if (gateAuto > (LITE ? 2.2 : 2.6) || gateIdx < 0) { gateAuto = 0; setGate((gateIdx + 1) % GATE.length, true); if (LITE) { const cv = $("#knob"); cv.classList.remove("snap"); void cv.offsetWidth; cv.classList.add("snap"); }   /* phones: the snap is a CSS turn of the still knob */ } } }
   if (!gl || !R) return;
+  if (LITE && !S.entered && ((frame.n = (frame.n || 0) + 1) & 1)) return;   // phones, at the dial: the galaxy runs at half rate
 
   /* ── draw ── */
   gl.disable(gl.DEPTH_TEST); gl.disable(gl.BLEND);

@@ -298,10 +298,9 @@ function buildMask(size = 1024) {
   return cv;
 }
 
-// lite (phones): fewer raymarch steps, no ambient-occlusion taps, 1× resolution, and no idle
-// redraw — the knob is drawn once per change and then sits as a still image.
+// lite (phones): the knob is drawn once per change at high resolution and then sits as a still image.
 export function createKnob(canvas, { motion = true, label = "", lite = false } = {}) {
-  const FSQ = FS.replace("precision highp float;", `precision highp float;\n#define STEPS ${lite ? 52 : 80}\n#define AO(p, n) ${lite ? "1." : "ao(p, n)"}`);
+  const FSQ = FS.replace("precision highp float;", `precision highp float;\n#define STEPS 80\n#define AO(p, n) ao(p, n)`);
   const gl = canvas.getContext("webgl2", { alpha: true, premultipliedAlpha: true, antialias: false });
   if (!gl) return null;
   const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; };
@@ -327,7 +326,7 @@ export function createKnob(canvas, { motion = true, label = "", lite = false } =
   Object.assign(K, { tiltY: 0.06 });
   let alive = true, time = 0, idle = 0;
   const resize = () => {
-    const d = lite ? 1 : Math.min(devicePixelRatio || 1, 1.5), w = Math.min(lite ? 520 : 1200, Math.round(canvas.clientWidth * d));
+    const d = lite ? Math.min(devicePixelRatio || 1, 2.5) : Math.min(devicePixelRatio || 1, 1.5), w = Math.min(lite ? 1100 : 1200, Math.round(canvas.clientWidth * d));
     if (canvas.width !== w) { canvas.width = canvas.height = w; dirty = true; }
   };
   const ease = (k, rate, dt) => { const d = T[k] - K[k]; if (Math.abs(d) < 1e-4) { K[k] = T[k]; return false; } K[k] += d * (1 - Math.exp(-rate * dt)); return true; };
@@ -338,6 +337,9 @@ export function createKnob(canvas, { motion = true, label = "", lite = false } =
     frame(dt) {
       if (!alive) return;
       resize(); time += dt;
+      // lite (phones): no animation frames at all — every change is drawn once, at full sharpness, and the
+      // canvas then sits as a still picture (the "snap" motion is a cheap CSS rotation of that picture)
+      if (lite) { if (!dirty) return; Object.assign(K, T); K.lag = K.angle; K.gem = 0; }
       let moving = false;
       // angle: shortest way round
       let da = T.angle - K.angle; da = Math.atan2(Math.sin(da), Math.cos(da));
