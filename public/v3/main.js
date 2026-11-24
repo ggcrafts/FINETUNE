@@ -51,7 +51,8 @@ const PROCESS = [
 // The arrays above are the fallback when content.json is missing. `?draft` (the editor's live
 // preview) reads the unsaved draft from localStorage instead of the file.
 const QS = new URLSearchParams(location.search);
-const tx = (v, lang) => (v == null ? "" : typeof v === "string" ? v : v[lang] || v.en || "");
+// a field filled in only one language shows that language in the other one too (never a blank label)
+const tx = (v, lang) => (v == null ? "" : typeof v === "string" ? v.trim() : ((v[lang] || "").trim() || (v.en || "").trim() || (v.pt || "").trim()));
 const hex3 = (h, d) => { const m = /^#?([0-9a-f]{6})$/i.exec(h || ""); return m ? [0, 2, 4].map((i) => parseInt(m[1].slice(i, i + 2), 16) / 255) : d; };
 let CONTENT = null;
 if (QS.has("draft")) { try { CONTENT = JSON.parse(localStorage.getItem("portfolio-update:draft")); } catch { CONTENT = null; } }

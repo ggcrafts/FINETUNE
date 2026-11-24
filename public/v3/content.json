@@ -1,6 +1,6 @@
 {
   "format": "finetune-portfolio/1",
-  "updated": "2026-11-24T00:43:34.627Z",
+  "updated": "2026-11-24T00:49:24.923Z",
   "hero": {
     "eyebrow": {
       "en": "Senior Motion Designer · Art Director · Creative Technologist",
@@ -156,6 +156,57 @@
         "url": "https://www.behance.net/gallery/195282279/Bravecto-Experience-Direcao-de-projeto"
       },
       "imported": "https://finetunemotion.myportfolio.com/bravecto-experience-direcao-de-projeto"
+    },
+    {
+      "id": "craneleap",
+      "title": " Crane Craze - MagicLeap Game",
+      "client": "MagicLeap",
+      "year": "2018",
+      "disciplines": "3D - Video Production",
+      "tint": "#ffd500",
+      "context": {
+        "en": "",
+        "pt": ""
+      },
+      "categories": [
+        "motion-design",
+        "3d-vfx"
+      ],
+      "tools": [
+        "after-effects",
+        "premiere",
+        "blender",
+        "unity"
+      ],
+      "cover": "media/craneleap/vv2.webp",
+      "video": "https://www.youtube.com/watch?v=I-PuuvlGF_I",
+      "gallery": [
+        "media/craneleap/cc.webp"
+      ],
+      "challenge": {
+        "en": "",
+        "pt": ""
+      },
+      "idea": {
+        "en": "",
+        "pt": ""
+      },
+      "execution": {
+        "en": "Turning game assets into motion graphics",
+        "pt": "Produção audiovisual para o jogo desenvolvido para a plataforma MagicLeap2 "
+      },
+      "outcome": {
+        "en": "",
+        "pt": ""
+      },
+      "role": "Art Direction - Scripting - Film - 3D VFX - Composition - Post Production",
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": ""
+      }
     },
     {
       "id": "implanta-it-solution-explainer-video",
@@ -364,6 +415,53 @@
         "url": "https://www.behance.net/gallery/144381729/Paralax-animation-for-Mobile-game-Cleopatra"
       },
       "imported": "https://finetunemotion.myportfolio.com/paralax-animation-for-mobile-game-cleopatra"
+    },
+    {
+      "id": "cooldown-animation-test-non-official",
+      "title": "CoolDown - Animation test (non-official)",
+      "client": "Cooldown",
+      "year": "",
+      "disciplines": "Motion Design · 3D · Study",
+      "tint": "#8fd8ff",
+      "context": {
+        "en": "Non-official animation test made as a study.",
+        "pt": "Teste de animação não oficial, feito como estudo."
+      },
+      "categories": [
+        "motion-design"
+      ],
+      "tools": [
+        "after-effects",
+        "blender"
+      ],
+      "cover": "media/cooldown-animation-test-non-official/00-afc8cf98eda17ff99c8e7106f478a568f75685e01d4c7774dc2042055.webp",
+      "video": "https://player.vimeo.com/video/235693169?autoplay=1&loop=1&muted=1",
+      "gallery": [],
+      "challenge": {
+        "en": "Explore 3D inside After Effects using a real brand as reference.",
+        "pt": "Explorar 3D dentro do After Effects usando uma marca real como referência."
+      },
+      "idea": {
+        "en": "Treat it as a spot-style study: product, logo and motion in a short piece.",
+        "pt": "Tratar como um estudo em formato de spot: produto, logo e movimento numa peça curta."
+      },
+      "execution": {
+        "en": "Animation in After Effects with Element 3D.",
+        "pt": "Animação em After Effects com Element 3D."
+      },
+      "outcome": {
+        "en": "A self-initiated study of 3D-in-After-Effects workflows — not an official piece for the brand.",
+        "pt": "Um estudo autoral do fluxo de 3D no After Effects — não é uma peça oficial da marca."
+      },
+      "role": "Animation · 3D",
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": ""
+      },
+      "imported": "https://finetunemotion.myportfolio.com/cooldown-animation-test-non-official"
     },
     {
       "id": "true-riches",
@@ -1057,53 +1155,6 @@
       "imported": "https://finetunemotion.myportfolio.com/do-re-mundo-animacao-infantil"
     },
     {
-      "id": "cooldown-animation-test-non-official",
-      "title": "CoolDown - Animation test (non-official)",
-      "client": "Cooldown",
-      "year": "",
-      "disciplines": "Motion Design · 3D · Study",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "Non-official animation test made as a study.",
-        "pt": "Teste de animação não oficial, feito como estudo."
-      },
-      "categories": [
-        "motion-design"
-      ],
-      "tools": [
-        "after-effects",
-        "blender"
-      ],
-      "cover": "media/cooldown-animation-test-non-official/00-afc8cf98eda17ff99c8e7106f478a568f75685e01d4c7774dc2042055.webp",
-      "video": "https://player.vimeo.com/video/235693169?autoplay=1&loop=1&muted=1",
-      "gallery": [],
-      "challenge": {
-        "en": "Explore 3D inside After Effects using a real brand as reference.",
-        "pt": "Explorar 3D dentro do After Effects usando uma marca real como referência."
-      },
-      "idea": {
-        "en": "Treat it as a spot-style study: product, logo and motion in a short piece.",
-        "pt": "Tratar como um estudo em formato de spot: produto, logo e movimento numa peça curta."
-      },
-      "execution": {
-        "en": "Animation in After Effects with Element 3D.",
-        "pt": "Animação em After Effects com Element 3D."
-      },
-      "outcome": {
-        "en": "A self-initiated study of 3D-in-After-Effects workflows — not an official piece for the brand.",
-        "pt": "Um estudo autoral do fluxo de 3D no After Effects — não é uma peça oficial da marca."
-      },
-      "role": "Animation · 3D",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      },
-      "imported": "https://finetunemotion.myportfolio.com/cooldown-animation-test-non-official"
-    },
-    {
       "id": "yes-idiomas-matriculas-2018",
       "title": "YES! Idiomas - Matrículas 2018",
       "client": "",
@@ -1336,57 +1387,6 @@
       },
       "hidden": true,
       "imported": "https://finetunemotion.myportfolio.com/comfrio-3d-architecture"
-    },
-    {
-      "id": "craneleap",
-      "title": " Crane Craze - MagicLeap Game",
-      "client": "MagicLeap",
-      "year": "2018",
-      "disciplines": "3D - Video Production",
-      "tint": "#ffd500",
-      "context": {
-        "en": "",
-        "pt": ""
-      },
-      "categories": [
-        "motion-design",
-        "3d-vfx"
-      ],
-      "tools": [
-        "after-effects",
-        "premiere",
-        "blender",
-        "unity"
-      ],
-      "cover": "media/craneleap/vv2.webp",
-      "video": "https://www.youtube.com/watch?v=I-PuuvlGF_I",
-      "gallery": [
-        "media/craneleap/cc.webp"
-      ],
-      "challenge": {
-        "en": "",
-        "pt": ""
-      },
-      "idea": {
-        "en": "",
-        "pt": ""
-      },
-      "execution": {
-        "en": "Turning game assets into motion graphics",
-        "pt": "Produção audiovisual para o jogo desenvolvido para a plataforma MagicLeap2 "
-      },
-      "outcome": {
-        "en": "",
-        "pt": ""
-      },
-      "role": "Art Direction - Scripting - Film - 3D VFX - Composition - Post Production",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      }
     }
   ],
   "practices": [
