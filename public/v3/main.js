@@ -141,7 +141,7 @@ const I18N = {
     idRole: "Senior Motion Designer · Diretor de Arte · Creative Technologist",
     idBio: "12+ anos em animação, 3D, VFX e experiências imersivas — hoje combinados com workflows assistidos por IA, código e automação.",
     idF1: "Experiência", idF1v: "12+ anos", idF2: "Base", idF2v: "Curitiba, Brasil", idF3: "Atuação", idF3v: "Remoto · Internacional", idCta: "Entrar em contato",
-    featured: "Observado", gateRole: "Luiz Gustavo Czaika", gateCta: "Pressione para entrar", gateArc: "Portfólio · Seleção de trabalhos",
+    featured: "Observado", gateRole: "Luiz Gustavo Czaika", gateCta: "Pressione para entrar", gateArc: "Motion Design · Trabalhos selecionados",
     eyebrow: "Senior Motion Designer · Diretor de Arte · Creative Technologist",
     lead: "Sistemas visuais onde motion, 3D, VFX, IA e tecnologia criativa convergem.", hint: "Role para observar", open: "Abrir case",
     nextTitle: "O caminho de luz continua.",

@@ -1,6 +1,6 @@
 {
   "format": "finetune-portfolio/1",
-  "updated": "2026-11-24T00:54:22.541Z",
+  "updated": "2026-11-24T01:08:43.875Z",
   "hero": {
     "eyebrow": {
       "en": "Senior Motion Designer · Art Director · Creative Technologist",
@@ -98,115 +98,184 @@
       "imported": "https://finetunemotion.myportfolio.com/reel-2017-2018"
     },
     {
-      "id": "bravecto",
-      "title": "Bravecto Experience",
+      "id": "yes",
+      "title": "YES! — Diga Sim ao Mundo",
       "client": "",
       "year": "",
-      "disciplines": "Art Direction · 3D · Immersive",
-      "tint": "#ffb35c",
+      "disciplines": "Motion Design · VFX · Storytelling",
+      "tint": "#6bd6ff",
       "context": {
-        "en": "Art direction and 3D for an immersive brand experience.",
-        "pt": "Direção de arte e 3D para uma experiência de marca imersiva."
+        "en": "Motion design and VFX carrying a language-school campaign.",
+        "pt": "Motion design e VFX construindo a história de uma campanha."
       },
       "categories": [
-        "3d-vfx",
-        "art-direction"
+        "motion-design"
       ],
-      "tools": [
-        "after-effects",
-        "blender",
-        "photoshop",
-        "illustrator",
-        "elevenlabs",
-        "threejs"
-      ],
-      "cover": "media/bravecto/layer-3-3.webp",
-      "video": "https://www.youtube.com/embed/ccLV2Llamr4",
-      "gallery": [
-        "media/bravecto/layer-3.webp",
-        "media/bravecto/layer-1.webp",
-        "media/bravecto/02-3784ad5d-f1e6-4156-9cc1-2c30fc5512c0-rw-1200.webp",
-        "media/bravecto/01-c6e0ffa6-bdf5-4bde-914e-0ef67cd264ce-rw-1920.webp",
-        "media/bravecto/03-87068639-c6ae-4b47-8163-15dbd2a290a3-rw-1920.webp",
-        "media/bravecto/04-fd332715-f933-44ba-8033-051c572e159a-rw-1920.webp",
-        "covers/bravecto.webp"
-      ],
+      "tools": [],
+      "cover": "covers/yes.webp",
+      "video": "https://www.youtube.com/embed/Cbct1o5f7RA",
+      "gallery": [],
       "challenge": {
-        "en": "Make an animal-health brand feel tangible and memorable in an immersive format.",
-        "pt": "Tornar uma marca de saúde animal tangível e memorável num formato imersivo."
+        "en": "Create an energetic signature for a language school that speaks to a young audience.",
+        "pt": "Criar uma assinatura enérgica para uma escola de idiomas que fale com o público jovem."
       },
       "idea": {
-        "en": "Build a 3D world around the product so the audience experiences its benefits instead of reading about them.",
-        "pt": "Construir um mundo 3D em volta do produto para o público vivenciar seus benefícios, em vez de ler sobre eles."
+        "en": "'Say yes to the world': open every shot outward, with motion and VFX turning YES into a gesture.",
+        "pt": "'Diga sim ao mundo': abrir cada plano para fora, com motion e VFX transformando o YES num gesto."
       },
       "execution": {
-        "en": "Art direction of the 3D world, modeling, lighting and animation with a small team of storyboard, 3D and audio partners.",
-        "pt": "SB: Leandro Ricardo\n3D: Luiz Gustavo, Flavio Novi\nAudio: Jukebox\nArt director: Luiz Gustavo."
+        "en": "Motion design, VFX and compositing over live-action footage, timed to the soundtrack.",
+        "pt": "Motion design, VFX e composição sobre imagens filmadas, no ritmo da trilha."
       },
       "outcome": {
-        "en": "An immersive brand piece that tells the product story through space and motion.",
-        "pt": "Uma peça imersiva que conta a história do produto através de espaço e movimento."
+        "en": "A brand vignette with a clear, upbeat identity for the campaign.",
+        "pt": "Uma vinheta de marca com identidade clara e positiva para a campanha."
       },
-      "role": "Art direction · 3D",
+      "role": "Motion design · VFX",
       "link": {
         "label": {
           "en": "View on Behance",
           "pt": "Ver no Behance"
         },
-        "url": "https://www.behance.net/gallery/195282279/Bravecto-Experience-Direcao-de-projeto"
+        "url": "https://www.behance.net/gallery/194456335/Vinheta-YES-Idiomas-Diga-Sim-ao-Mundo-Diga-YES"
       },
-      "imported": "https://finetunemotion.myportfolio.com/bravecto-experience-direcao-de-projeto"
+      "imported": "https://finetunemotion.myportfolio.com/vinheta-yes-idiomas-diga-sim-ao-mundo-diga-yes"
     },
     {
-      "id": "craneleap",
-      "title": " Crane Craze - MagicLeap Game",
-      "client": "MagicLeap",
-      "year": "2018",
-      "disciplines": "3D - Video Production",
-      "tint": "#ffd500",
+      "id": "true-riches",
+      "title": "True Riches",
+      "client": "",
+      "year": "",
+      "disciplines": "Motion Design · Teaser",
+      "tint": "#8f9eff",
       "context": {
-        "en": "",
-        "pt": ""
+        "en": "Teaser for True Riche$ — Twe Way Service.",
+        "pt": "Teaser para True Riche$ — Twe Way Service."
       },
       "categories": [
-        "motion-design",
-        "3d-vfx"
+        "motion-design"
       ],
-      "tools": [
-        "after-effects",
-        "premiere",
-        "blender",
-        "unity"
-      ],
-      "cover": "media/craneleap/vv2.webp",
-      "video": "https://www.youtube.com/watch?v=I-PuuvlGF_I",
-      "gallery": [
-        "media/craneleap/cc.webp"
-      ],
+      "tools": [],
+      "cover": "covers/true-riches.webp",
+      "video": "https://www-ccv.adobe.io/v1/player/ccv/Dhe9K9-tdkU/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
+      "gallery": [],
       "challenge": {
-        "en": "",
-        "pt": ""
+        "en": "Build anticipation in a short piece with strong attitude.",
+        "pt": "Criar expectativa numa peça curta e com atitude."
       },
       "idea": {
-        "en": "",
-        "pt": ""
+        "en": "Reveal through rhythm: quick cuts, bold type and motion that hold back the full picture.",
+        "pt": "Revelar pelo ritmo: cortes rápidos, tipografia forte e movimento que seguram a revelação."
       },
       "execution": {
-        "en": "Turning game assets into motion graphics",
-        "pt": "Produção audiovisual para o jogo desenvolvido para a plataforma MagicLeap2 "
+        "en": "Graphic design, animation and editing synced to the track.",
+        "pt": "Design gráfico, animação e edição sincronizados com a trilha."
       },
       "outcome": {
-        "en": "",
-        "pt": ""
+        "en": "A punchy teaser for social channels.",
+        "pt": "Um teaser direto para as redes sociais."
       },
-      "role": "Art Direction - Scripting - Film - 3D VFX - Composition - Post Production",
+      "role": "Motion design · Edit",
       "link": {
         "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
+          "en": "View on Behance",
+          "pt": "Ver no Behance"
         },
-        "url": ""
-      }
+        "url": "https://www.behance.net/gallery/143962405/TRUE-RICHES-TWE-WAY-SERVICE-TEASER"
+      },
+      "imported": "https://finetunemotion.myportfolio.com/true-riche-twe-way-service-teaser"
+    },
+    {
+      "id": "conectivo",
+      "title": "Conectivo",
+      "client": "",
+      "year": "",
+      "disciplines": "Motion Design · Campaign",
+      "tint": "#db8fff",
+      "context": {
+        "en": "Enrollment campaign for Conectivo (SAE Digital).",
+        "pt": "Campanha de matrículas do Conectivo (SAE Digital)."
+      },
+      "categories": [
+        "motion-design"
+      ],
+      "tools": [],
+      "cover": "covers/conectivo.webp",
+      "video": "https://www.youtube.com/embed/Pq9saikYbZo?list=PLkZxkFmStuft17Puta8HeM1-ga659R1J9",
+      "gallery": [
+        "media/conectivo/01-8f819515-92db-4df3-9164-18331b1d1488-rw-1920.webp",
+        "https://www.youtube.com/embed/X6h-pVPNERA?list=PLkZxkFmStuft17Puta8HeM1-ga659R1J9",
+        "https://www.youtube.com/embed/FSYGlZI2XIo?list=PLkZxkFmStuft17Puta8HeM1-ga659R1J9"
+      ],
+      "challenge": {
+        "en": "Communicate an education offer clearly across several pieces and formats.",
+        "pt": "Comunicar uma oferta educacional com clareza em várias peças e formatos."
+      },
+      "idea": {
+        "en": "A modular motion system — shapes, type and color that adapt to each piece while keeping one identity.",
+        "pt": "Um sistema de motion modular: formas, tipografia e cor que se adaptam a cada peça mantendo uma só identidade."
+      },
+      "execution": {
+        "en": "Animation of the campaign pieces and their versions for different formats.",
+        "pt": "Animação das peças da campanha e das versões para formatos diferentes."
+      },
+      "outcome": {
+        "en": "A consistent set of pieces for the enrollment period.",
+        "pt": "Um conjunto consistente de peças para o período de matrículas."
+      },
+      "role": "Motion design",
+      "link": {
+        "label": {
+          "en": "View on Behance",
+          "pt": "Ver no Behance"
+        },
+        "url": "https://www.behance.net/gallery/144190393/Conectivo-Matriculas-abertas-(SAE-Digital)"
+      },
+      "imported": "https://finetunemotion.myportfolio.com/conectivo-matriculas-abertas-sae-digital"
+    },
+    {
+      "id": "cleopatra",
+      "title": "Cleopatra",
+      "client": "",
+      "year": "",
+      "disciplines": "Animation · Parallax · Game Art",
+      "tint": "#ffd180",
+      "context": {
+        "en": "Parallax animation for a Cleopatra-themed mobile game.",
+        "pt": "Animação em parallax para um jogo mobile com tema de Cleópatra."
+      },
+      "categories": [
+        "motion-design"
+      ],
+      "tools": [],
+      "cover": "covers/cleopatra.webp",
+      "video": "https://www-ccv.adobe.io/v1/player/ccv/-YHV5HvDdgD/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
+      "gallery": [],
+      "challenge": {
+        "en": "Add depth and life to flat game art within mobile constraints.",
+        "pt": "Dar profundidade e vida à arte 2D do jogo dentro das limitações do mobile."
+      },
+      "idea": {
+        "en": "Split the illustration into layers and move them at different depths, like a camera drifting through the scene.",
+        "pt": "Separar a ilustração em camadas e movê-las em profundidades diferentes, como uma câmera passeando pela cena."
+      },
+      "execution": {
+        "en": "Layer preparation, parallax camera moves, ambient animation and loops for the game and its promotion.",
+        "pt": "Preparação das camadas, movimentos de câmera em parallax, animações de ambiente e loops para o jogo e a divulgação."
+      },
+      "outcome": {
+        "en": "Animated scenes that make the game world feel deeper and more inviting.",
+        "pt": "Cenas animadas que deixam o mundo do jogo mais profundo e convidativo."
+      },
+      "role": "Animation · Parallax",
+      "link": {
+        "label": {
+          "en": "View on Behance",
+          "pt": "Ver no Behance"
+        },
+        "url": "https://www.behance.net/gallery/144381729/Paralax-animation-for-Mobile-game-Cleopatra"
+      },
+      "imported": "https://finetunemotion.myportfolio.com/paralax-animation-for-mobile-game-cleopatra"
     },
     {
       "id": "implanta-it-solution-explainer-video",
@@ -220,9 +289,7 @@
         "pt": "Vídeo explicativo apresentando as soluções de TI da Implanta numa linguagem visual clara e amigável."
       },
       "categories": [
-        "2d-animation",
-        "motion-design",
-        "art-direction"
+        "motion-design"
       ],
       "tools": [
         "after-effects",
@@ -329,275 +396,156 @@
       ]
     },
     {
-      "id": "yes",
-      "title": "YES! — Diga Sim ao Mundo",
+      "id": "bravecto",
+      "title": "Bravecto Experience",
       "client": "",
       "year": "",
-      "disciplines": "Motion Design · VFX · Storytelling",
-      "tint": "#6bd6ff",
+      "disciplines": "Art Direction · 3D · Immersive",
+      "tint": "#ffb35c",
       "context": {
-        "en": "Motion design and VFX carrying a language-school campaign.",
-        "pt": "Motion design e VFX construindo a história de uma campanha."
+        "en": "Art direction and 3D for an immersive brand experience.",
+        "pt": "Direção de arte e 3D para uma experiência de marca imersiva."
       },
       "categories": [
-        "motion-design"
-      ],
-      "tools": [],
-      "cover": "covers/yes.webp",
-      "video": "https://www.youtube.com/embed/Cbct1o5f7RA",
-      "gallery": [],
-      "challenge": {
-        "en": "Create an energetic signature for a language school that speaks to a young audience.",
-        "pt": "Criar uma assinatura enérgica para uma escola de idiomas que fale com o público jovem."
-      },
-      "idea": {
-        "en": "'Say yes to the world': open every shot outward, with motion and VFX turning YES into a gesture.",
-        "pt": "'Diga sim ao mundo': abrir cada plano para fora, com motion e VFX transformando o YES num gesto."
-      },
-      "execution": {
-        "en": "Motion design, VFX and compositing over live-action footage, timed to the soundtrack.",
-        "pt": "Motion design, VFX e composição sobre imagens filmadas, no ritmo da trilha."
-      },
-      "outcome": {
-        "en": "A brand vignette with a clear, upbeat identity for the campaign.",
-        "pt": "Uma vinheta de marca com identidade clara e positiva para a campanha."
-      },
-      "role": "Motion design · VFX",
-      "link": {
-        "label": {
-          "en": "View on Behance",
-          "pt": "Ver no Behance"
-        },
-        "url": "https://www.behance.net/gallery/194456335/Vinheta-YES-Idiomas-Diga-Sim-ao-Mundo-Diga-YES"
-      },
-      "imported": "https://finetunemotion.myportfolio.com/vinheta-yes-idiomas-diga-sim-ao-mundo-diga-yes"
-    },
-    {
-      "id": "cleopatra",
-      "title": "Cleopatra",
-      "client": "",
-      "year": "",
-      "disciplines": "Animation · Parallax · Game Art",
-      "tint": "#ffd180",
-      "context": {
-        "en": "Parallax animation for a Cleopatra-themed mobile game.",
-        "pt": "Animação em parallax para um jogo mobile com tema de Cleópatra."
-      },
-      "categories": [
-        "motion-design"
-      ],
-      "tools": [],
-      "cover": "covers/cleopatra.webp",
-      "video": "https://www-ccv.adobe.io/v1/player/ccv/-YHV5HvDdgD/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
-      "gallery": [],
-      "challenge": {
-        "en": "Add depth and life to flat game art within mobile constraints.",
-        "pt": "Dar profundidade e vida à arte 2D do jogo dentro das limitações do mobile."
-      },
-      "idea": {
-        "en": "Split the illustration into layers and move them at different depths, like a camera drifting through the scene.",
-        "pt": "Separar a ilustração em camadas e movê-las em profundidades diferentes, como uma câmera passeando pela cena."
-      },
-      "execution": {
-        "en": "Layer preparation, parallax camera moves, ambient animation and loops for the game and its promotion.",
-        "pt": "Preparação das camadas, movimentos de câmera em parallax, animações de ambiente e loops para o jogo e a divulgação."
-      },
-      "outcome": {
-        "en": "Animated scenes that make the game world feel deeper and more inviting.",
-        "pt": "Cenas animadas que deixam o mundo do jogo mais profundo e convidativo."
-      },
-      "role": "Animation · Parallax",
-      "link": {
-        "label": {
-          "en": "View on Behance",
-          "pt": "Ver no Behance"
-        },
-        "url": "https://www.behance.net/gallery/144381729/Paralax-animation-for-Mobile-game-Cleopatra"
-      },
-      "imported": "https://finetunemotion.myportfolio.com/paralax-animation-for-mobile-game-cleopatra"
-    },
-    {
-      "id": "cooldown-animation-test-non-official",
-      "title": "CoolDown - Animation test (non-official)",
-      "client": "Cooldown",
-      "year": "",
-      "disciplines": "Motion Design · 3D · Study",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "Non-official animation test made as a study.",
-        "pt": "Teste de animação não oficial, feito como estudo."
-      },
-      "categories": [
-        "motion-design"
+        "tv-show-cinema"
       ],
       "tools": [
         "after-effects",
-        "blender"
+        "blender",
+        "photoshop",
+        "illustrator",
+        "elevenlabs",
+        "threejs"
       ],
-      "cover": "media/cooldown-animation-test-non-official/00-afc8cf98eda17ff99c8e7106f478a568f75685e01d4c7774dc2042055.webp",
-      "video": "https://player.vimeo.com/video/235693169?autoplay=1&loop=1&muted=1",
-      "gallery": [],
+      "cover": "media/bravecto/layer-3-3.webp",
+      "video": "https://www.youtube.com/embed/ccLV2Llamr4",
+      "gallery": [
+        "media/bravecto/layer-3.webp",
+        "media/bravecto/layer-1.webp",
+        "media/bravecto/02-3784ad5d-f1e6-4156-9cc1-2c30fc5512c0-rw-1200.webp",
+        "media/bravecto/01-c6e0ffa6-bdf5-4bde-914e-0ef67cd264ce-rw-1920.webp",
+        "media/bravecto/03-87068639-c6ae-4b47-8163-15dbd2a290a3-rw-1920.webp",
+        "media/bravecto/04-fd332715-f933-44ba-8033-051c572e159a-rw-1920.webp",
+        "covers/bravecto.webp"
+      ],
       "challenge": {
-        "en": "Explore 3D inside After Effects using a real brand as reference.",
-        "pt": "Explorar 3D dentro do After Effects usando uma marca real como referência."
+        "en": "Make an animal-health brand feel tangible and memorable in an immersive format.",
+        "pt": "Tornar uma marca de saúde animal tangível e memorável num formato imersivo."
       },
       "idea": {
-        "en": "Treat it as a spot-style study: product, logo and motion in a short piece.",
-        "pt": "Tratar como um estudo em formato de spot: produto, logo e movimento numa peça curta."
+        "en": "Build a 3D world around the product so the audience experiences its benefits instead of reading about them.",
+        "pt": "Construir um mundo 3D em volta do produto para o público vivenciar seus benefícios, em vez de ler sobre eles."
       },
       "execution": {
-        "en": "Animation in After Effects with Element 3D.",
-        "pt": "Animação em After Effects com Element 3D."
+        "en": "Art direction of the 3D world, modeling, lighting and animation with a small team of storyboard, 3D and audio partners.",
+        "pt": "SB: Leandro Ricardo\n3D: Luiz Gustavo, Flavio Novi\nAudio: Jukebox\nArt director: Luiz Gustavo."
       },
       "outcome": {
-        "en": "A self-initiated study of 3D-in-After-Effects workflows — not an official piece for the brand.",
-        "pt": "Um estudo autoral do fluxo de 3D no After Effects — não é uma peça oficial da marca."
+        "en": "An immersive brand piece that tells the product story through space and motion.",
+        "pt": "Uma peça imersiva que conta a história do produto através de espaço e movimento."
       },
-      "role": "Animation · 3D",
+      "role": "Art direction · 3D",
+      "link": {
+        "label": {
+          "en": "View on Behance",
+          "pt": "Ver no Behance"
+        },
+        "url": "https://www.behance.net/gallery/195282279/Bravecto-Experience-Direcao-de-projeto"
+      },
+      "imported": "https://finetunemotion.myportfolio.com/bravecto-experience-direcao-de-projeto"
+    },
+    {
+      "id": "craneleap",
+      "title": " Crane Craze - MagicLeap Game",
+      "client": "MagicLeap",
+      "year": "2018",
+      "disciplines": "3D - Video Production",
+      "tint": "#ffd500",
+      "context": {
+        "en": "",
+        "pt": ""
+      },
+      "categories": [
+        "tv-show-cinema"
+      ],
+      "tools": [
+        "after-effects",
+        "premiere",
+        "blender",
+        "unity"
+      ],
+      "cover": "media/craneleap/vv2.webp",
+      "video": "https://www.youtube.com/watch?v=I-PuuvlGF_I",
+      "gallery": [
+        "media/craneleap/cc.webp"
+      ],
+      "challenge": {
+        "en": "",
+        "pt": ""
+      },
+      "idea": {
+        "en": "",
+        "pt": ""
+      },
+      "execution": {
+        "en": "Turning game assets into motion graphics",
+        "pt": "Produção audiovisual para o jogo desenvolvido para a plataforma MagicLeap2 "
+      },
+      "outcome": {
+        "en": "",
+        "pt": ""
+      },
+      "role": "Art Direction - Scripting - Film - 3D VFX - Composition - Post Production",
       "link": {
         "label": {
           "en": "View project",
           "pt": "Ver projeto"
         },
         "url": ""
-      },
-      "imported": "https://finetunemotion.myportfolio.com/cooldown-animation-test-non-official"
+      }
     },
     {
-      "id": "true-riches",
-      "title": "True Riches",
-      "client": "",
-      "year": "",
-      "disciplines": "Motion Design · Teaser",
-      "tint": "#8f9eff",
-      "context": {
-        "en": "Teaser for True Riche$ — Twe Way Service.",
-        "pt": "Teaser para True Riche$ — Twe Way Service."
-      },
-      "categories": [
-        "motion-design"
-      ],
-      "tools": [],
-      "cover": "covers/true-riches.webp",
-      "video": "https://www-ccv.adobe.io/v1/player/ccv/Dhe9K9-tdkU/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View",
-      "gallery": [],
-      "challenge": {
-        "en": "Build anticipation in a short piece with strong attitude.",
-        "pt": "Criar expectativa numa peça curta e com atitude."
-      },
-      "idea": {
-        "en": "Reveal through rhythm: quick cuts, bold type and motion that hold back the full picture.",
-        "pt": "Revelar pelo ritmo: cortes rápidos, tipografia forte e movimento que seguram a revelação."
-      },
-      "execution": {
-        "en": "Graphic design, animation and editing synced to the track.",
-        "pt": "Design gráfico, animação e edição sincronizados com a trilha."
-      },
-      "outcome": {
-        "en": "A punchy teaser for social channels.",
-        "pt": "Um teaser direto para as redes sociais."
-      },
-      "role": "Motion design · Edit",
-      "link": {
-        "label": {
-          "en": "View on Behance",
-          "pt": "Ver no Behance"
-        },
-        "url": "https://www.behance.net/gallery/143962405/TRUE-RICHES-TWE-WAY-SERVICE-TEASER"
-      },
-      "imported": "https://finetunemotion.myportfolio.com/true-riche-twe-way-service-teaser"
-    },
-    {
-      "id": "conectivo",
-      "title": "Conectivo",
-      "client": "",
-      "year": "",
-      "disciplines": "Motion Design · Campaign",
-      "tint": "#db8fff",
-      "context": {
-        "en": "Enrollment campaign for Conectivo (SAE Digital).",
-        "pt": "Campanha de matrículas do Conectivo (SAE Digital)."
-      },
-      "categories": [
-        "motion-design"
-      ],
-      "tools": [],
-      "cover": "covers/conectivo.webp",
-      "video": "https://www.youtube.com/embed/Pq9saikYbZo?list=PLkZxkFmStuft17Puta8HeM1-ga659R1J9",
-      "gallery": [
-        "media/conectivo/01-8f819515-92db-4df3-9164-18331b1d1488-rw-1920.webp",
-        "https://www.youtube.com/embed/X6h-pVPNERA?list=PLkZxkFmStuft17Puta8HeM1-ga659R1J9",
-        "https://www.youtube.com/embed/FSYGlZI2XIo?list=PLkZxkFmStuft17Puta8HeM1-ga659R1J9"
-      ],
-      "challenge": {
-        "en": "Communicate an education offer clearly across several pieces and formats.",
-        "pt": "Comunicar uma oferta educacional com clareza em várias peças e formatos."
-      },
-      "idea": {
-        "en": "A modular motion system — shapes, type and color that adapt to each piece while keeping one identity.",
-        "pt": "Um sistema de motion modular: formas, tipografia e cor que se adaptam a cada peça mantendo uma só identidade."
-      },
-      "execution": {
-        "en": "Animation of the campaign pieces and their versions for different formats.",
-        "pt": "Animação das peças da campanha e das versões para formatos diferentes."
-      },
-      "outcome": {
-        "en": "A consistent set of pieces for the enrollment period.",
-        "pt": "Um conjunto consistente de peças para o período de matrículas."
-      },
-      "role": "Motion design",
-      "link": {
-        "label": {
-          "en": "View on Behance",
-          "pt": "Ver no Behance"
-        },
-        "url": "https://www.behance.net/gallery/144190393/Conectivo-Matriculas-abertas-(SAE-Digital)"
-      },
-      "imported": "https://finetunemotion.myportfolio.com/conectivo-matriculas-abertas-sae-digital"
-    },
-    {
-      "id": "gabriel-guedes-oferta-agradavel-lyric",
-      "title": "Gabriel Guedes - Oferta Agradável LYRIC",
+      "id": "gloria-e-aleluia-christmas-lyric-video",
+      "title": "Glória e aleluia (Christmas) - Lyric Video",
       "client": "Gabriel Guedes",
       "year": "",
       "disciplines": "Lyric Video · Animation",
       "tint": "#8fd8ff",
       "context": {
-        "en": "Lyric video for Gabriel Guedes' 'Oferta Agradável'.",
-        "pt": "Lyric video de 'Oferta Agradável', de Gabriel Guedes."
+        "en": "Christmas lyric video for Gabriel Guedes' 'Glória e Aleluia'.",
+        "pt": "Lyric video de Natal de 'Glória e Aleluia', de Gabriel Guedes."
       },
       "categories": [
-        "3d-vfx"
+        "2d-animation"
       ],
       "tools": [
         "after-effects",
-        "blender"
+        "photoshop"
       ],
-      "cover": "media/gabriel-guedes-oferta-agradavel-lyric/00-6e258121-3c49-4e93-ab7c-4a5d52edeb25-carw-16x10x1920.webp",
-      "video": "https://www.youtube.com/embed/1kLN-NwJPBE",
+      "cover": "media/gloria-e-aleluia-christmas-lyric-video/00-2d64d997-1e4b-4d03-a652-bfea4864d941-carw-16x10x1920.webp",
+      "video": "https://www.youtube.com/embed/fdMk6kT8hyc",
       "gallery": [
-        "media/gabriel-guedes-oferta-agradavel-lyric/01-e010df41-75b6-4366-bc9c-2a913a186a4e-rw-1200.webp",
-        "media/gabriel-guedes-oferta-agradavel-lyric/02-6dcc1798-d400-44e6-ae0b-606de4d5446d-rw-1920.webp",
-        "media/gabriel-guedes-oferta-agradavel-lyric/03-cba7e911-e702-4bcf-badd-c81be7a6331e-rw-1920.webp",
-        "media/gabriel-guedes-oferta-agradavel-lyric/04-b8e355e0-fe18-4322-bcfc-cdc70713e93f-rw-1920.webp"
+        "media/gloria-e-aleluia-christmas-lyric-video/03-3e856dfa-5ecf-4f33-8800-ca0550233413-rw-1920.webp",
+        "media/gloria-e-aleluia-christmas-lyric-video/01-13e02314-1050-4668-9c8a-e0f115a9bc75-rw-1920.webp",
+        "media/gloria-e-aleluia-christmas-lyric-video/02-72e0a9ea-8696-47d7-b968-e2a186c2bb7b-rw-1920.webp"
       ],
       "challenge": {
-        "en": "Give a piano-and-voice song a visual that respects its intimacy.",
-        "pt": "Dar a uma música de piano e voz um visual que respeite sua intimidade."
+        "en": "Celebrate Christmas with a lyric video that feels festive without losing readability.",
+        "pt": "Celebrar o Natal com um lyric video festivo sem perder a leitura."
       },
       "idea": {
-        "en": "Let the lyrics breathe: calm typography and illustration that follow the phrasing of the song.",
-        "pt": "Deixar a letra respirar: tipografia calma e ilustrações que seguem o fraseado da música."
+        "en": "Hand lettering and illustration as ornaments that reveal the lyrics.",
+        "pt": "Lettering e ilustrações como enfeites que revelam a letra."
       },
       "execution": {
-        "en": "Direction, script and animation of the lyric video.",
-        "pt": "Direção Roteiro e Animação\n\nFicha técnica: Produção: Gabriel Guedes Produção musical: Gabriel Guedes e Ed Oliver Piano e voz: Gabriel Guedes Violoncelo: Renato de Sá Vídeo: Finetune Produção: FINETUNEMOTION.COM Direção e Animação: Luiz…"
+        "en": "Direction and animation, with lettering and illustrations by partner artists.",
+        "pt": "Produção: FINETUNE Motion Direção e Animação: Luiz Gustavo Czaika Roteiro e Letterings: Alessandra Gubert Ilustrações: Carolina Araújo"
       },
       "outcome": {
-        "en": "A lyric video that carries the song's emotion and reads clearly.",
-        "pt": "Um lyric video que carrega a emoção da música e tem leitura clara."
+        "en": "A festive lyric video for the season.",
+        "pt": "Um lyric video festivo para a época."
       },
-      "role": "Direction · Script · Animation",
+      "role": "Direction · Animation",
       "link": {
         "label": {
           "en": "View project",
@@ -605,7 +553,58 @@
         },
         "url": ""
       },
-      "imported": "https://finetunemotion.myportfolio.com/gabriel-guedes-oferta-agradavel-lyric"
+      "imported": "https://finetunemotion.myportfolio.com/gloria-e-aleluia-christmas-lyric-video"
+    },
+    {
+      "id": "secreto-lugar-animation",
+      "title": "SECRETO LUGAR - Animation",
+      "client": "Simar Valadares",
+      "year": "",
+      "disciplines": "Animation · 3D · 2D",
+      "tint": "#8fd8ff",
+      "context": {
+        "en": "3D animation with a 2D character.",
+        "pt": "Animação 3D com personagem 2D"
+      },
+      "categories": [
+        "2d-animation"
+      ],
+      "tools": [
+        "after-effects",
+        "blender",
+        "photoshop"
+      ],
+      "cover": "media/secreto-lugar-animation/00-be53f58a-7ed4-43ed-86a4-766636826610-carw-16x10x1920.webp",
+      "video": "https://www.youtube.com/embed/vRC_warrSog",
+      "gallery": [
+        "media/secreto-lugar-animation/01-2bbf7f2c-31b1-4aac-b73d-55274ab03a09-rw-1920.webp",
+        "media/secreto-lugar-animation/02-4a50bfa2-9826-4abc-9e98-2ad48516fdf2-rw-1920.webp"
+      ],
+      "challenge": {
+        "en": "Combine a 2D character with 3D environments in one coherent look.",
+        "pt": "Combinar um personagem 2D com ambientes 3D num visual coerente."
+      },
+      "idea": {
+        "en": "Use 3D space as a stage and keep the character hand-drawn, so it feels intimate.",
+        "pt": "Usar o espaço 3D como palco e manter o personagem desenhado, para que pareça íntimo."
+      },
+      "execution": {
+        "en": "3D environments and camera, 2D character animation and compositing.",
+        "pt": "Ambientes e câmera em 3D, animação 2D do personagem e composição."
+      },
+      "outcome": {
+        "en": "An animated clip where both techniques serve the song.",
+        "pt": "Um clipe animado em que as duas técnicas servem à música."
+      },
+      "role": "3D · 2D animation",
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": ""
+      },
+      "imported": "https://finetunemotion.myportfolio.com/secreto-lugar-animation"
     },
     {
       "id": "a-bencao-gabriel-guedes-ilustracoes",
@@ -657,6 +656,352 @@
         "url": ""
       },
       "imported": "https://finetunemotion.myportfolio.com/a-bencao-gabriel-guedes-ilustracoes"
+    },
+    {
+      "id": "voo-sem-retorno-animacao",
+      "title": "Vôo sem retorno - Animação",
+      "client": "Jocelino Rodrigues",
+      "year": "",
+      "disciplines": "Music Video · Animation",
+      "tint": "#8fd8ff",
+      "context": {
+        "en": "Animated music video for Jocelino Rodrigues' 'Vôo sem retorno'.",
+        "pt": "Videoclipe animado de 'Vôo sem retorno', de Jocelino Rodrigues."
+      },
+      "categories": [
+        "2d-animation"
+      ],
+      "tools": [
+        "after-effects",
+        "photoshop"
+      ],
+      "cover": "media/voo-sem-retorno-animacao/00-145feaed-bae2-4546-8625-b7786d05c76f-carw-4x3x1920.webp",
+      "video": "https://www.youtube.com/embed/KJzdOAk3DiI",
+      "gallery": [],
+      "challenge": {
+        "en": "Bring a hand-illustrated story to life while keeping the illustrator's style.",
+        "pt": "Dar vida a uma história ilustrada à mão mantendo o estilo da ilustradora."
+      },
+      "idea": {
+        "en": "Animate with restraint: movement that serves the drawings and the story of the song.",
+        "pt": "Animar com contenção: movimento a serviço dos desenhos e da narrativa da música."
+      },
+      "execution": {
+        "en": "Animation of the illustrated music video, together with the illustrator and a second animator.",
+        "pt": "Música e letra: Jocelino Rodrigues  MÚSICOS Jocelino Rodrigues: voz, guitarras, e coros Alexandre Reis: percussões e bateria Francisco Esteves: guitarra eléctrica Valter Lima: baixo eléctrico Carolina Marques: flauta transversal FICHA TÉCNICA Produção: Jocelino Rodrigues e Alexandre Reis Gravado em Penela em Maio 2016 por Alexandre Reis. Misturado e masterizado por André Tavares (Atlântico Blue Studios). VIDEOCLIP Produção: Jocelino Rodrigues e Isabelle Verona Brust Direcção: Jocelino Rodrigues e Débora Pimentel Guião: Jocelino Rodrigues e Hannah Wauchope Ilustração: Débora Pimentel Animação: Luiz Gustavo - Fine Tune Motion  e Renker Amantéa \n"
+      },
+      "outcome": {
+        "en": "A finished music video released with the song.",
+        "pt": "Um videoclipe finalizado e lançado junto com a música."
+      },
+      "role": "Animation",
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": "https://www.youtube.com/redirect?redir_token=r8RXE8GCuVz4LhAv24_4U0IU8rd8MTUyODkxMTE5MEAxNTI4ODI0Nzkw&v=KJzdOAk3DiI&q=https%3A%2F%2Fwww.behance.net%2Fpimenteldebora&event=video_description"
+      },
+      "imported": "https://finetunemotion.myportfolio.com/voo-sem-retorno-animacao"
+    },
+    {
+      "id": "do-re-mundo-animacao-infantil",
+      "title": "Dó-Ré Mundo - Animação infantil",
+      "client": "Moove House",
+      "year": "",
+      "disciplines": "Animação Infantil",
+      "tint": "#8fd8ff",
+      "context": {
+        "en": "Children's animation produced with Moove House.",
+        "pt": "Animação infantil produzida com a Moove House."
+      },
+      "categories": [
+        "2d-animation"
+      ],
+      "tools": [
+        "after-effects",
+        "photoshop",
+        "illustrator"
+      ],
+      "cover": "media/do-re-mundo-animacao-infantil/00-bd34b7e1-e8b6-4538-a32d-a450b2f65649-rwc-30x0x1125x706x11.webp",
+      "video": "https://www.youtube.com/embed/f6R5hVuDpzo",
+      "gallery": [
+        "https://www.youtube.com/embed/wWvBAKApnuA",
+        "https://www.youtube.com/embed/20R4Sn1pwb4"
+      ],
+      "challenge": {
+        "en": "Teach and entertain young children with a simple, musical world.",
+        "pt": "Ensinar e divertir crianças pequenas com um mundo simples e musical."
+      },
+      "idea": {
+        "en": "Friendly characters and clear shapes, with movement driven by the music.",
+        "pt": "Personagens simpáticos e formas claras, com movimento guiado pela música."
+      },
+      "execution": {
+        "en": "Character and scene animation for the episodes.",
+        "pt": "Animação de personagens e cenários para os episódios."
+      },
+      "outcome": {
+        "en": "Animated content made for a young audience.",
+        "pt": "Conteúdo animado feito para o público infantil."
+      },
+      "role": "Animation",
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": ""
+      },
+      "imported": "https://finetunemotion.myportfolio.com/do-re-mundo-animacao-infantil"
+    },
+    {
+      "id": "milky-way-motion-graphics",
+      "title": "Milky Way - Motion Graphics",
+      "client": "",
+      "year": "",
+      "disciplines": "Motion Graphics · Character Animation",
+      "tint": "#8fd8ff",
+      "context": {
+        "en": "Animated vignette with character animation.",
+        "pt": "Vinheta animada com animação de personagem."
+      },
+      "categories": [
+        "2d-animation"
+      ],
+      "tools": [
+        "after-effects",
+        "illustrator"
+      ],
+      "cover": "media/milky-way-motion-graphics/00-c914a8c66baf975b9397ac9be122c397a38a1928daecc89f6be49d90f.webp",
+      "video": "https://player.vimeo.com/video/228712006?autoplay=1&loop=1&title=0&byline=0&portrait=0&muted=1",
+      "gallery": [
+        "media/milky-way-motion-graphics/01-5b3179b9a5701a61ae9a31fba82a889923bb228df45153cca90ae6b8d.webp",
+        "https://www-ccv.adobe.io/v1/player/ccv/KP3Ki-NKjSr/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View"
+      ],
+      "challenge": {
+        "en": "Give a short vignette personality through a character.",
+        "pt": "Dar personalidade a uma vinheta curta através de um personagem."
+      },
+      "idea": {
+        "en": "A small cosmic story — character, motion and timing doing all the work in a few seconds.",
+        "pt": "Uma pequena história cósmica: personagem, movimento e timing resolvendo tudo em poucos segundos."
+      },
+      "execution": {
+        "en": "Character design and animation in a short vignette.",
+        "pt": "Design e animação de personagem numa vinheta curta."
+      },
+      "outcome": {
+        "en": "A playful vignette driven by character motion.",
+        "pt": "Uma vinheta divertida guiada pelo movimento do personagem."
+      },
+      "role": "Motion design · Character animation",
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": ""
+      },
+      "imported": "https://finetunemotion.myportfolio.com/milky-way-motion-graphics"
+    },
+    {
+      "id": "finetune-making-of",
+      "title": "FineTune Portfolio — Making Of",
+      "client": "",
+      "year": "2026",
+      "disciplines": "Creative Direction · AI-Assisted Development · WebGL",
+      "tint": "#78d98a",
+      "context": {
+        "en": "How this portfolio was directed by a designer and built with AI.",
+        "pt": "Como este portfólio foi dirigido por um designer e construído com IA."
+      },
+      "categories": [
+        "ai-creative-tech"
+      ],
+      "tools": [
+        "claude",
+        "codex",
+        "javascript"
+      ],
+      "cover": "media/finetune-making-of/cover.webp",
+      "video": "media/finetune-making-of/making-of.mp4",
+      "gallery": [],
+      "challenge": {
+        "en": "Build an interactive portfolio that behaves like an instrument, without a development team.",
+        "pt": "Construir um portfólio interativo que se comporta como um instrumento, sem uma equipe de desenvolvimento."
+      },
+      "idea": {
+        "en": "Start with a brief, not a prompt: a master spec, approved references, and a review at the end of every round.",
+        "pt": "Começar com um briefing, e não com um prompt: um master spec, referências aprovadas e uma revisão ao fim de cada rodada."
+      },
+      "execution": {
+        "en": "AI wrote the code in raw WebGL2 while I directed each stage; a custom editor, Portfolio Update, keeps the content current without touching code.",
+        "pt": "A IA escreveu o código em WebGL2 puro enquanto eu dirigia cada etapa; um editor próprio, o Portfolio Update, mantém o conteúdo atualizado sem mexer em código."
+      },
+      "outcome": {
+        "en": "The site you are looking at, published on GitHub Pages and updated from a single editor.",
+        "pt": "O site que você está vendo, publicado no GitHub Pages e atualizado a partir de um único editor."
+      },
+      "role": "Direction · Design · Motion",
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": ""
+      }
+    },
+    {
+      "id": "combalista-making-of",
+      "title": "Combalista — A Channel Built as a System",
+      "client": "",
+      "year": "2026",
+      "disciplines": "AI Pipeline · Motion Design · 3D · Automation",
+      "tint": "#6fd8ff",
+      "context": {
+        "en": "A semi-autonomous studio for Magic: The Gathering shorts, directed by me and built with AI.",
+        "pt": "Um estúdio semiautônomo de shorts de Magic: The Gathering, dirigido por mim e construído com IA."
+      },
+      "categories": [
+        "ai-creative-tech"
+      ],
+      "tools": [
+        "claude",
+        "blender",
+        "photoshop",
+        "after-effects",
+        "magnific",
+        "javascript"
+      ],
+      "cover": "media/combalista-making-of/cover.webp",
+      "video": "media/combalista-making-of/making-of.mp4",
+      "gallery": [],
+      "challenge": {
+        "en": "Publish short videos about Magic combos with a consistent identity, without editing every one by hand.",
+        "pt": "Publicar vídeos curtos sobre combos de Magic com identidade consistente, sem editar cada um à mão."
+      },
+      "idea": {
+        "en": "Automate the pipeline and keep the taste: research, script, voice and render run as one chain, while 3D, key art, the mascot and the final approval stay with me.",
+        "pt": "Automatizar a pipeline e manter o gosto: pesquisa, roteiro, voz e render rodam em cadeia, enquanto o 3D, o key art, a mascote e a aprovação final ficam comigo."
+      },
+      "execution": {
+        "en": "A desktop production panel, programmatic rendering, deckboxes modelled in Blender, key art composited in Photoshop, a mascot animated in After Effects, and skills that turn every correction into a rule.",
+        "pt": "Um painel de produção desktop, render programático, deckboxes modeladas no Blender, key art composto no Photoshop, uma mascote animada no After Effects e skills que transformam cada correção em regra."
+      },
+      "outcome": {
+        "en": "A working platform for the @combalista channel, with scripts checked against the card rules before anything is rendered.",
+        "pt": "Uma plataforma em funcionamento para o canal @combalista, com roteiros conferidos com as regras das cartas antes de qualquer render."
+      },
+      "role": "Direction · Design · 3D · Motion · Pipeline",
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": ""
+      }
+    },
+    {
+      "id": "cooldown-animation-test-non-official",
+      "title": "CoolDown - Animation test (non-official)",
+      "client": "Cooldown",
+      "year": "",
+      "disciplines": "Motion Design · 3D · Study",
+      "tint": "#8fd8ff",
+      "context": {
+        "en": "Non-official animation test made as a study.",
+        "pt": "Teste de animação não oficial, feito como estudo."
+      },
+      "categories": [
+        "motion-design"
+      ],
+      "tools": [
+        "after-effects",
+        "blender"
+      ],
+      "cover": "media/cooldown-animation-test-non-official/00-afc8cf98eda17ff99c8e7106f478a568f75685e01d4c7774dc2042055.webp",
+      "video": "https://player.vimeo.com/video/235693169?autoplay=1&loop=1&muted=1",
+      "gallery": [],
+      "challenge": {
+        "en": "Explore 3D inside After Effects using a real brand as reference.",
+        "pt": "Explorar 3D dentro do After Effects usando uma marca real como referência."
+      },
+      "idea": {
+        "en": "Treat it as a spot-style study: product, logo and motion in a short piece.",
+        "pt": "Tratar como um estudo em formato de spot: produto, logo e movimento numa peça curta."
+      },
+      "execution": {
+        "en": "Animation in After Effects with Element 3D.",
+        "pt": "Animação em After Effects com Element 3D."
+      },
+      "outcome": {
+        "en": "A self-initiated study of 3D-in-After-Effects workflows — not an official piece for the brand.",
+        "pt": "Um estudo autoral do fluxo de 3D no After Effects — não é uma peça oficial da marca."
+      },
+      "role": "Animation · 3D",
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": ""
+      },
+      "imported": "https://finetunemotion.myportfolio.com/cooldown-animation-test-non-official",
+      "hidden": true
+    },
+    {
+      "id": "gabriel-guedes-oferta-agradavel-lyric",
+      "title": "Gabriel Guedes - Oferta Agradável LYRIC",
+      "client": "Gabriel Guedes",
+      "year": "",
+      "disciplines": "Lyric Video · Animation",
+      "tint": "#8fd8ff",
+      "context": {
+        "en": "Lyric video for Gabriel Guedes' 'Oferta Agradável'.",
+        "pt": "Lyric video de 'Oferta Agradável', de Gabriel Guedes."
+      },
+      "categories": [
+        "3d-vfx"
+      ],
+      "tools": [
+        "after-effects",
+        "blender"
+      ],
+      "cover": "media/gabriel-guedes-oferta-agradavel-lyric/00-6e258121-3c49-4e93-ab7c-4a5d52edeb25-carw-16x10x1920.webp",
+      "video": "https://www.youtube.com/embed/1kLN-NwJPBE",
+      "gallery": [
+        "media/gabriel-guedes-oferta-agradavel-lyric/01-e010df41-75b6-4366-bc9c-2a913a186a4e-rw-1200.webp",
+        "media/gabriel-guedes-oferta-agradavel-lyric/02-6dcc1798-d400-44e6-ae0b-606de4d5446d-rw-1920.webp",
+        "media/gabriel-guedes-oferta-agradavel-lyric/03-cba7e911-e702-4bcf-badd-c81be7a6331e-rw-1920.webp",
+        "media/gabriel-guedes-oferta-agradavel-lyric/04-b8e355e0-fe18-4322-bcfc-cdc70713e93f-rw-1920.webp"
+      ],
+      "challenge": {
+        "en": "Give a piano-and-voice song a visual that respects its intimacy.",
+        "pt": "Dar a uma música de piano e voz um visual que respeite sua intimidade."
+      },
+      "idea": {
+        "en": "Let the lyrics breathe: calm typography and illustration that follow the phrasing of the song.",
+        "pt": "Deixar a letra respirar: tipografia calma e ilustrações que seguem o fraseado da música."
+      },
+      "execution": {
+        "en": "Direction, script and animation of the lyric video.",
+        "pt": "Direção Roteiro e Animação\n\nFicha técnica: Produção: Gabriel Guedes Produção musical: Gabriel Guedes e Ed Oliver Piano e voz: Gabriel Guedes Violoncelo: Renato de Sá Vídeo: Finetune Produção: FINETUNEMOTION.COM Direção e Animação: Luiz…"
+      },
+      "outcome": {
+        "en": "A lyric video that carries the song's emotion and reads clearly.",
+        "pt": "Um lyric video que carrega a emoção da música e tem leitura clara."
+      },
+      "role": "Direction · Script · Animation",
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": ""
+      },
+      "imported": "https://finetunemotion.myportfolio.com/gabriel-guedes-oferta-agradavel-lyric",
+      "hidden": true
     },
     {
       "id": "videoclipe-o-amor-de-deus",
@@ -711,157 +1056,6 @@
       "imported": "https://finetunemotion.myportfolio.com/videoclipe-o-amor-de-deus"
     },
     {
-      "id": "gloria-e-aleluia-christmas-lyric-video",
-      "title": "Glória e aleluia (Christmas) - Lyric Video",
-      "client": "Gabriel Guedes",
-      "year": "",
-      "disciplines": "Lyric Video · Animation",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "Christmas lyric video for Gabriel Guedes' 'Glória e Aleluia'.",
-        "pt": "Lyric video de Natal de 'Glória e Aleluia', de Gabriel Guedes."
-      },
-      "categories": [
-        "2d-animation",
-        "art-direction"
-      ],
-      "tools": [
-        "after-effects",
-        "photoshop"
-      ],
-      "cover": "media/gloria-e-aleluia-christmas-lyric-video/00-2d64d997-1e4b-4d03-a652-bfea4864d941-carw-16x10x1920.webp",
-      "video": "https://www.youtube.com/embed/fdMk6kT8hyc",
-      "gallery": [
-        "media/gloria-e-aleluia-christmas-lyric-video/03-3e856dfa-5ecf-4f33-8800-ca0550233413-rw-1920.webp",
-        "media/gloria-e-aleluia-christmas-lyric-video/01-13e02314-1050-4668-9c8a-e0f115a9bc75-rw-1920.webp",
-        "media/gloria-e-aleluia-christmas-lyric-video/02-72e0a9ea-8696-47d7-b968-e2a186c2bb7b-rw-1920.webp"
-      ],
-      "challenge": {
-        "en": "Celebrate Christmas with a lyric video that feels festive without losing readability.",
-        "pt": "Celebrar o Natal com um lyric video festivo sem perder a leitura."
-      },
-      "idea": {
-        "en": "Hand lettering and illustration as ornaments that reveal the lyrics.",
-        "pt": "Lettering e ilustrações como enfeites que revelam a letra."
-      },
-      "execution": {
-        "en": "Direction and animation, with lettering and illustrations by partner artists.",
-        "pt": "Produção: FINETUNE Motion Direção e Animação: Luiz Gustavo Czaika Roteiro e Letterings: Alessandra Gubert Ilustrações: Carolina Araújo"
-      },
-      "outcome": {
-        "en": "A festive lyric video for the season.",
-        "pt": "Um lyric video festivo para a época."
-      },
-      "role": "Direction · Animation",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      },
-      "imported": "https://finetunemotion.myportfolio.com/gloria-e-aleluia-christmas-lyric-video"
-    },
-    {
-      "id": "secreto-lugar-animation",
-      "title": "SECRETO LUGAR - Animation",
-      "client": "Simar Valadares",
-      "year": "",
-      "disciplines": "Animation · 3D · 2D",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "3D animation with a 2D character.",
-        "pt": "Animação 3D com personagem 2D"
-      },
-      "categories": [
-        "2d-animation",
-        "3d-vfx"
-      ],
-      "tools": [
-        "after-effects",
-        "blender",
-        "photoshop"
-      ],
-      "cover": "media/secreto-lugar-animation/00-be53f58a-7ed4-43ed-86a4-766636826610-carw-16x10x1920.webp",
-      "video": "https://www.youtube.com/embed/vRC_warrSog",
-      "gallery": [
-        "media/secreto-lugar-animation/01-2bbf7f2c-31b1-4aac-b73d-55274ab03a09-rw-1920.webp",
-        "media/secreto-lugar-animation/02-4a50bfa2-9826-4abc-9e98-2ad48516fdf2-rw-1920.webp"
-      ],
-      "challenge": {
-        "en": "Combine a 2D character with 3D environments in one coherent look.",
-        "pt": "Combinar um personagem 2D com ambientes 3D num visual coerente."
-      },
-      "idea": {
-        "en": "Use 3D space as a stage and keep the character hand-drawn, so it feels intimate.",
-        "pt": "Usar o espaço 3D como palco e manter o personagem desenhado, para que pareça íntimo."
-      },
-      "execution": {
-        "en": "3D environments and camera, 2D character animation and compositing.",
-        "pt": "Ambientes e câmera em 3D, animação 2D do personagem e composição."
-      },
-      "outcome": {
-        "en": "An animated clip where both techniques serve the song.",
-        "pt": "Um clipe animado em que as duas técnicas servem à música."
-      },
-      "role": "3D · 2D animation",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      },
-      "imported": "https://finetunemotion.myportfolio.com/secreto-lugar-animation"
-    },
-    {
-      "id": "voo-sem-retorno-animacao",
-      "title": "Vôo sem retorno - Animação",
-      "client": "Jocelino Rodrigues",
-      "year": "",
-      "disciplines": "Music Video · Animation",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "Animated music video for Jocelino Rodrigues' 'Vôo sem retorno'.",
-        "pt": "Videoclipe animado de 'Vôo sem retorno', de Jocelino Rodrigues."
-      },
-      "categories": [
-        "2d-animation"
-      ],
-      "tools": [
-        "after-effects",
-        "photoshop"
-      ],
-      "cover": "media/voo-sem-retorno-animacao/00-145feaed-bae2-4546-8625-b7786d05c76f-carw-4x3x1920.webp",
-      "video": "https://www.youtube.com/embed/KJzdOAk3DiI",
-      "gallery": [],
-      "challenge": {
-        "en": "Bring a hand-illustrated story to life while keeping the illustrator's style.",
-        "pt": "Dar vida a uma história ilustrada à mão mantendo o estilo da ilustradora."
-      },
-      "idea": {
-        "en": "Animate with restraint: movement that serves the drawings and the story of the song.",
-        "pt": "Animar com contenção: movimento a serviço dos desenhos e da narrativa da música."
-      },
-      "execution": {
-        "en": "Animation of the illustrated music video, together with the illustrator and a second animator.",
-        "pt": "Música e letra: Jocelino Rodrigues  MÚSICOS Jocelino Rodrigues: voz, guitarras, e coros Alexandre Reis: percussões e bateria Francisco Esteves: guitarra eléctrica Valter Lima: baixo eléctrico Carolina Marques: flauta transversal FICHA TÉCNICA Produção: Jocelino Rodrigues e Alexandre Reis Gravado em Penela em Maio 2016 por Alexandre Reis. Misturado e masterizado por André Tavares (Atlântico Blue Studios). VIDEOCLIP Produção: Jocelino Rodrigues e Isabelle Verona Brust Direcção: Jocelino Rodrigues e Débora Pimentel Guião: Jocelino Rodrigues e Hannah Wauchope Ilustração: Débora Pimentel Animação: Luiz Gustavo - Fine Tune Motion  e Renker Amantéa \n"
-      },
-      "outcome": {
-        "en": "A finished music video released with the song.",
-        "pt": "Um videoclipe finalizado e lançado junto com a música."
-      },
-      "role": "Animation",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": "https://www.youtube.com/redirect?redir_token=r8RXE8GCuVz4LhAv24_4U0IU8rd8MTUyODkxMTE5MEAxNTI4ODI0Nzkw&v=KJzdOAk3DiI&q=https%3A%2F%2Fwww.behance.net%2Fpimenteldebora&event=video_description"
-      },
-      "imported": "https://finetunemotion.myportfolio.com/voo-sem-retorno-animacao"
-    },
-    {
       "id": "alcance-kids-vinhetas",
       "title": "Alcance KIDS - Vinhetas",
       "client": "Comunidade Alcance",
@@ -912,103 +1106,6 @@
       "imported": "https://finetunemotion.myportfolio.com/alcance-kids-vinhetas"
     },
     {
-      "id": "combalista-making-of",
-      "title": "Combalista — A Channel Built as a System",
-      "client": "",
-      "year": "2026",
-      "disciplines": "AI Pipeline · Motion Design · 3D · Automation",
-      "tint": "#6fd8ff",
-      "context": {
-        "en": "A semi-autonomous studio for Magic: The Gathering shorts, directed by me and built with AI.",
-        "pt": "Um estúdio semiautônomo de shorts de Magic: The Gathering, dirigido por mim e construído com IA."
-      },
-      "categories": [
-        "ai-creative-tech"
-      ],
-      "tools": [
-        "claude",
-        "blender",
-        "photoshop",
-        "after-effects",
-        "magnific",
-        "javascript"
-      ],
-      "cover": "media/combalista-making-of/cover.webp",
-      "video": "media/combalista-making-of/making-of.mp4",
-      "gallery": [],
-      "challenge": {
-        "en": "Publish short videos about Magic combos with a consistent identity, without editing every one by hand.",
-        "pt": "Publicar vídeos curtos sobre combos de Magic com identidade consistente, sem editar cada um à mão."
-      },
-      "idea": {
-        "en": "Automate the pipeline and keep the taste: research, script, voice and render run as one chain, while 3D, key art, the mascot and the final approval stay with me.",
-        "pt": "Automatizar a pipeline e manter o gosto: pesquisa, roteiro, voz e render rodam em cadeia, enquanto o 3D, o key art, a mascote e a aprovação final ficam comigo."
-      },
-      "execution": {
-        "en": "A desktop production panel, programmatic rendering, deckboxes modelled in Blender, key art composited in Photoshop, a mascot animated in After Effects, and skills that turn every correction into a rule.",
-        "pt": "Um painel de produção desktop, render programático, deckboxes modeladas no Blender, key art composto no Photoshop, uma mascote animada no After Effects e skills que transformam cada correção em regra."
-      },
-      "outcome": {
-        "en": "A working platform for the @combalista channel, with scripts checked against the card rules before anything is rendered.",
-        "pt": "Uma plataforma em funcionamento para o canal @combalista, com roteiros conferidos com as regras das cartas antes de qualquer render."
-      },
-      "role": "Direction · Design · 3D · Motion · Pipeline",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      }
-    },
-    {
-      "id": "finetune-making-of",
-      "title": "FineTune Portfolio — Making Of",
-      "client": "",
-      "year": "2026",
-      "disciplines": "Creative Direction · AI-Assisted Development · WebGL",
-      "tint": "#78d98a",
-      "context": {
-        "en": "How this portfolio was directed by a designer and built with AI.",
-        "pt": "Como este portfólio foi dirigido por um designer e construído com IA."
-      },
-      "categories": [
-        "ai-creative-tech"
-      ],
-      "tools": [
-        "claude",
-        "codex",
-        "javascript"
-      ],
-      "cover": "media/finetune-making-of/cover.webp",
-      "video": "media/finetune-making-of/making-of.mp4",
-      "gallery": [],
-      "challenge": {
-        "en": "Build an interactive portfolio that behaves like an instrument, without a development team.",
-        "pt": "Construir um portfólio interativo que se comporta como um instrumento, sem uma equipe de desenvolvimento."
-      },
-      "idea": {
-        "en": "Start with a brief, not a prompt: a master spec, approved references, and a review at the end of every round.",
-        "pt": "Começar com um briefing, e não com um prompt: um master spec, referências aprovadas e uma revisão ao fim de cada rodada."
-      },
-      "execution": {
-        "en": "AI wrote the code in raw WebGL2 while I directed each stage; a custom editor, Portfolio Update, keeps the content current without touching code.",
-        "pt": "A IA escreveu o código em WebGL2 puro enquanto eu dirigia cada etapa; um editor próprio, o Portfolio Update, mantém o conteúdo atualizado sem mexer em código."
-      },
-      "outcome": {
-        "en": "The site you are looking at, published on GitHub Pages and updated from a single editor.",
-        "pt": "O site que você está vendo, publicado no GitHub Pages e atualizado a partir de um único editor."
-      },
-      "role": "Direction · Design · Motion",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      }
-    },
-    {
       "id": "ggcrafts-ecomerce",
       "title": "GGCRAFTS - Ecomerce",
       "client": "",
@@ -1057,7 +1154,8 @@
         },
         "url": "https://ggcrafts.com.br"
       },
-      "imported": "https://finetunemotion.myportfolio.com/ggcrafts-ecomerce"
+      "imported": "https://finetunemotion.myportfolio.com/ggcrafts-ecomerce",
+      "hidden": true
     },
     {
       "id": "lyric-video-me-leva-pra-casa",
@@ -1101,58 +1199,8 @@
         },
         "url": ""
       },
-      "imported": "https://finetunemotion.myportfolio.com/lyric-video-me-leva-pra-casa"
-    },
-    {
-      "id": "do-re-mundo-animacao-infantil",
-      "title": "Dó-Ré Mundo - Animação infantil",
-      "client": "Moove House",
-      "year": "",
-      "disciplines": "Animação Infantil",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "Children's animation produced with Moove House.",
-        "pt": "Animação infantil produzida com a Moove House."
-      },
-      "categories": [
-        "2d-animation"
-      ],
-      "tools": [
-        "after-effects",
-        "photoshop",
-        "illustrator"
-      ],
-      "cover": "media/do-re-mundo-animacao-infantil/00-bd34b7e1-e8b6-4538-a32d-a450b2f65649-rwc-30x0x1125x706x11.webp",
-      "video": "https://www.youtube.com/embed/f6R5hVuDpzo",
-      "gallery": [
-        "https://www.youtube.com/embed/wWvBAKApnuA",
-        "https://www.youtube.com/embed/20R4Sn1pwb4"
-      ],
-      "challenge": {
-        "en": "Teach and entertain young children with a simple, musical world.",
-        "pt": "Ensinar e divertir crianças pequenas com um mundo simples e musical."
-      },
-      "idea": {
-        "en": "Friendly characters and clear shapes, with movement driven by the music.",
-        "pt": "Personagens simpáticos e formas claras, com movimento guiado pela música."
-      },
-      "execution": {
-        "en": "Character and scene animation for the episodes.",
-        "pt": "Animação de personagens e cenários para os episódios."
-      },
-      "outcome": {
-        "en": "Animated content made for a young audience.",
-        "pt": "Conteúdo animado feito para o público infantil."
-      },
-      "role": "Animation",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      },
-      "imported": "https://finetunemotion.myportfolio.com/do-re-mundo-animacao-infantil"
+      "imported": "https://finetunemotion.myportfolio.com/lyric-video-me-leva-pra-casa",
+      "hidden": true
     },
     {
       "id": "yes-idiomas-matriculas-2018",
@@ -1202,57 +1250,8 @@
         },
         "url": ""
       },
-      "imported": "https://finetunemotion.myportfolio.com/yes-idiomas-matriculas-2018"
-    },
-    {
-      "id": "milky-way-motion-graphics",
-      "title": "Milky Way - Motion Graphics",
-      "client": "",
-      "year": "",
-      "disciplines": "Motion Graphics · Character Animation",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "Animated vignette with character animation.",
-        "pt": "Vinheta animada com animação de personagem."
-      },
-      "categories": [
-        "2d-animation"
-      ],
-      "tools": [
-        "after-effects",
-        "illustrator"
-      ],
-      "cover": "media/milky-way-motion-graphics/00-c914a8c66baf975b9397ac9be122c397a38a1928daecc89f6be49d90f.webp",
-      "video": "https://player.vimeo.com/video/228712006?autoplay=1&loop=1&title=0&byline=0&portrait=0&muted=1",
-      "gallery": [
-        "media/milky-way-motion-graphics/01-5b3179b9a5701a61ae9a31fba82a889923bb228df45153cca90ae6b8d.webp",
-        "https://www-ccv.adobe.io/v1/player/ccv/KP3Ki-NKjSr/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View"
-      ],
-      "challenge": {
-        "en": "Give a short vignette personality through a character.",
-        "pt": "Dar personalidade a uma vinheta curta através de um personagem."
-      },
-      "idea": {
-        "en": "A small cosmic story — character, motion and timing doing all the work in a few seconds.",
-        "pt": "Uma pequena história cósmica: personagem, movimento e timing resolvendo tudo em poucos segundos."
-      },
-      "execution": {
-        "en": "Character design and animation in a short vignette.",
-        "pt": "Design e animação de personagem numa vinheta curta."
-      },
-      "outcome": {
-        "en": "A playful vignette driven by character motion.",
-        "pt": "Uma vinheta divertida guiada pelo movimento do personagem."
-      },
-      "role": "Motion design · Character animation",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      },
-      "imported": "https://finetunemotion.myportfolio.com/milky-way-motion-graphics"
+      "imported": "https://finetunemotion.myportfolio.com/yes-idiomas-matriculas-2018",
+      "hidden": true
     },
     {
       "id": "personal-3d",
@@ -1335,7 +1334,8 @@
         "https://finetunemotion.myportfolio.com/shotem-up",
         "https://finetunemotion.myportfolio.com/nano-enemy",
         "https://finetunemotion.myportfolio.com/pgc-materials"
-      ]
+      ],
+      "hidden": true
     },
     {
       "id": "comfrio-3d-architecture",
@@ -1839,11 +1839,50 @@
         "pt": "Motion Design"
       },
       "text": {
-        "en": "Openings, campaigns and brand films where rhythm carries the idea.",
-        "pt": "Aberturas, campanhas e filmes de marca em que o ritmo conduz a ideia."
+        "en": "Brand films, campaigns and idents where rhythm carries the idea.",
+        "pt": "Filmes de marca, campanhas e vinhetas em que o ritmo conduz a ideia."
       },
       "cover": "reel/clip-03.webm",
       "tint": "#6bd6ff"
+    },
+    {
+      "id": "tv-show-cinema",
+      "name": {
+        "en": "Openings & Campaigns",
+        "pt": "Aberturas & Campanhas"
+      },
+      "text": {
+        "en": "Title sequences, launch films and campaign pieces for brands, TV and games.",
+        "pt": "Aberturas, filmes de lançamento e peças de campanha para marcas, TV e games."
+      },
+      "cover": "covers/hbo-bff.webp",
+      "tint": "#ff5fa2"
+    },
+    {
+      "id": "2d-animation",
+      "name": {
+        "en": "Animation",
+        "pt": "Animação"
+      },
+      "text": {
+        "en": "Character animation, music videos and illustrated worlds.",
+        "pt": "Animação de personagens, videoclipes e mundos ilustrados."
+      },
+      "cover": "media/gloria-e-aleluia-christmas-lyric-video/00-2d64d997-1e4b-4d03-a652-bfea4864d941-carw-16x10x1920.webp",
+      "tint": "#ffb35c"
+    },
+    {
+      "id": "ai-creative-tech",
+      "name": {
+        "en": "Behind the Work",
+        "pt": "Bastidores"
+      },
+      "text": {
+        "en": "How the work gets made: direction, pipeline and the tools behind it.",
+        "pt": "Como o trabalho é feito: direção, pipeline e as ferramentas por trás."
+      },
+      "cover": "media/combalista-making-of/making-of.mp4",
+      "tint": "#78D98A"
     },
     {
       "id": "3d-vfx",
@@ -1870,45 +1909,6 @@
       },
       "cover": "media/gate/teste-2.mp4",
       "tint": "#ffb35c"
-    },
-    {
-      "id": "ai-creative-tech",
-      "name": {
-        "en": "AI & Creative Tech",
-        "pt": "IA & Tecnologia Criativa"
-      },
-      "text": {
-        "en": "Generative tools, code and automation inside a directed pipeline.",
-        "pt": "Ferramentas generativas, código e automação dentro de um pipeline dirigido."
-      },
-      "cover": "media/combalista-making-of/making-of.mp4",
-      "tint": "#00ffe1"
-    },
-    {
-      "id": "2d-animation",
-      "name": {
-        "en": "",
-        "pt": "2D Animation "
-      },
-      "text": {
-        "en": "",
-        "pt": "2D simple and complex animations"
-      },
-      "cover": "",
-      "tint": "#8fd8ff"
-    },
-    {
-      "id": "tv-show-cinema",
-      "name": {
-        "en": "",
-        "pt": "TV Shows and Cinema"
-      },
-      "text": {
-        "en": "",
-        "pt": ""
-      },
-      "cover": "",
-      "tint": "#ff7300"
     }
   ]
 }
