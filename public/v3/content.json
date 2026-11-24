@@ -1,6 +1,6 @@
 {
   "format": "finetune-portfolio/1",
-  "updated": "2026-11-24T01:08:43.875Z",
+  "updated": "2026-11-24T01:13:50.551Z",
   "hero": {
     "eyebrow": {
       "en": "Senior Motion Designer · Art Director · Creative Technologist",
@@ -96,6 +96,214 @@
         "url": ""
       },
       "imported": "https://finetunemotion.myportfolio.com/reel-2017-2018"
+    },
+    {
+      "id": "bravecto",
+      "title": "Bravecto Experience",
+      "client": "",
+      "year": "",
+      "disciplines": "Art Direction · 3D · Immersive",
+      "tint": "#ffb35c",
+      "context": {
+        "en": "Art direction and 3D for an immersive brand experience.",
+        "pt": "Direção de arte e 3D para uma experiência de marca imersiva."
+      },
+      "categories": [
+        "tv-show-cinema"
+      ],
+      "tools": [
+        "after-effects",
+        "blender",
+        "photoshop",
+        "illustrator",
+        "elevenlabs",
+        "threejs"
+      ],
+      "cover": "media/bravecto/layer-3-3.webp",
+      "video": "https://www.youtube.com/embed/ccLV2Llamr4",
+      "gallery": [
+        "media/bravecto/layer-3.webp",
+        "media/bravecto/layer-1.webp",
+        "media/bravecto/02-3784ad5d-f1e6-4156-9cc1-2c30fc5512c0-rw-1200.webp",
+        "media/bravecto/01-c6e0ffa6-bdf5-4bde-914e-0ef67cd264ce-rw-1920.webp",
+        "media/bravecto/03-87068639-c6ae-4b47-8163-15dbd2a290a3-rw-1920.webp",
+        "media/bravecto/04-fd332715-f933-44ba-8033-051c572e159a-rw-1920.webp",
+        "covers/bravecto.webp"
+      ],
+      "challenge": {
+        "en": "Make an animal-health brand feel tangible and memorable in an immersive format.",
+        "pt": "Tornar uma marca de saúde animal tangível e memorável num formato imersivo."
+      },
+      "idea": {
+        "en": "Build a 3D world around the product so the audience experiences its benefits instead of reading about them.",
+        "pt": "Construir um mundo 3D em volta do produto para o público vivenciar seus benefícios, em vez de ler sobre eles."
+      },
+      "execution": {
+        "en": "Art direction of the 3D world, modeling, lighting and animation with a small team of storyboard, 3D and audio partners.",
+        "pt": "SB: Leandro Ricardo\n3D: Luiz Gustavo, Flavio Novi\nAudio: Jukebox\nArt director: Luiz Gustavo."
+      },
+      "outcome": {
+        "en": "An immersive brand piece that tells the product story through space and motion.",
+        "pt": "Uma peça imersiva que conta a história do produto através de espaço e movimento."
+      },
+      "role": "Art direction · 3D",
+      "link": {
+        "label": {
+          "en": "View on Behance",
+          "pt": "Ver no Behance"
+        },
+        "url": "https://www.behance.net/gallery/195282279/Bravecto-Experience-Direcao-de-projeto"
+      },
+      "imported": "https://finetunemotion.myportfolio.com/bravecto-experience-direcao-de-projeto"
+    },
+    {
+      "id": "craneleap",
+      "title": " Crane Craze - MagicLeap Game",
+      "client": "MagicLeap",
+      "year": "2018",
+      "disciplines": "3D - Video Production",
+      "tint": "#ffd500",
+      "context": {
+        "en": "",
+        "pt": ""
+      },
+      "categories": [
+        "tv-show-cinema"
+      ],
+      "tools": [
+        "after-effects",
+        "premiere",
+        "blender",
+        "unity"
+      ],
+      "cover": "media/craneleap/vv2.webp",
+      "video": "https://www.youtube.com/watch?v=I-PuuvlGF_I",
+      "gallery": [
+        "media/craneleap/cc.webp"
+      ],
+      "challenge": {
+        "en": "",
+        "pt": ""
+      },
+      "idea": {
+        "en": "",
+        "pt": ""
+      },
+      "execution": {
+        "en": "Turning game assets into motion graphics",
+        "pt": "Produção audiovisual para o jogo desenvolvido para a plataforma MagicLeap2 "
+      },
+      "outcome": {
+        "en": "",
+        "pt": ""
+      },
+      "role": "Art Direction - Scripting - Film - 3D VFX - Composition - Post Production",
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": ""
+      }
+    },
+    {
+      "id": "implanta-it-solution-explainer-video",
+      "title": "Implanta IT Solution - Explainer Vídeo",
+      "client": "Implanta It Solutions",
+      "year": "2018",
+      "disciplines": "Motion Graphics • Project Management • Art Direction",
+      "tint": "#8fd8ff",
+      "context": {
+        "en": "Explainer video presenting Implanta's IT solutions in a clear, friendly visual language.",
+        "pt": "Vídeo explicativo apresentando as soluções de TI da Implanta numa linguagem visual clara e amigável."
+      },
+      "categories": [
+        "motion-design"
+      ],
+      "tools": [
+        "after-effects",
+        "photoshop",
+        "illustrator"
+      ],
+      "cover": "media/implanta-it-solution-explainer-video/00-47ea311d-9cbb-477f-b5ec-1ddb521eaab0-carw-4x3x1920.webp",
+      "video": "https://player.vimeo.com/video/383414558",
+      "gallery": [],
+      "challenge": {
+        "en": "Explain a technical service to non-technical decision makers in very little time.",
+        "pt": "Explicar um serviço técnico para tomadores de decisão não técnicos em pouco tempo."
+      },
+      "idea": {
+        "en": "Turn abstract processes into simple visual metaphors carried by a steady narrative pace.",
+        "pt": "Transformar processos abstratos em metáforas visuais simples, com uma narrativa de ritmo constante."
+      },
+      "execution": {
+        "en": "Script breakdown, styleframes, 2D animation and sound sync, with project management through delivery.",
+        "pt": "Decupagem do roteiro, styleframes, animação 2D e sincronia com o áudio, com gestão do projeto até a entrega."
+      },
+      "outcome": {
+        "en": "A concise explainer the client could use in sales and presentations.",
+        "pt": "Um explicativo objetivo para o cliente usar em vendas e apresentações."
+      },
+      "role": "Art direction · Motion graphics · Project management",
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": ""
+      },
+      "imported": "https://finetunemotion.myportfolio.com/implanta-it-solution-explainer-video"
+    },
+    {
+      "id": "do-re-mundo-animacao-infantil",
+      "title": "Dó-Ré Mundo - Animação infantil",
+      "client": "Moove House",
+      "year": "",
+      "disciplines": "Animação Infantil",
+      "tint": "#8fd8ff",
+      "context": {
+        "en": "Children's animation produced with Moove House.",
+        "pt": "Animação infantil produzida com a Moove House."
+      },
+      "categories": [
+        "2d-animation"
+      ],
+      "tools": [
+        "after-effects",
+        "photoshop",
+        "illustrator"
+      ],
+      "cover": "media/do-re-mundo-animacao-infantil/00-bd34b7e1-e8b6-4538-a32d-a450b2f65649-rwc-30x0x1125x706x11.webp",
+      "video": "https://www.youtube.com/embed/f6R5hVuDpzo",
+      "gallery": [
+        "https://www.youtube.com/embed/wWvBAKApnuA",
+        "https://www.youtube.com/embed/20R4Sn1pwb4"
+      ],
+      "challenge": {
+        "en": "Teach and entertain young children with a simple, musical world.",
+        "pt": "Ensinar e divertir crianças pequenas com um mundo simples e musical."
+      },
+      "idea": {
+        "en": "Friendly characters and clear shapes, with movement driven by the music.",
+        "pt": "Personagens simpáticos e formas claras, com movimento guiado pela música."
+      },
+      "execution": {
+        "en": "Character and scene animation for the episodes.",
+        "pt": "Animação de personagens e cenários para os episódios."
+      },
+      "outcome": {
+        "en": "Animated content made for a young audience.",
+        "pt": "Conteúdo animado feito para o público infantil."
+      },
+      "role": "Animation",
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": ""
+      },
+      "imported": "https://finetunemotion.myportfolio.com/do-re-mundo-animacao-infantil"
     },
     {
       "id": "yes",
@@ -234,6 +442,53 @@
       "imported": "https://finetunemotion.myportfolio.com/conectivo-matriculas-abertas-sae-digital"
     },
     {
+      "id": "cooldown-animation-test-non-official",
+      "title": "CoolDown - Logo Intro",
+      "client": "Cooldown",
+      "year": "",
+      "disciplines": "Motion Design · 3D · Study",
+      "tint": "#8fd8ff",
+      "context": {
+        "en": "Non-official animation test made as a study.",
+        "pt": "Teste de animação não oficial, feito como estudo."
+      },
+      "categories": [
+        "motion-design"
+      ],
+      "tools": [
+        "after-effects",
+        "blender"
+      ],
+      "cover": "media/cooldown-animation-test-non-official/00-afc8cf98eda17ff99c8e7106f478a568f75685e01d4c7774dc2042055.webp",
+      "video": "https://player.vimeo.com/video/235693169?autoplay=1&loop=1&muted=1",
+      "gallery": [],
+      "challenge": {
+        "en": "Explore 3D inside After Effects using a real brand as reference.",
+        "pt": "Explorar 3D dentro do After Effects usando uma marca real como referência."
+      },
+      "idea": {
+        "en": "Treat it as a spot-style study: product, logo and motion in a short piece.",
+        "pt": "Tratar como um estudo em formato de spot: produto, logo e movimento numa peça curta."
+      },
+      "execution": {
+        "en": "Animation in After Effects with Element 3D.",
+        "pt": "Animação em After Effects com Element 3D."
+      },
+      "outcome": {
+        "en": "A self-initiated study of 3D-in-After-Effects workflows — not an official piece for the brand.",
+        "pt": "Um estudo autoral do fluxo de 3D no After Effects — não é uma peça oficial da marca."
+      },
+      "role": "Animation · 3D",
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": ""
+      },
+      "imported": "https://finetunemotion.myportfolio.com/cooldown-animation-test-non-official"
+    },
+    {
       "id": "cleopatra",
       "title": "Cleopatra",
       "client": "",
@@ -276,54 +531,6 @@
         "url": "https://www.behance.net/gallery/144381729/Paralax-animation-for-Mobile-game-Cleopatra"
       },
       "imported": "https://finetunemotion.myportfolio.com/paralax-animation-for-mobile-game-cleopatra"
-    },
-    {
-      "id": "implanta-it-solution-explainer-video",
-      "title": "Implanta IT Solution - Explainer Vídeo",
-      "client": "Implanta It Solutions",
-      "year": "2018",
-      "disciplines": "Motion Graphics • Project Management • Art Direction",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "Explainer video presenting Implanta's IT solutions in a clear, friendly visual language.",
-        "pt": "Vídeo explicativo apresentando as soluções de TI da Implanta numa linguagem visual clara e amigável."
-      },
-      "categories": [
-        "motion-design"
-      ],
-      "tools": [
-        "after-effects",
-        "photoshop",
-        "illustrator"
-      ],
-      "cover": "media/implanta-it-solution-explainer-video/00-47ea311d-9cbb-477f-b5ec-1ddb521eaab0-carw-4x3x1920.webp",
-      "video": "https://player.vimeo.com/video/383414558",
-      "gallery": [],
-      "challenge": {
-        "en": "Explain a technical service to non-technical decision makers in very little time.",
-        "pt": "Explicar um serviço técnico para tomadores de decisão não técnicos em pouco tempo."
-      },
-      "idea": {
-        "en": "Turn abstract processes into simple visual metaphors carried by a steady narrative pace.",
-        "pt": "Transformar processos abstratos em metáforas visuais simples, com uma narrativa de ritmo constante."
-      },
-      "execution": {
-        "en": "Script breakdown, styleframes, 2D animation and sound sync, with project management through delivery.",
-        "pt": "Decupagem do roteiro, styleframes, animação 2D e sincronia com o áudio, com gestão do projeto até a entrega."
-      },
-      "outcome": {
-        "en": "A concise explainer the client could use in sales and presentations.",
-        "pt": "Um explicativo objetivo para o cliente usar em vendas e apresentações."
-      },
-      "role": "Art direction · Motion graphics · Project management",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      },
-      "imported": "https://finetunemotion.myportfolio.com/implanta-it-solution-explainer-video"
     },
     {
       "id": "hbo-bff",
@@ -394,115 +601,6 @@
         "https://finetunemotion.myportfolio.com/vfx-abertura-o-melhor-verao-das-nossas-vidas",
         "https://finetunemotion.myportfolio.com/o-melhor-verao-das-nosas-vidas-abertura"
       ]
-    },
-    {
-      "id": "bravecto",
-      "title": "Bravecto Experience",
-      "client": "",
-      "year": "",
-      "disciplines": "Art Direction · 3D · Immersive",
-      "tint": "#ffb35c",
-      "context": {
-        "en": "Art direction and 3D for an immersive brand experience.",
-        "pt": "Direção de arte e 3D para uma experiência de marca imersiva."
-      },
-      "categories": [
-        "tv-show-cinema"
-      ],
-      "tools": [
-        "after-effects",
-        "blender",
-        "photoshop",
-        "illustrator",
-        "elevenlabs",
-        "threejs"
-      ],
-      "cover": "media/bravecto/layer-3-3.webp",
-      "video": "https://www.youtube.com/embed/ccLV2Llamr4",
-      "gallery": [
-        "media/bravecto/layer-3.webp",
-        "media/bravecto/layer-1.webp",
-        "media/bravecto/02-3784ad5d-f1e6-4156-9cc1-2c30fc5512c0-rw-1200.webp",
-        "media/bravecto/01-c6e0ffa6-bdf5-4bde-914e-0ef67cd264ce-rw-1920.webp",
-        "media/bravecto/03-87068639-c6ae-4b47-8163-15dbd2a290a3-rw-1920.webp",
-        "media/bravecto/04-fd332715-f933-44ba-8033-051c572e159a-rw-1920.webp",
-        "covers/bravecto.webp"
-      ],
-      "challenge": {
-        "en": "Make an animal-health brand feel tangible and memorable in an immersive format.",
-        "pt": "Tornar uma marca de saúde animal tangível e memorável num formato imersivo."
-      },
-      "idea": {
-        "en": "Build a 3D world around the product so the audience experiences its benefits instead of reading about them.",
-        "pt": "Construir um mundo 3D em volta do produto para o público vivenciar seus benefícios, em vez de ler sobre eles."
-      },
-      "execution": {
-        "en": "Art direction of the 3D world, modeling, lighting and animation with a small team of storyboard, 3D and audio partners.",
-        "pt": "SB: Leandro Ricardo\n3D: Luiz Gustavo, Flavio Novi\nAudio: Jukebox\nArt director: Luiz Gustavo."
-      },
-      "outcome": {
-        "en": "An immersive brand piece that tells the product story through space and motion.",
-        "pt": "Uma peça imersiva que conta a história do produto através de espaço e movimento."
-      },
-      "role": "Art direction · 3D",
-      "link": {
-        "label": {
-          "en": "View on Behance",
-          "pt": "Ver no Behance"
-        },
-        "url": "https://www.behance.net/gallery/195282279/Bravecto-Experience-Direcao-de-projeto"
-      },
-      "imported": "https://finetunemotion.myportfolio.com/bravecto-experience-direcao-de-projeto"
-    },
-    {
-      "id": "craneleap",
-      "title": " Crane Craze - MagicLeap Game",
-      "client": "MagicLeap",
-      "year": "2018",
-      "disciplines": "3D - Video Production",
-      "tint": "#ffd500",
-      "context": {
-        "en": "",
-        "pt": ""
-      },
-      "categories": [
-        "tv-show-cinema"
-      ],
-      "tools": [
-        "after-effects",
-        "premiere",
-        "blender",
-        "unity"
-      ],
-      "cover": "media/craneleap/vv2.webp",
-      "video": "https://www.youtube.com/watch?v=I-PuuvlGF_I",
-      "gallery": [
-        "media/craneleap/cc.webp"
-      ],
-      "challenge": {
-        "en": "",
-        "pt": ""
-      },
-      "idea": {
-        "en": "",
-        "pt": ""
-      },
-      "execution": {
-        "en": "Turning game assets into motion graphics",
-        "pt": "Produção audiovisual para o jogo desenvolvido para a plataforma MagicLeap2 "
-      },
-      "outcome": {
-        "en": "",
-        "pt": ""
-      },
-      "role": "Art Direction - Scripting - Film - 3D VFX - Composition - Post Production",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      }
     },
     {
       "id": "gloria-e-aleluia-christmas-lyric-video",
@@ -705,57 +803,6 @@
       "imported": "https://finetunemotion.myportfolio.com/voo-sem-retorno-animacao"
     },
     {
-      "id": "do-re-mundo-animacao-infantil",
-      "title": "Dó-Ré Mundo - Animação infantil",
-      "client": "Moove House",
-      "year": "",
-      "disciplines": "Animação Infantil",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "Children's animation produced with Moove House.",
-        "pt": "Animação infantil produzida com a Moove House."
-      },
-      "categories": [
-        "2d-animation"
-      ],
-      "tools": [
-        "after-effects",
-        "photoshop",
-        "illustrator"
-      ],
-      "cover": "media/do-re-mundo-animacao-infantil/00-bd34b7e1-e8b6-4538-a32d-a450b2f65649-rwc-30x0x1125x706x11.webp",
-      "video": "https://www.youtube.com/embed/f6R5hVuDpzo",
-      "gallery": [
-        "https://www.youtube.com/embed/wWvBAKApnuA",
-        "https://www.youtube.com/embed/20R4Sn1pwb4"
-      ],
-      "challenge": {
-        "en": "Teach and entertain young children with a simple, musical world.",
-        "pt": "Ensinar e divertir crianças pequenas com um mundo simples e musical."
-      },
-      "idea": {
-        "en": "Friendly characters and clear shapes, with movement driven by the music.",
-        "pt": "Personagens simpáticos e formas claras, com movimento guiado pela música."
-      },
-      "execution": {
-        "en": "Character and scene animation for the episodes.",
-        "pt": "Animação de personagens e cenários para os episódios."
-      },
-      "outcome": {
-        "en": "Animated content made for a young audience.",
-        "pt": "Conteúdo animado feito para o público infantil."
-      },
-      "role": "Animation",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      },
-      "imported": "https://finetunemotion.myportfolio.com/do-re-mundo-animacao-infantil"
-    },
-    {
       "id": "milky-way-motion-graphics",
       "title": "Milky Way - Motion Graphics",
       "client": "",
@@ -901,54 +948,6 @@
         },
         "url": ""
       }
-    },
-    {
-      "id": "cooldown-animation-test-non-official",
-      "title": "CoolDown - Animation test (non-official)",
-      "client": "Cooldown",
-      "year": "",
-      "disciplines": "Motion Design · 3D · Study",
-      "tint": "#8fd8ff",
-      "context": {
-        "en": "Non-official animation test made as a study.",
-        "pt": "Teste de animação não oficial, feito como estudo."
-      },
-      "categories": [
-        "motion-design"
-      ],
-      "tools": [
-        "after-effects",
-        "blender"
-      ],
-      "cover": "media/cooldown-animation-test-non-official/00-afc8cf98eda17ff99c8e7106f478a568f75685e01d4c7774dc2042055.webp",
-      "video": "https://player.vimeo.com/video/235693169?autoplay=1&loop=1&muted=1",
-      "gallery": [],
-      "challenge": {
-        "en": "Explore 3D inside After Effects using a real brand as reference.",
-        "pt": "Explorar 3D dentro do After Effects usando uma marca real como referência."
-      },
-      "idea": {
-        "en": "Treat it as a spot-style study: product, logo and motion in a short piece.",
-        "pt": "Tratar como um estudo em formato de spot: produto, logo e movimento numa peça curta."
-      },
-      "execution": {
-        "en": "Animation in After Effects with Element 3D.",
-        "pt": "Animação em After Effects com Element 3D."
-      },
-      "outcome": {
-        "en": "A self-initiated study of 3D-in-After-Effects workflows — not an official piece for the brand.",
-        "pt": "Um estudo autoral do fluxo de 3D no After Effects — não é uma peça oficial da marca."
-      },
-      "role": "Animation · 3D",
-      "link": {
-        "label": {
-          "en": "View project",
-          "pt": "Ver projeto"
-        },
-        "url": ""
-      },
-      "imported": "https://finetunemotion.myportfolio.com/cooldown-animation-test-non-official",
-      "hidden": true
     },
     {
       "id": "gabriel-guedes-oferta-agradavel-lyric",
