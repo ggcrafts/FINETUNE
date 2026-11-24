@@ -1004,12 +1004,19 @@ function openCat(k, at = 0) {
   if (!CATS[k]) return;
   if (S.cat < 0) pushHist("cat");
   const c = CATS[k], sw = S.cat >= 0 && S.cat !== k; S.cat = k; S.catShown = k; S.slideT = clamp(at, 0, c.jobs.length - 1); if (S.catT < 0.05 || sw) S.slide = S.slideT;
-  setGate(k, true); if (scrollY > 2) scrollTo(0, 0);
+  setGate(k, true); hdrCat(k); if (scrollY > 2) scrollTo(0, 0);
   document.body.classList.add("is-cat");
   $("#catName").textContent = L() === "pt" ? c.nameP : c.name;
   $("#catDots").replaceChildren(...c.jobs.map((ji, i) => { const b = document.createElement("button"); b.type = "button"; b.setAttribute("aria-label", PROJECTS[ji].title); b.onclick = () => slideTo(i); return b; }));
   S.capKey = "";
   setTimeout(() => { waves.trace(flankL, { strength: 1 }); waves.trace(flankR, { strength: 1, up: true }); }, 420);
+}
+// header title while inside a category: "CH 02  3D & VFX", in the category's LED colour
+function hdrCat(k) {
+  const c = CATS[k]; if (!c) return;
+  $("#hdrCatName").textContent = L() === "pt" ? c.nameP : c.name;
+  $("#hdrCatCh").textContent = "CH " + String(k + 1).padStart(2, "0");
+  $("#hdrCat").style.setProperty("--c", GATE[k] ? GATE[k].led : "var(--green)");
 }
 function closeCatNow() { if (S.cat < 0) return; S.cat = -1; document.body.classList.remove("is-cat"); S.capKey = ""; }
 /* Browser / phone Back button: an open category and an open case each add a history entry, so
@@ -1183,7 +1190,7 @@ $("#lang").addEventListener("click", () => {
   document.querySelectorAll("[data-i18n]").forEach((el) => (el.textContent = (S.lang === "pt" && I18N.pt[el.dataset.i18n]) || EN[el.dataset.i18n]));
   if (knob) knob.setLabel(S.lang === "pt" ? I18N.pt.gateCta : "Press to enter");
   buildStations(); buildRing(); { const g = Math.max(0, gateIdx); gateIdx = -2; quietTune = true; setGate(g, false); quietTune = false; }
-  setMotionLabel(); buildRows(); buildProcess(); if (S.active >= 0) onActive(S.active); if (S.caseOpen) openCase(caseIdx); S.capKey = ""; if (S.cat >= 0) $("#catName").textContent = L() === "pt" ? CATS[S.cat].nameP : CATS[S.cat].name;
+  setMotionLabel(); buildRows(); buildProcess(); if (S.active >= 0) onActive(S.active); if (S.caseOpen) openCase(caseIdx); S.capKey = ""; if (S.cat >= 0) { $("#catName").textContent = L() === "pt" ? CATS[S.cat].nameP : CATS[S.cat].name; hdrCat(S.cat); }
 });
 const setMotionLabel = () => { $("#motionLbl").textContent = S.lang === "pt" ? (S.motion ? "Movimento on" : "Movimento off") : S.motion ? "Motion on" : "Motion off"; $("#motion").setAttribute("aria-pressed", S.motion); };
 $("#motion").addEventListener("click", () => { S.motion = !S.motion; setMotionLabel(); });

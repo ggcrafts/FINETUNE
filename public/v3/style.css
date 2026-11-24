@@ -626,3 +626,25 @@ body:not(.show-process) .process{display:none}
 /* the header and the bottom bar sit above the dial, so their buttons (language, motion, let's
    talk, menu) are clicked themselves instead of the dial behind them */
 .hdr,.dock,.talk{z-index:40}
+
+/* the station the dial rests on: its ring label grows, turns bold and takes the LED colour (all screens) */
+.gate__ring text{transition:font-size .35s var(--ease),fill .35s,font-weight .35s}
+.gate__ring text.on{font-size:13.5px;font-weight:700;fill:var(--led);letter-spacing:.18em}
+.lite .gate__ring text.on{font-size:15px}
+/* the readout under the wordmark: the station name reads first */
+.gate__sub b{font:600 clamp(.875rem,1.05vw,1.0625rem)/1.2 var(--f-mono);letter-spacing:.16em;color:var(--pearl);text-shadow:0 0 14px color-mix(in srgb,var(--led) 45%,transparent)}
+/* header title inside a category (replaces the menu while a category is open) */
+.hdr{position:fixed}
+.hdr__cat{position:absolute;left:50%;top:50%;transform:translate(-50%,-30%);display:flex;align-items:baseline;gap:12px;opacity:0;pointer-events:none;white-space:nowrap;transition:opacity .35s,transform .45s var(--ease)}
+.hdr__cat i{align-self:center;width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 12px var(--c)}
+.hdr__cat small{font:500 .625rem var(--f-mono);letter-spacing:.22em;color:var(--c)}
+.hdr__cat b{font:600 clamp(1.05rem,1.5vw,1.5rem)/1 var(--f-head);letter-spacing:-.02em;color:var(--pearl)}
+.is-cat .hdr__cat{opacity:1;transform:translate(-50%,-50%)}
+.is-cat .nav{opacity:0;pointer-events:none}
+.nav{transition:opacity .3s}
+@media (max-width:600px){
+  .hdr__cat{left:auto;right:var(--pad);transform:translateY(-30%);max-width:60vw}
+  .is-cat .hdr__cat{transform:translateY(-50%)}
+  .hdr__cat b{font-size:1rem;overflow:hidden;text-overflow:ellipsis}
+  .is-cat .hdr__count{opacity:0}
+}
