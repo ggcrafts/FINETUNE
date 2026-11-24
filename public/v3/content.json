@@ -1,6 +1,6 @@
 {
   "format": "finetune-portfolio/1",
-  "updated": "2026-11-20T21:48:29.282Z",
+  "updated": "2026-11-24T00:43:34.627Z",
   "hero": {
     "eyebrow": {
       "en": "Senior Motion Designer · Art Director · Creative Technologist",
@@ -109,8 +109,8 @@
         "pt": "Direção de arte e 3D para uma experiência de marca imersiva."
       },
       "categories": [
-        "art-direction",
-        "3d-vfx"
+        "3d-vfx",
+        "art-direction"
       ],
       "tools": [
         "after-effects",
@@ -169,6 +169,7 @@
         "pt": "Vídeo explicativo apresentando as soluções de TI da Implanta numa linguagem visual clara e amigável."
       },
       "categories": [
+        "2d-animation",
         "motion-design",
         "art-direction"
       ],
@@ -218,8 +219,7 @@
         "pt": "VFX, 3D e aberturas para três produções da HBO Max: BFF Nossa Voz, Use Sua Voz e O Melhor Verão das Nossas Vidas."
       },
       "categories": [
-        "3d-vfx",
-        "motion-design"
+        "tv-show-cinema"
       ],
       "tools": [
         "after-effects",
@@ -469,7 +469,6 @@
         "pt": "Lyric video de 'Oferta Agradável', de Gabriel Guedes."
       },
       "categories": [
-        "motion-design",
         "3d-vfx"
       ],
       "tools": [
@@ -522,8 +521,7 @@
         "pt": "Ilustração e animação criadas para vídeo clipe infantil de Gabriel Guedes."
       },
       "categories": [
-        "motion-design",
-        "art-direction"
+        "2d-animation"
       ],
       "tools": [
         "after-effects",
@@ -574,8 +572,7 @@
         "pt": "Desenvolvimento de personagens, cenário e animações para videoclipe infantil. Música de Débora Cabral"
       },
       "categories": [
-        "motion-design",
-        "art-direction"
+        "2d-animation"
       ],
       "tools": [],
       "cover": "media/videoclipe-o-amor-de-deus/00-b0d9c94f-1c65-4c5d-a797-82a5384dff28-carw-16x10x1920.webp",
@@ -627,7 +624,7 @@
         "pt": "Lyric video de Natal de 'Glória e Aleluia', de Gabriel Guedes."
       },
       "categories": [
-        "motion-design",
+        "2d-animation",
         "art-direction"
       ],
       "tools": [
@@ -679,7 +676,7 @@
         "pt": "Animação 3D com personagem 2D"
       },
       "categories": [
-        "motion-design",
+        "2d-animation",
         "3d-vfx"
       ],
       "tools": [
@@ -731,8 +728,7 @@
         "pt": "Videoclipe animado de 'Vôo sem retorno', de Jocelino Rodrigues."
       },
       "categories": [
-        "motion-design",
-        "art-direction"
+        "2d-animation"
       ],
       "tools": [
         "after-effects",
@@ -779,7 +775,7 @@
         "pt": "Vinhetas animadas para o Alcance KIDS, programa infantil da Comunidade Alcance."
       },
       "categories": [
-        "motion-design"
+        "2d-animation"
       ],
       "tools": [],
       "cover": "media/alcance-kids-vinhetas/00-d8c20f5a-2cdd-4c71-8110-cb7fdbd2128f-carw-16x10x1920.webp",
@@ -968,16 +964,16 @@
     {
       "id": "lyric-video-me-leva-pra-casa",
       "title": "Me leva pra casa - Lyric Vídeo",
-      "client": "",
-      "year": "",
+      "client": "Israel Subirá",
+      "year": "2017",
       "disciplines": "Lyric Video · Typography",
-      "tint": "#8fd8ff",
+      "tint": "#ffc800",
       "context": {
         "en": "Lyric video for 'Me leva pra casa'.",
         "pt": "Lyric video de 'Me leva pra casa'."
       },
       "categories": [
-        "motion-design"
+        "2d-animation"
       ],
       "tools": [],
       "cover": "media/lyric-video-me-leva-pra-casa/00-5604b6d6-4c31-4d07-930e-ccd44e9a191a-rwc-0x145x1280x802x1.webp",
@@ -996,7 +992,7 @@
         "pt": "Design tipográfico e animação da letra, sincronizados com a música."
       },
       "outcome": {
-        "en": "A lyric video ready for release on YouTube and social channels.",
+        "en": "A lyric video released on YouTube with +227 milion Views",
         "pt": "Um lyric video pronto para lançamento no YouTube e nas redes."
       },
       "role": "Motion design",
@@ -1021,7 +1017,7 @@
         "pt": "Animação infantil produzida com a Moove House."
       },
       "categories": [
-        "motion-design"
+        "2d-animation"
       ],
       "tools": [
         "after-effects",
@@ -1072,8 +1068,7 @@
         "pt": "Teste de animação não oficial, feito como estudo."
       },
       "categories": [
-        "motion-design",
-        "3d-vfx"
+        "motion-design"
       ],
       "tools": [
         "after-effects",
@@ -1170,7 +1165,7 @@
         "pt": "Vinheta animada com animação de personagem."
       },
       "categories": [
-        "motion-design"
+        "2d-animation"
       ],
       "tools": [
         "after-effects",
@@ -1220,7 +1215,7 @@
         "pt": "Estudos e exercícios autorais de 3D: modelagem, materiais, lookdev e cenários de game art."
       },
       "categories": [
-        "3d-vfx"
+        "art-direction"
       ],
       "tools": [],
       "cover": "media/deep/00-c4dc5d64-b25c-49a2-8751-b46a2d934bb4-carw-4x3x1920.webp",
@@ -1341,6 +1336,57 @@
       },
       "hidden": true,
       "imported": "https://finetunemotion.myportfolio.com/comfrio-3d-architecture"
+    },
+    {
+      "id": "craneleap",
+      "title": " Crane Craze - MagicLeap Game",
+      "client": "MagicLeap",
+      "year": "2018",
+      "disciplines": "3D - Video Production",
+      "tint": "#ffd500",
+      "context": {
+        "en": "",
+        "pt": ""
+      },
+      "categories": [
+        "motion-design",
+        "3d-vfx"
+      ],
+      "tools": [
+        "after-effects",
+        "premiere",
+        "blender",
+        "unity"
+      ],
+      "cover": "media/craneleap/vv2.webp",
+      "video": "https://www.youtube.com/watch?v=I-PuuvlGF_I",
+      "gallery": [
+        "media/craneleap/cc.webp"
+      ],
+      "challenge": {
+        "en": "",
+        "pt": ""
+      },
+      "idea": {
+        "en": "",
+        "pt": ""
+      },
+      "execution": {
+        "en": "Turning game assets into motion graphics",
+        "pt": "Produção audiovisual para o jogo desenvolvido para a plataforma MagicLeap2 "
+      },
+      "outcome": {
+        "en": "",
+        "pt": ""
+      },
+      "role": "Art Direction - Scripting - Film - 3D VFX - Composition - Post Production",
+      "link": {
+        "label": {
+          "en": "View project",
+          "pt": "Ver projeto"
+        },
+        "url": ""
+      }
     }
   ],
   "practices": [
@@ -1837,6 +1883,32 @@
       },
       "cover": "media/combalista-making-of/making-of.mp4",
       "tint": "#00ffe1"
+    },
+    {
+      "id": "2d-animation",
+      "name": {
+        "en": "",
+        "pt": "2D Animation "
+      },
+      "text": {
+        "en": "",
+        "pt": "2D simple and complex animations"
+      },
+      "cover": "",
+      "tint": "#8fd8ff"
+    },
+    {
+      "id": "tv-show-cinema",
+      "name": {
+        "en": "",
+        "pt": "TV Shows and Cinema"
+      },
+      "text": {
+        "en": "",
+        "pt": ""
+      },
+      "cover": "",
+      "tint": "#ff7300"
     }
   ]
 }
