@@ -5,8 +5,8 @@ cd /d "%~dp0"
 echo.
 echo   FineTune  /  Portfolio Update
 echo   ------------------------------------------------------------
-echo   Editor de conteudo do site v3 (jobs, imagens, videos, textos).
-echo   Salva em public\v3\content.json e importa midia para public\v3\media\
+echo   Editor de conteudo do site v4 (especialista): diretrizes, reels, cases, skills do knob.
+echo   Salva em public\v4\content.json e importa midia para public\v3\media\ (biblioteca)
 echo.
 where node >nul 2>nul
 if errorlevel 1 (

@@ -1,14 +1,15 @@
 // Portfolio Update — dev-server API for the content editor (portfolio-update/index.html).
 //
 // Only active in `vite` dev mode (apply: "serve"); production builds never include it.
-// Everything it writes stays inside public/v3/ (content.json + media) and
-// portfolio-update/.backups/ (one copy of content.json per save, last 30 kept).
+// v4: the content lives in public/v4/content.json; media stays in the shared library in
+// public/v3/ (media/, covers/, portrait/, reel/, tools/ — content paths are relative to it).
+// Backups: portfolio-update/.backups/ (one copy of content.json per save, last 30 kept).
 //
 //   GET  /__portfolio/status            → { ok, content, site }
-//   GET  /__portfolio/content           → public/v3/content.json
+//   GET  /__portfolio/content           → public/v4/content.json
 //   PUT  /__portfolio/content           → validates + writes content.json (backup first)
 //   POST /__portfolio/upload?dir=&name= → raw file body → public/v3/<dir>/<name> (unique name)
-//   GET  /__portfolio/files             → every image / video under the v3 media folders
+//   GET  /__portfolio/files             → every image / video under the media folders
 //   POST /__portfolio/publish           → opens publish.bat in its own window (Windows)
 //   GET  /__portfolio/remote?url=       → fetches a page or image from an Adobe Portfolio site
 //                                         (*.myportfolio.com only) for the Importar page
@@ -47,7 +48,7 @@ async function webVideo(absDir: string, file: string): Promise<string> {
   return out;
 }
 
-const MEDIA_ROOTS = ["media", "covers", "practice", "portrait", "reel", "tools"];
+const MEDIA_ROOTS = ["media", "covers", "practice", "portrait", "reel", "tools"];   // inside public/v3
 const MEDIA_EXT = /\.(png|jpe?g|webp|avif|gif|svg|mp4|webm|mov)$/i;
 const MAX_UPLOAD = 300 * 1024 * 1024;
 const KEEP_BACKUPS = 30;
@@ -115,8 +116,8 @@ export function portfolioUpdate(): Plugin {
     apply: "serve",
     configureServer(server) {
       const root = server.config.root;
-      const site = path.join(root, "public", "v3");
-      const contentFile = path.join(site, "content.json");
+      const site = path.join(root, "public", "v3");                 // media library
+      const contentFile = path.join(root, "public", "v4", "content.json");
       const backups = path.join(root, "portfolio-update", ".backups");
 
       async function handle(req: IncomingMessage, res: ServerResponse): Promise<void> {
@@ -135,7 +136,7 @@ export function portfolioUpdate(): Plugin {
         }
 
         if (route === "GET /content") {
-          if (!fs.existsSync(contentFile)) return send(res, 404, { error: "public/v3/content.json not found" });
+          if (!fs.existsSync(contentFile)) return send(res, 404, { error: "public/v4/content.json not found" });
           res.setHeader("content-type", "application/json; charset=utf-8");
           res.setHeader("cache-control", "no-store");
           res.end(await fsp.readFile(contentFile));
@@ -146,7 +147,7 @@ export function portfolioUpdate(): Plugin {
           const raw = (await readBody(req, 10 * 1024 * 1024)).toString("utf8");
           let data: { format?: string; jobs?: unknown };
           try { data = JSON.parse(raw); } catch { return send(res, 400, { error: "invalid JSON" }); }
-          if (!data || data.format !== "finetune-portfolio/1" || !Array.isArray(data.jobs)) return send(res, 400, { error: "not a FineTune content file" });
+          if (!data || data.format !== "finetune-portfolio/2" || !Array.isArray(data.jobs)) return send(res, 400, { error: "not a FineTune v4 content file (finetune-portfolio/2)" });
           await fsp.mkdir(backups, { recursive: true });
           if (fs.existsSync(contentFile)) {
             const stamp = new Date().toISOString().replace(/[:.]/g, "-");

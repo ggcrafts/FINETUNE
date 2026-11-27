@@ -1,18 +1,23 @@
-// Portfolio Update — content editor for the FineTune v3 site.
-// Reads / writes public/v3/content.json and imports media into public/v3/media/
-// through the dev-server API in ./plugin.ts. Run it with portfolio-update.bat.
+// Portfolio Update — content editor for the FineTune v4 site (specialist portfolio).
+// Reads / writes public/v4/content.json and imports media into the shared library in
+// public/v3/ (media/, covers/, portrait/, reel/, tools/) through the dev-server API in
+// ./plugin.ts. Run it with portfolio-update.bat. The v4 pages (Diretrizes, Posicionamento,
+// Reels, Organizar, Skills, Versões por vaga) live in ./specialist.js.
 
 import "@fontsource-variable/space-grotesk";
 import "@fontsource-variable/inter";
 import "@fontsource/ibm-plex-mono/400.css";
 import "@fontsource/ibm-plex-mono/500.css";
+import { createSpecialist } from "./specialist.js";
 
 const API = "/__portfolio";
-const SITE = "/v3/";
+const SITE = "/v4/";            // the site the preview shows
+const MEDIA = "/v3/";           // the shared media library (content.json paths are relative to it)
+const FORMAT = "finetune-portfolio/2";
 const DRAFT_KEY = "portfolio-update:draft";
 const DIRTY_KEY = "portfolio-update:dirty";
 const WRITE = { "x-portfolio-update": "1" };
-const COVER_RATIO = 404 / 316;   // the glass panes in the 3D gallery
+const COVER_RATIO = 16 / 10;     // the case cards in v4
 const PRACTICE_RATIO = 4 / 3;    // the lens in Fields of practice
 
 /* ───────────── helpers ───────────── */
@@ -37,7 +42,7 @@ const isVideo = (p) => /\.(mp4|webm|mov)(\?|$)/i.test(p || "");
 const T = (o, k) => { if (!o[k] || typeof o[k] !== "object") o[k] = { en: typeof o[k] === "string" ? o[k] : "", pt: "" }; return o[k]; };
 const tv = (v, l = "en") => (v == null ? "" : typeof v === "string" ? v : v[l] || v.en || "");
 const bust = new Map();
-const url = (p) => (/^https?:/.test(p) ? p : SITE + p + (bust.has(p) ? "?v=" + bust.get(p) : ""));
+const url = (p) => (/^https?:/.test(p) ? p : MEDIA + p + (bust.has(p) ? "?v=" + bust.get(p) : ""));
 
 function embedOf(u) {
   u = (u || "").trim(); if (!u) return null;
@@ -67,11 +72,13 @@ const curJob = () => jobs().find((j) => j.id === E.sel.id);
 function blankJob(id) {
   return { id, title: "", client: "", year: String(new Date().getFullYear()), disciplines: "", tint: "#8fd8ff", context: { en: "", pt: "" },
     categories: [], tools: [], cover: "", video: "", gallery: [], challenge: { en: "", pt: "" }, idea: { en: "", pt: "" }, execution: { en: "", pt: "" }, outcome: { en: "", pt: "" },
-    role: "", link: { label: { en: "View project", pt: "Ver projeto" }, url: "" } };
+    role: "", tier: "archive", breakdown: "", link: { label: { en: "View project", pt: "Ver projeto" }, url: "" } };
 }
 function blankContent() {
   const t = () => ({ en: "", pt: "" });
-  return { format: "finetune-portfolio/1", updated: "", hero: { eyebrow: t(), lead: t() }, gate: Array.from({ length: 8 }, () => ({ name: "", media: "" })),
+  return { format: FORMAT, media: "../v3/", updated: "",
+    positioning: { specialty: t(), line: t(), secondary: t(), facts: t(), loop: "", poster: "" },
+    reels: [{ id: "main", kind: "main", name: t(), video: "", poster: "", duration: "", note: "" }], primaryReel: "main", skills: [], profiles: [], hero: { eyebrow: t(), lead: t() }, gate: Array.from({ length: 8 }, () => ({ name: "", media: "" })),
     categories: [], tools: [], jobs: [], practices: Array.from({ length: 4 }, (_, i) => ({ title: t(), keys: t(), text: t(), image: "", tint: "#8fd8ff", jobs: [] })),
     process: Array.from({ length: 5 }, () => ({ name: t(), keys: t(), text: t(), era: { year: "", title: t(), where: t() } })),
     about: { name: "", role: t(), bio: t(), availability: t(), facts: [0, 1, 2].map(() => ({ label: t(), value: t() })), email: "", linkedin: "", behance: "", portrait: "" } };
@@ -124,7 +131,7 @@ async function save() {
   try {
     await api("/content", { method: "PUT", headers: { ...WRITE, "content-type": "application/json" }, body: JSON.stringify(E.data) });
     E.dirty = false; E.savedAt = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-    renderState(); writeDraft(); toast("Salvo em public/v3/content.json", "ok");
+    renderState(); writeDraft(); toast("Salvo em public/v4/content.json", "ok");
     return true;
   } catch (e) { toast("Não salvou: " + e.message, "err", 8000); return false; }
 }
@@ -313,34 +320,44 @@ function gallery(j) {
       h("small", { class: "f__h" }, "Imagens são convertidas para WebP (até 2400 px) em v3/media/" + j.id + "/")),
     grid);
 }
-function video(j) {
+/** video slot: YouTube / Vimeo / https link, or an imported .mp4 / .webm (obj[key]) */
+function videoField(obj, key, { dir, empty = "Sem vídeo." } = {}) {
   const out = h("div", { class: "vid__pv" }), st = h("small", { class: "f__h" });
-  const inp = h("input", { class: "in", value: j.video || "", placeholder: "https://youtu.be/…   ·   https://vimeo.com/…   ·   ou importe um .mp4 / .webm" });
+  const inp = h("input", { class: "in", value: obj[key] || "", placeholder: "https://youtu.be/…   ·   https://vimeo.com/…   ·   ou importe um .mp4 / .webm" });
+  const bar = h("div", { class: "row" });
   const draw = () => {
-    const e = embedOf(j.video);
-    st.replaceChildren(!j.video ? "Sem vídeo: o case abre na capa." : e ? h("span", { class: "ok" }, "✓ " + e.what) : h("span", { class: "warn" }, "Link não reconhecido — use YouTube, Vimeo, um https:// ou um arquivo importado."));
+    const e = embedOf(obj[key]);
+    st.replaceChildren(!obj[key] ? empty : e ? h("span", { class: "ok" }, "✓ " + e.what) : h("span", { class: "warn" }, "Link não reconhecido — use YouTube, Vimeo, um https:// ou um arquivo importado."));
     out.replaceChildren(...(e ? [e.kind === "iframe" ? h("iframe", { src: e.src, allow: "fullscreen; picture-in-picture; encrypted-media", allowfullscreen: true, loading: "lazy", title: "Vídeo" }) : h("video", { src: e.src, controls: true, playsinline: true, preload: "metadata" })] : []));
+    bar.replaceChildren(st,
+      h("button", { class: "mini", type: "button", onclick: async () => { const f = await pick({ accept: "video/mp4,video/webm" }); if (!f.length) return; const [p] = await importFiles(f, { dir: dir() }); if (p) { inp.value = obj[key] = p; changed(); draw(); } } }, "Importar arquivo de vídeo"),
+      obj[key] && h("button", { class: "mini", type: "button", onclick: () => { inp.value = obj[key] = ""; changed(); draw(); } }, "Remover"));
   };
-  const commit = debounce(() => { j.video = inp.value.trim(); changed(); draw(); }, 500);
+  const commit = debounce(() => { obj[key] = inp.value.trim(); changed(); draw(); }, 500);
   inp.addEventListener("input", commit);
   draw();
-  return h("div", { class: "vid" }, inp,
-    h("div", { class: "row" }, st,
-      h("button", { class: "mini", type: "button", onclick: async () => { const f = await pick({ accept: "video/mp4,video/webm" }); if (!f.length) return; const [p] = await importFiles(f, { dir: `media/${j.id}` }); if (p) { inp.value = j.video = p; changed(); draw(); } } }, "Importar arquivo de vídeo"),
-      j.video && h("button", { class: "mini", type: "button", onclick: () => { inp.value = j.video = ""; changed(); draw(); } }, "Remover")),
-    out);
+  return h("div", { class: "vid" }, inp, bar, out);
 }
+const video = (j) => videoField(j, "video", { dir: () => `media/${j.id}`, empty: "Sem vídeo: o case abre na capa." });
+
+/* ───────────── v4 specialist pages (./specialist.js) ───────────── */
+const SP = createSpecialist({ E, h, field, sec, tr, txt, color, media, videoField, toolPicker: (o) => toolPicker(o), select: (s) => select(s), changed, renderMain: () => renderMain(),
+  tv, pad, url, isVideo, toast, slug });
 
 /* ───────────── nav ───────────── */
 const PAGES = [
-  { type: "categories", i: "01", t: "Categorias", sub: "As lâminas do corredor" },
-  { type: "hero", i: "02", t: "Hero & Gate", sub: "Abertura e as 8 prévias do anel" },
-  { type: "practices", i: "03", t: "Práticas", sub: "As 4 disciplinas" },
-  { type: "process", i: "04", t: "Processo & Carreira", sub: "5 fases + anos de trajetória" },
-  { type: "about", i: "05", t: "Sobre & Contato", sub: "Cartão, foto e links" },
-  { type: "tools", i: "06", t: "Ferramentas", sub: "Ícones disponíveis para os jobs" },
-  { type: "import", i: "07", t: "Importar", sub: "Trazer jobs do Adobe Portfolio" },
+  { type: "guide", i: "00", t: "Diretrizes", sub: "Checklist de especialista" },
+  { type: "positioning", i: "01", t: "Posicionamento", sub: "Especialidade, frase e hero" },
+  { type: "reels", i: "02", t: "Reels", sub: "Principal, versões e breakdown" },
+  { type: "organize", i: "03", t: "Organizar", sub: "Cases principais · apoio · lab · arquivo" },
+  { type: "skills", i: "04", t: "Skills (knob)", sub: "Estações do knob e suas provas" },
+  { type: "profiles", i: "05", t: "Versões por vaga", sub: "Links ?for= por candidatura" },
+  { type: "categories", i: "06", t: "Categorias", sub: "Filtros do índice" },
+  { type: "about", i: "07", t: "Sobre & Contato", sub: "Cartão, foto e links" },
+  { type: "tools", i: "08", t: "Ferramentas", sub: "Ícones disponíveis para os jobs" },
+  { type: "import", i: "09", t: "Importar", sub: "Trazer jobs do Adobe Portfolio" },
 ];
+const TIER_TAG = { flagship: "principal", featured: "apoio", lab: "lab" };
 function select(sel) { E.sel = sel; renderNav(); renderMain(); reloadPreview(); $("#form").scrollTop = 0; }
 function renderNav() {
   let from = -1;
@@ -349,7 +366,7 @@ function renderNav() {
       h("span", { class: "navit__grip", "aria-hidden": "true" }, "⋮⋮"),
       h("span", { class: "navit__th", style: { backgroundImage: j.cover && !isVideo(j.cover) ? `url("${url(j.cover)}")` : "none" } }),
       h("span", { class: "navit__t" }, h("b", {}, j.title || "Sem título"), h("small", {}, `${pad(i + 1)} · ${(j.categories || []).map(catName).join(" + ") || "sem categoria"}`)),
-      h("span", { class: "navit__f" }, j.hidden && h("span", { class: "flag", title: "Oculto: não aparece no site" }, "oculto"), !j.hidden && !(j.categories || []).length && h("span", { class: "flag", title: "Sem categoria: aparece em “Selected work”" }, "cat"), !j.cover && h("span", { class: "flag", title: "Sem capa" }, "capa"), miss > 0 && h("span", { class: "flag", title: `${miss} texto(s) sem versão PT` }, "PT " + miss)));
+      h("span", { class: "navit__f" }, j.hidden && h("span", { class: "flag", title: "Oculto: não aparece no site" }, "oculto"), !j.hidden && TIER_TAG[j.tier] && h("span", { class: "flag flag--" + j.tier, title: "Posição no portfólio" }, TIER_TAG[j.tier]), !j.cover && h("span", { class: "flag", title: "Sem capa" }, "capa"), miss > 0 && h("span", { class: "flag", title: `${miss} texto(s) sem versão PT` }, "PT " + miss)));
     b.addEventListener("dragstart", (e) => { from = i; b.classList.add("dragging"); e.dataTransfer.setData("text/x-job", j.id); e.dataTransfer.effectAllowed = "move"; });
     b.addEventListener("dragend", () => { from = -1; b.classList.remove("dragging"); });
     b.addEventListener("dragover", (e) => { if (from < 0) return; e.preventDefault(); b.classList.add("drag-over"); });
@@ -368,15 +385,17 @@ function jobForm(j) {
   const idIn = h("input", { class: "in", value: j.id, spellcheck: "false" });
   idIn.addEventListener("change", () => {
     const old = j.id, nid = uniqueId(idIn.value, j); idIn.value = nid; if (nid === old) return;
-    j.id = nid; E.sel.id = nid; E.data.practices.forEach((p) => { p.jobs = (p.jobs || []).map((x) => (x === old ? nid : x)); }); changed();
+    j.id = nid; E.sel.id = nid; E.data.practices.forEach((p) => { p.jobs = (p.jobs || []).map((x) => (x === old ? nid : x)); });
+    E.data.skills.forEach((s) => { s.jobs = (s.jobs || []).map((x) => (x === old ? nid : x)); }); E.data.profiles.forEach((p) => { p.flagships = (p.flagships || []).map((x) => (x === old ? nid : x)); }); changed();
     toast(`ID alterado para "${nid}". Mídias já importadas continuam em media/${old}/.`, "warn", 7000);
   });
   const syncTitle = (v) => { $("#barTitle").textContent = v || "Sem título"; head.querySelector("h1").textContent = v || "Sem título"; if (/^novo-job/.test(j.id) && v.trim()) { j.id = idIn.value = E.sel.id = uniqueId(v, j); } };
   const del = h("button", { class: "mini warn", type: "button", onclick: () => {
     if (!confirmDel) { confirmDel = true; del.textContent = "Clique de novo para excluir"; setTimeout(() => { confirmDel = false; del.textContent = "Excluir"; }, 3500); return; }
-    jobs().splice(i, 1); E.data.practices.forEach((p) => { p.jobs = (p.jobs || []).filter((x) => x !== j.id); }); changed();
+    jobs().splice(i, 1); E.data.practices.forEach((p) => { p.jobs = (p.jobs || []).filter((x) => x !== j.id); });
+    E.data.skills.forEach((s) => { s.jobs = (s.jobs || []).filter((x) => x !== j.id); }); E.data.profiles.forEach((p) => { p.flagships = (p.flagships || []).filter((x) => x !== j.id); }); changed();
     toast(`"${j.title || j.id}" removido do site. Os arquivos de mídia continuam na pasta.`, "warn");
-    select(jobs()[Math.min(i, jobs().length - 1)] ? { type: "job", id: jobs()[Math.min(i, jobs().length - 1)].id } : { type: "hero" });
+    select(jobs()[Math.min(i, jobs().length - 1)] ? { type: "job", id: jobs()[Math.min(i, jobs().length - 1)].id } : { type: "guide" });
   } }, "Excluir");
   const head = h("div", { class: "head" },
     h("span", { class: "head__th", style: { backgroundImage: j.cover && !isVideo(j.cover) ? `url("${url(j.cover)}")` : "none" } }),
@@ -385,15 +404,15 @@ function jobForm(j) {
       h("button", { class: "mini", type: "button", onclick: () => { const c = structuredClone(j); c.id = uniqueId(j.id + "-copia"); c.title = (j.title || "") + " (cópia)"; jobs().splice(i + 1, 0, c); changed(); select({ type: "job", id: c.id }); } }, "Duplicar"),
       del));
   const lab = { challenge: "Desafio", idea: "Ideia", execution: "Execução", outcome: "Resultado" };
-  return [head,
-    sec("01", "Identificação", "aparece na galeria e no topo do case",
+  return [head, SP.jobPosition(j),
+    sec("01", "Identificação", "aparece nos cards e no topo do case",
       h("div", { class: "grid2" },
         field("Título", txt(j, "title", { onInput: syncTitle })),
         field("ID / pasta", idIn, "Usado em v3/media/<id>/ e no link ?case=<id>."),
         field("Cliente", txt(j, "client", { ph: "HBO Max" })),
         field("Ano", txt(j, "year", { ph: "2025" })),
         field("Disciplinas", txt(j, "disciplines", { ph: "VFX · 3D · Compositing" }), "Separe com ·"),
-        field("Cor da luz", color(j, "tint"), "Tinge a galáxia quando o job está em foco."),
+        field("Cor da luz", color(j, "tint"), "Tinge a galáxia quando o card está em foco."),
         field("Contexto — uma linha", tr(j, "context", { multi: true, rows: 2 }), null, "full"),
         h("div", { class: "f full" }, h("span", { class: "f__l" }, "Categorias"),
           h("div", { class: "chips" }, cats().map((c) => {
@@ -401,16 +420,15 @@ function jobForm(j) {
             cb.addEventListener("change", () => { j.categories = (j.categories || []).filter((x) => x !== c.id); if (cb.checked) j.categories.push(c.id); changed(); });
             return h("label", { class: "chk" }, cb, tv(c.name) || c.id);
           }), h("button", { class: "mini", type: "button", onclick: () => select({ type: "categories" }) }, "Gerenciar categorias")),
-          h("small", { class: "f__h" }, "O job aparece como slide dentro de cada categoria marcada. Sem categoria, vai para “Selected work”.")),
+          h("small", { class: "f__h" }, "Filtros do índice (Index). Um job pode estar em mais de uma.")),
         h("label", { class: "chk full" }, (() => { const cb = h("input", { type: "checkbox", checked: !j.hidden }); cb.addEventListener("change", () => { if (cb.checked) delete j.hidden; else j.hidden = true; changed(); }); return cb; })(), "Visível no site"))),
-    sec("02", "Capa", "a lâmina de vidro da galeria 3D",
-      media(j, "cover", { dir: () => `media/${j.id}`, maxW: 1600, ratio: COVER_RATIO, videos: true, aspect: "404/316", empty: "Imagem é recortada na proporção da lâmina (1,28 : 1). Vídeo: WebM 1280×1000, 4–8 s em loop, sem áudio, até ~4 MB." })),
+    sec("02", "Capa", "o card do job (16 : 10; o case principal grande usa 16 : 9)",
+      media(j, "cover", { dir: () => `media/${j.id}`, maxW: 1920, ratio: COVER_RATIO, videos: true, aspect: "16/10", empty: "Imagem é recortada em 16 : 10. Vídeo: WebM/MP4 1280–1920 px, 4–8 s em loop, sem áudio, até ~4 MB — toca no card." })),
     sec("03", "Vídeo", "o primeiro item do case", video(j)),
     sec("04", "Galeria", "imagens e vídeos do case, na ordem abaixo", gallery(j)),
     sec("05", "Case", "Desafio → Ideia → Execução → Resultado",
       h("div", { class: "grid2" },
-        ...Object.entries(lab).map(([k, l]) => field(l, tr(j, k, { multi: true, rows: 3 }))),
-        field("Função", txt(j, "role", { ph: "Direção de arte, 3D, composição" }), null, "full"))),
+        ...Object.entries(lab).map(([k, l]) => field(l, tr(j, k, { multi: true, rows: 3 }))))),
     sec("06", "Ferramentas", "ícones no slide e no case", toolPicker(j)),
     sec("07", "Link externo", "botão no final do case",
       h("div", { class: "grid2" },
@@ -437,7 +455,7 @@ function toolPicker(j) {
 function categoriesForm() {
   const list = cats();
   const move = (i, d) => { const k = i + d; if (k < 0 || k >= list.length) return; [list[i], list[k]] = [list[k], list[i]]; changed(); renderMain(); };
-  return [h("p", { class: "intro" }, "Cada categoria é uma lâmina no corredor 3D; ao entrar nela, os jobs viram slides laterais. Categorias sem jobs ficam escondidas no site. Um job pode estar em mais de uma."),
+  return [h("p", { class: "intro" }, "Na v4 as categorias são os filtros do índice (Index). Principais aparecem primeiro; secundárias ficam com borda tracejada. Categorias sem jobs visíveis somem do site."),
     h("div", { class: "row", style: { marginBottom: "14px" } }, h("button", { class: "btn", type: "button", onclick: () => {
       list.push({ id: uniqueCatId("nova-categoria"), name: { en: "", pt: "" }, text: { en: "", pt: "" }, cover: "", tint: "#8fd8ff" }); changed(); renderMain();
       setTimeout(() => { const f = $("#form"); f.scrollTop = f.scrollHeight; }, 30); } }, "+ Nova categoria")),
@@ -457,7 +475,8 @@ function categoriesForm() {
             h("div", { class: "f", style: { alignContent: "start", gap: "12px" } },
               field("Nome", tr(c, "name", { ph: "Motion Design" })),
               field("Frase", tr(c, "text", { multi: true, rows: 2 })),
-              h("div", { class: "grid2" }, field("ID", idIn, "Usado no link ?cat=<id>."), field("Cor da luz", color(c, "tint")))),
+              h("div", { class: "grid2" }, field("ID", idIn), field("Cor da luz", color(c, "tint"))),
+              h("div", { class: "f" }, h("span", { class: "f__l" }, "Peso"), (() => { const b = h("div", { class: "seg seg--pick" }); const draw = () => b.replaceChildren(...[["primary", "Principal"], ["secondary", "Secundária"]].map(([v, l]) => h("button", { type: "button", class: (c.tier || "secondary") === v ? "on" : "", onclick: () => { c.tier = v; changed(); draw(); } }, l))); draw(); return b; })())),
             field("Capa da categoria", media(c, "cover", { dir: () => "media/categories", maxW: 1600, ratio: COVER_RATIO, videos: true, aspect: "404/316", empty: "Vazia: usa a capa do primeiro job. Aceita WebM animado (1280×1000, loop curto, sem áudio)." }))),
           h("div", { class: "f" }, h("span", { class: "f__l" }, "Jobs nesta categoria"),
             h("div", { class: "chips" }, jobs().map((j) => {
@@ -569,8 +588,9 @@ function renderMain() {
     if (!j) { E.sel = jobs()[0] ? { type: "job", id: jobs()[0].id } : { type: "hero" }; return renderMain(); }
     title = j.title || "Sem título"; crumb = "Jobs"; form.replaceChildren(...jobForm(j));
   } else {
-    const p = PAGES.find((x) => x.type === sel.type); title = p.t; crumb = "Site";
-    form.replaceChildren(...({ categories: categoriesForm, tools: toolsForm, hero: heroForm, practices: practicesForm, process: processForm, about: aboutForm, import: importForm })[sel.type]());
+    const p = PAGES.find((x) => x.type === sel.type) || { t: sel.type }; title = p.t; crumb = "Site";
+    form.replaceChildren(...({ guide: SP.guideForm, positioning: SP.positioningForm, reels: SP.reelsForm, organize: SP.organizeForm, skills: SP.skillsForm, profiles: SP.profilesForm,
+      categories: categoriesForm, tools: toolsForm, hero: heroForm, practices: practicesForm, process: processForm, about: aboutForm, import: importForm })[sel.type]());
   }
   $("#barTitle").textContent = title; $("#crumb").textContent = crumb + " · textos em " + E.lang.toUpperCase();
 }
@@ -580,9 +600,10 @@ function previewURL() {
   const q = ["draft"]; if (E.lang === "pt") q.push("lang=pt");
   const s = E.sel;
   if (s.type === "job") q.push("case=" + encodeURIComponent(s.id));
-  else if (s.type === "hero") { /* gate first: the previews are visible */ }
-  else if (s.type === "categories" || s.type === "tools") { const c = cats().find((x) => jobs().some((j) => (j.categories || []).includes(x.id))); q.push(c ? "cat=" + encodeURIComponent(c.id) : "skip"); }
-  else q.push("at=" + ({ practices: "practice", process: "process", about: "about" })[s.type]);
+  else if (s.type === "guide" || s.type === "positioning") { /* the hero */ }
+  else if (s.type === "reels") q.push("reel");
+  else if (s.type === "profiles") { const p = E.data.profiles[0]; if (p) q.push("for=" + encodeURIComponent(p.id)); }
+  else q.push("at=" + ({ organize: "work", skills: "skills", categories: "index", tools: "work", about: "about", import: "index" })[s.type] || "work");
   return SITE + "index.html?" + q.join("&");
 }
 function reloadPreview() {
@@ -608,14 +629,18 @@ function bindChrome() {
 }
 function normalize(d) {
   const b = blankContent();
-  d.format = "finetune-portfolio/1";
-  for (const k of ["hero", "about"]) d[k] = { ...b[k], ...(d[k] || {}) };
+  d.format = FORMAT; if (typeof d.media !== "string") d.media = "../v3/";
+  for (const k of ["hero", "about", "positioning"]) d[k] = { ...b[k], ...(d[k] || {}) };
+  for (const k of ["reels", "skills", "profiles"]) d[k] = Array.isArray(d[k]) ? d[k] : b[k];
+  if (typeof d.primaryReel !== "string") d.primaryReel = (d.reels[0] || {}).id || "";
+  d.skills.forEach((s) => { s.jobs = Array.isArray(s.jobs) ? s.jobs : []; s.tools = Array.isArray(s.tools) ? s.tools : []; if (!["core", "adjacent", "edge"].includes(s.ring)) s.ring = "adjacent"; });
+  d.profiles.forEach((p) => { p.flagships = Array.isArray(p.flagships) ? p.flagships : []; });
   for (const k of ["gate", "practices", "process"]) { const arr = Array.isArray(d[k]) ? d[k] : []; d[k] = b[k].map((x, i) => ({ ...x, ...(arr[i] || {}) })); }
   d.categories = Array.isArray(d.categories) ? d.categories : [];
   d.tools = Array.isArray(d.tools) ? d.tools : [];
   const byLabel = (name) => d.tools.find((t) => t.label.toLowerCase() === name.trim().toLowerCase());
   d.jobs = (Array.isArray(d.jobs) ? d.jobs : []).map((j) => ({ ...blankJob(j.id || "job"), ...j, gallery: Array.isArray(j.gallery) ? j.gallery : [],
-    categories: Array.isArray(j.categories) ? j.categories : [],
+    categories: Array.isArray(j.categories) ? j.categories : [], tier: ["flagship", "featured", "lab", "archive"].includes(j.tier) ? j.tier : "archive",
     // older drafts kept tools as free text: map the names that exist in the registry
     tools: Array.isArray(j.tools) ? j.tools : String(j.tools || "").split(/[,·;]/).map(byLabel).filter(Boolean).map((t) => t.id) }));
   return d;
@@ -626,7 +651,7 @@ async function boot() {
   let data = null;
   try {
     const st = await api("/status"); E.server = true; E.platform = st.platform;
-    conn.className = "side__status ok"; conn.lastChild.textContent = "servidor local · content.json";
+    conn.className = "side__status ok"; conn.lastChild.textContent = "servidor local · v4/content.json";
     data = st.content ? await api("/content") : blankContent();
   } catch {
     conn.className = "side__status err"; conn.lastChild.textContent = "sem servidor local";
@@ -645,7 +670,7 @@ async function boot() {
         h("button", { class: "mini", type: "button", onclick: () => { localStorage.setItem(DIRTY_KEY, "0"); b.hidden = true; } }, "Descartar"));
     }
   } catch { /* ignore */ }
-  E.sel = jobs()[0] ? { type: "job", id: jobs()[0].id } : { type: "hero" };
+  E.sel = { type: "guide" };
   renderNav(); renderMain(); renderState(); reloadPreview();
   try { if (localStorage.getItem(DIRTY_KEY) !== "1") localStorage.setItem(DRAFT_KEY, JSON.stringify(E.data)); } catch { /* ignore */ }
 }
